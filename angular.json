@@ -30,9 +30,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/assets/css/bootstrap.min.css",
+              "src/assets/css/style.css"
             ],
-            "scripts": [],
+            "scripts": ["src/assets/js/modernizr.js",
+            "src/assets/js/jquery-1.11.0.min.js",
+            "src/assets/js/bootstrap.bundle.min.js",
+            "src/assets/js/plugins.js",
+            "src/assets/js/script.js"],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -95,12 +100,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/assets/css/bootstrap.min.css",
+              "src/assets/css/style.css"
             ],
-            "scripts": []
+            "scripts": ["src/assets/js/modernizr.js",
+            "src/assets/js/jquery-1.11.0.min.js",
+            "src/assets/js/bootstrap.bundle.min.js",
+            "src/assets/js/plugins.js",
+            "src/assets/js/script.js"]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "549c5ef6-a772-4ed7-bf7b-decb764ac8a2"
   }
 }
