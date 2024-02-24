@@ -30,12 +30,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/css/bootstrap.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/style.css"
             ],
             "scripts": ["src/assets/js/modernizr.js",
-            "src/assets/js/jquery-1.11.0.min.js",
-            "src/assets/js/bootstrap.bundle.min.js",
+            "node_modules/jquery/dist/jquery.min.js",
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"],
             "server": "src/main.server.ts",
