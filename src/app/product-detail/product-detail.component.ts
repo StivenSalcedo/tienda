@@ -18,9 +18,9 @@ export class ProductDetailComponent {
   ProductName: string | null;
   Loading: Boolean = true;
   ProductDetail: any = {};
-  CurrentImagen:any={};
+  CurrentImagen: any = {};
   public Links: any = [];
-  Colors:any=[];
+  Colors: any = [];
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient, private _router: Router, public Service: ApiService) {
     this.ProductId = this._Activatedroute.snapshot.queryParamMap.get("Id");
     this.ProductName = this._Activatedroute.snapshot.queryParamMap.get("P");
@@ -28,76 +28,70 @@ export class ProductDetailComponent {
       this.redirectTo('./', '');
     }
     else {
-      this.GetProductDetail();
+      afterRender(() => {
+       if(this.Loading)
+       {
+        this.GetProductDetail();
+       }
+        this.Loading = false;
+        
+      })
     }
-    afterRender(() => {
-      this.Loading = false;
-    })
+
   }
   GetLinks(data: any) {
     this.Links = data;
   }
-  ShowDetail(data: any)
-  {
+  ShowDetail(data: any) {
     console.log(data.attributes);
-    this.CurrentImagen=data.attributes;
+    this.CurrentImagen = data.attributes;
   }
   GetProductDetail() {
-  var ComplementQuery="&populate[color]=*&populate[imagen]=*&populate[productos][populate]=*";
+    var Filter = "/productos?filters[id][$eq]=";
+    var ComplementQuery = "&populate[color]=*&populate[imagen]=*&populate[productos][populate]=*";
     if (this.ProductId != '' && this.ProductId != null) {
-
-      this.Service.getPosts('get', {}, '/productos?filters[id][$eq]=' + this.ProductId + ComplementQuery)
-        .subscribe({
-          next: data => {
-            this.ProductDetail = data;
-            this.ProductDetail = this.ProductDetail.data[0].attributes;
-            if(this.ProductDetail.imagen.data.length>0)
-            {
-              this.CurrentImagen=this.ProductDetail.imagen.data[0].attributes;
-            }
-            console.log('ProductDetail');
-            console.log(this.ProductDetail);
-          },
-          error: error => {
-
-          }
-        });
+      Filter = "/productos?filters[id][$eq]=";
     }
     else if (this.ProductName != '' && this.ProductName != null) {
-      this.Service.getPosts('get', {}, '/productos?filters[titulo][$eq]=' + this.ProductName + ComplementQuery)
-        .subscribe({
-          next: data => {
-            this.ProductDetail = data;
-            this.ProductDetail = this.ProductDetail.data[0].attributes;
-            if(this.ProductDetail.imagen.data.length>0)
-            {
-              this.CurrentImagen=this.ProductDetail.imagen.data[0].attributes;
-            }
-            
-          },
-          error: error => {
-
-          }
-        });
+      Filter = "/productos?filters[titulo][$eq]=";
     }
     else {
       //this.redirectTo('./', '');
     }
 
-    if(this.ProductDetail.color.data!=null)
-    {
-      this.Colors.push(this.ProductDetail.color.data);
-      if(this.ProductDetail.productos.data.length>0)
-      {
-        this.ProductDetail.productos.data.forEach((data: any, index2: number) => {
-          if(data.attributes.color.data!=null)
-          {
+    this.Service.getPosts('get', {}, Filter + this.ProductId + ComplementQuery)
+      .subscribe({
+        next: data => {
+          this.ProductDetail = data;
+          this.ProductDetail = this.ProductDetail.data[0].attributes;
+          if (this.ProductDetail.imagen.data.length > 0) {
+            this.CurrentImagen = this.ProductDetail.imagen.data[0].attributes;
+          }
+          if (this.ProductDetail.color.data != null) {
+            this.Colors.push(this.ProductDetail.color.data);
+            console.log(this.ProductDetail.productos.data.length);
+       
+              if (this.ProductDetail.productos.data.length > 0) {
+                /* this.ProductDetail.productos.data.forEach((data1: any, index2: number) => {
+                   if (data1.attributes.color.data != null) {
+                     var Validate = this.Colors.filter((data2: any) => { return data2.id == data1.attributes.color.data.id; });
+                     if (Validate.length == 0) {
+                       this.Colors.push(data1.attributes.color.data);
+                     }
+                   }
+                 })*/
+              }
             
           }
-        })
-      }
-    }
-    
+        },
+        error: error => {
+
+        }
+      });
+
+
+
+
 
 
 
