@@ -7,9 +7,9 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 export const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'tienda', component: ProductDetailComponent,runGuardsAndResolvers: 'always'},
-   /* { path: ':category', component: BaseComponent,children: [{
+    { path: ':category', component: BaseComponent,children: [{
       path: ':slug',component: BaseComponent}]
-    }
+    }/*
     ,{ path: '**', component: BaseComponent }*/
     
 ];

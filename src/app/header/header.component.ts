@@ -17,14 +17,14 @@ import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 
 export class HeaderComponent implements OnInit {
   Menu:any=[];
-  @Output() Links = new EventEmitter<any>();
+
   constructor(private Service: ApiService, private http: HttpClient, private _router: Router,@Inject(DOCUMENT) private document: Document) {
    
-    
+     
   }
   
   ngOnInit(): void {
-   this.loadMenu(true);
+    this.loadMenu(true);
   }
 
   loadMenu(reload:boolean){
@@ -32,7 +32,8 @@ export class HeaderComponent implements OnInit {
     var localdata =reload?null: localStorage?.getItem('paginas');
     var CurrentDate=new Date();
        if (localdata == null) {
-        this.Service.getPosts('get', {}, '/paginas?filters[$or][0][tipo][nombre][$eq]=pagina&filters[$or][1][tipo][nombre][$eq]=footer&populate=*')
+        //'/paginas?filters[$or][0][tipo][nombre][$eq]=pagina&filters[$or][1][tipo][nombre][$eq]=footer&populate=*'
+        this.Service.getPosts('get', {}, '/paginas?filters[tipo][nombre][$eq]=pagina&populate=*')
         .subscribe({
           next: data => {
             this.Menu= data;
@@ -43,9 +44,6 @@ export class HeaderComponent implements OnInit {
               data.localcreated=CurrentDate;
               data.menu=data.attributes.menu;
             })
-            this.Links.emit(data);
-            //console.log('this.Menu');
-          //console.log(data);
           },
           error: error => {
           

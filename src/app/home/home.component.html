@@ -1,4 +1,4 @@
-<app-header (Links)="GetLinks($event)"></app-header>
+<app-header ></app-header>
 <section *ngIf="Slider.length>0" id="billboard" class="position-relative overflow-hidden bg-light-blue">
   <div class="swiper main-swiper">
     <div class="swiper-wrapper">
@@ -110,7 +110,7 @@
               </div>
               <div class="cart-concern position-absolute">
                 <div *ngIf="p.attributes.unidades>0" class="cart-button d-flex">
-                  <a href="{{p.attributes.url}}&Id={{p.id}}" class="btn btn-medium btn-black">Añadir al carro<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                  <a href="tienda?p={{p.attributes.titulo}}&Id={{p.id}}" class="btn btn-medium btn-black">Añadir al carro<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
                 </div>
                 
                 <div *ngIf="p.attributes.unidades<=0" class="cart-button d-flex">
@@ -375,9 +375,7 @@
             </svg>
           </div>
           <div class="swiper-wrapper">
-            <div *ngFor="let t of Testimonials | orderby:'attributes.createdAt'" [innerHTML]="t.attributes.contenido" class="swiper-slide text-center d-flex justify-content-center">
-           .
-            </div>
+            <div *ngFor="let t of Testimonials | orderby:'attributes.createdAt'" [innerHTML]="t.attributes.contenido" class="swiper-slide text-center d-flex justify-content-center"></div>
            <!-- <div class="swiper-slide text-center d-flex justify-content-center">
               <div class="review-item col-md-10">
                 <i class="icon icon-review"></i>
@@ -499,5 +497,5 @@
     </div>
   </div>
 </section>-->
-<app-footer [Links]="Links"></app-footer>
+<app-footer ></app-footer>
 

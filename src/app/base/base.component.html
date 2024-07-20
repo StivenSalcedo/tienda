@@ -1,0 +1,5 @@
+<app-header (Links)="GetLinks($event)"></app-header>
+<div *ngIf="!loading">
+    <div *ngIf="Page.contenido!=''" [innerHTML]="Page.contenido"></div>
+</div>
+<app-footer ></app-footer>

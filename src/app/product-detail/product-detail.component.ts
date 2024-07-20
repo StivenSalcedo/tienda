@@ -26,20 +26,19 @@ export class ProductDetailComponent {
   Products: any = [];
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient, private _router: Router, public Service: ApiService) {
     this.ProductId = this._Activatedroute.snapshot.queryParamMap.get("Id");
-    this.ProductName = this._Activatedroute.snapshot.queryParamMap.get("P");
+    this.ProductName = this._Activatedroute.snapshot.queryParamMap.get("p");
     if ((this.ProductName === "" || this.ProductName == null)) {
       this.redirectTo('./', '');
     }
     else {
       afterRender(() => {
-       if(this.Loading)
-       {
-       
-       }
-        this.Loading = false;
+      
+      
+        
         
       })
       this.GetProductDetail();
+     
     }
 
   }
@@ -60,7 +59,9 @@ export class ProductDetailComponent {
    // this.CurrentImagen = data.attributes;
   }
   GetLinks(data: any) {
+    if (this.Links.length == 0) {
     this.Links = data;
+    }
   }
   ShowDetail(data: any) {
     console.log(data.attributes);
@@ -74,15 +75,22 @@ export class ProductDetailComponent {
     }
     else if (this.ProductName != '' && this.ProductName != null) {
       Filter = "/productos?filters[titulo][$eq]=";
+      this.ProductId=this.ProductName;
     }
     else {
-      //this.redirectTo('./', '');
+      this.redirectTo('./', '');
     }
 
     this.Service.getPosts('get', {}, Filter + this.ProductId + ComplementQuery)
       .subscribe({
         next: data => {
+          this.Loading = false;
           this.ProductDetail = data;
+          if(this.ProductDetail.data.length==0)
+          {
+            this.redirectTo('./pagina no encontrada', '');
+          }
+          else{
           this.ProductDetail.data[0].attributes.id=this.ProductDetail.data[0].id;
           this.ProductDetail = this.ProductDetail.data[0].attributes;
           this.Products.push(this.ProductDetail);
@@ -111,9 +119,10 @@ export class ProductDetailComponent {
               }
             
           }
+        }
         },
         error: error => {
-
+alert('ok');
         }
       });
 

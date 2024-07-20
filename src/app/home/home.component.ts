@@ -38,8 +38,8 @@ export class HomeComponent implements OnInit {
     GetLinks(data: any) {
         this.Links = data;
     }
-    loadProducts(reload: boolean) {
 
+    loadProducts(reload: boolean) {
         this.Service.getPosts('get', {}, '/productos?filters[$or][0][categoria][favoritos1][$eq]=1&filters[$or][1][categoria][favoritos2][$eq]=1&populate=*')
             .subscribe({
                 next: data => {
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
                         }
 
                     });
-                    
+
                 },
                 error: error => {
 
@@ -103,11 +103,9 @@ export class HomeComponent implements OnInit {
     }
 
     loadContent() {
-
         this.Service.getPosts('get', {}, '/paginas?filters[tipo][nombre][$ne]=pagina&populate=*')
             .subscribe({
                 next: data => {
-
                     this.Pages = data;
                     this.Pages = this.Pages.data;
                     // console.log( this.Pages);
@@ -161,12 +159,12 @@ export class HomeComponent implements OnInit {
                         }
 
                     });
-                    this.Slider= this.Pages.filter((p: any) => {
+                    this.Slider = this.Pages.filter((p: any) => {
                         if (p.attributes.tipo.data.attributes.nombre == 'slider1' && p.attributes.menu > 0) {
                             return p;
                         }
                     });
-                    this.Footer= this.Pages.filter((p: any) => {
+                    this.Footer = this.Pages.filter((p: any) => {
                         if (p.attributes.tipo.data.attributes.nombre == 'footer' && p.attributes.menu > 0) {
                             return p;
                         }
