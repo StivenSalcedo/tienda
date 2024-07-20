@@ -8,7 +8,9 @@
 <div class="product-card position-relative">
 <div  *ngIf="ProductDetail.unidades>0" class="cart-concern">
 <div class="cart-button d-flex">
-  <a  href="#" class="btn btn-medium btn-black">Comprar<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+  <button (click)="Pay()" >pago</button>
+  <a  (click)="Pay()" class="btn btn-medium btn-black">Comprar<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+  <a mp-mode="dftl" (click)="Pay()"  name="MP-payButton" class='blue-tr-m-rn-aron'>Pagar</a>
 </div>
 </div>
 </div>
@@ -34,4 +36,5 @@ unidades:
 
 <div *ngIf="ProductDetail.contenido!=null" [innerHTML]="ProductDetail.contenido"></div>
 </div>
+<ng-template #ContentPayment let-modal><app-payment [Data]="DataSelects"></app-payment></ng-template>
 <app-footer *ngIf="!Loading" [Links]="Links"></app-footer>
