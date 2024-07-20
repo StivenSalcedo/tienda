@@ -6,12 +6,12 @@ import { Injectable } from '@angular/core';
 })
 export class ApiService {
 
-   constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-   public urlBase = 'https://newtecnoshop.com';
-    public url = this.urlBase+'/api';
+  public urlBase = 'https://newtecnoshop.com';
+  public url = this.urlBase + '/api';
 
-   getPosts(Type?: string, ObjectData?: any, Action?: string) {
+  getPosts(Type?: string, ObjectData?: any, Action?: string) {
     let Params = new HttpParams();
     ObjectData=JSON.stringify(ObjectData)=="{}"?{test:'ok'}:ObjectData;
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });

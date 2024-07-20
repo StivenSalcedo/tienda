@@ -7,7 +7,6 @@ import { FooterComponent } from '../footer/footer.component';
 import { orderByPipe } from '../pipes/main.pipe';
 import { HttpClient } from '@angular/common/http';
 import { NgbTooltipModule,NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { PaymentCreateData } from 'mercadopago/dist/clients/payment/create/types';
 import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
 import { PaymentComponent } from '../payment/payment.component';
@@ -31,7 +30,6 @@ export class ProductDetailComponent implements OnInit {
   Products: any = [];
   public DataSelects:any={};
   
-
   @ViewChild('ContentPayment') templateRefPayment: TemplateRef<any> | undefined;
   preferenceData:PreferenceCreateData= {
     body: {
@@ -67,7 +65,7 @@ export class ProductDetailComponent implements OnInit {
  
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient, private _router: Router, public Service: ApiService,private modalService: NgbModal) {
     this.ProductId = this._Activatedroute.snapshot.queryParamMap.get("Id");
-    this.ProductName = this._Activatedroute.snapshot.queryParamMap.get("P");
+    this.ProductName = this._Activatedroute.snapshot.queryParamMap.get("p");
     if ((this.ProductName === "" || this.ProductName == null)) {
       this.redirectTo('./', '');
     }
@@ -82,6 +80,7 @@ export class ProductDetailComponent implements OnInit {
         
       })
       this.GetProductDetail();
+     
     }
     
    // const 
@@ -137,7 +136,9 @@ export class ProductDetailComponent implements OnInit {
    // this.CurrentImagen = data.attributes;
   }
   GetLinks(data: any) {
+    if (this.Links.length == 0) {
     this.Links = data;
+    }
   }
   ShowDetail(data: any) {
     console.log(data.attributes);
@@ -151,15 +152,22 @@ export class ProductDetailComponent implements OnInit {
     }
     else if (this.ProductName != '' && this.ProductName != null) {
       Filter = "/productos?filters[titulo][$eq]=";
+      this.ProductId=this.ProductName;
     }
     else {
-      //this.redirectTo('./', '');
+      this.redirectTo('./', '');
     }
 
     this.Service.getPosts('get', {}, Filter + this.ProductId + ComplementQuery)
       .subscribe({
         next: data => {
+          this.Loading = false;
           this.ProductDetail = data;
+          if(this.ProductDetail.data.length==0)
+          {
+            this.redirectTo('./pagina no encontrada', '');
+          }
+          else{
           this.ProductDetail.data[0].attributes.id=this.ProductDetail.data[0].id;
           this.ProductDetail = this.ProductDetail.data[0].attributes;
           this.Products.push(this.ProductDetail);
@@ -188,9 +196,10 @@ export class ProductDetailComponent implements OnInit {
               }
             
           }
+        }
         },
         error: error => {
-
+alert('ok');
         }
       });
 

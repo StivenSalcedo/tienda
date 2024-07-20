@@ -16,7 +16,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule]
 })
 export class HomeComponent implements OnInit {
-
+    Categories: any = [];
     Products: any = [];
     Products1: any = [];
     Products2: any = [];
@@ -31,22 +31,47 @@ export class HomeComponent implements OnInit {
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer) {
     }
     ngOnInit(): void {
-        this.loadProducts(true);
+
+        this.loadCategories();
         this.loadContent();
 
     }
     GetLinks(data: any) {
         this.Links = data;
     }
-    loadProducts(reload: boolean) {
 
+    loadCategories() {
+        this.Service.getPosts('get', {}, '/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*')
+            .subscribe({
+                next: categories => {
+                    this.Categories = categories;
+                    this.Categories = this.Categories.data;
+                    console.log(this.Categories);
+                    console.log("this.Categories");
+                    this.loadProducts();
+                },
+                error: error => {
+
+                }
+            });
+    }
+    getProductsByCategory(id: number) {
+        return this.Products.filter((p: any) => { return p.attributes.categoria.data.filter((c: any) => { return Number(c.id) == id; }).length>0 });
+    }
+    loadProducts() {
         this.Service.getPosts('get', {}, '/productos?filters[$or][0][categoria][favoritos1][$eq]=1&filters[$or][1][categoria][favoritos2][$eq]=1&populate=*')
             .subscribe({
                 next: data => {
 
                     this.Products = data;
                     this.Products = this.Products.data;
+                    this.Categories.forEach((category: any, index2: number) => {
+                        category.products=this.getProductsByCategory(category.id);
+                        console.log('category.product'+category.id);
+                        console.log(category.products);
+                    })
                     this.Products.forEach((data: any, index2: number) => {
+                       
 
                         if (data.attributes.imagen.data != null) {
 
@@ -87,7 +112,7 @@ export class HomeComponent implements OnInit {
                         }
 
                     });
-                    
+
                 },
                 error: error => {
 
@@ -103,11 +128,9 @@ export class HomeComponent implements OnInit {
     }
 
     loadContent() {
-
         this.Service.getPosts('get', {}, '/paginas?filters[tipo][nombre][$ne]=pagina&populate=*')
             .subscribe({
                 next: data => {
-
                     this.Pages = data;
                     this.Pages = this.Pages.data;
                     // console.log( this.Pages);
@@ -161,12 +184,12 @@ export class HomeComponent implements OnInit {
                         }
 
                     });
-                    this.Slider= this.Pages.filter((p: any) => {
+                    this.Slider = this.Pages.filter((p: any) => {
                         if (p.attributes.tipo.data.attributes.nombre == 'slider1' && p.attributes.menu > 0) {
                             return p;
                         }
                     });
-                    this.Footer= this.Pages.filter((p: any) => {
+                    this.Footer = this.Pages.filter((p: any) => {
                         if (p.attributes.tipo.data.attributes.nombre == 'footer' && p.attributes.menu > 0) {
                             return p;
                         }
