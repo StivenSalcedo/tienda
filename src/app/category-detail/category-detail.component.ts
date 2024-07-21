@@ -96,7 +96,7 @@ getCategories(){
       this.CategoryId=this.CategoryName;
     }
     else {
-      this.redirectTo('./', '');
+      this.redirectTo('./');
     }
     this.Service.getPosts('get', {},  Filter + this.CategoryId + ComplementQuery)
         .subscribe({
@@ -148,19 +148,9 @@ getCategories(){
 
 }
 
-redirectTo(uri: string, tableid: string) {
-  if (tableid != '' && tableid != undefined && tableid != null) {
-    this._router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this._router.navigate([uri], {
-        queryParams: { TableId: tableid }
-      }
-      )
-    )
-  }
-  else {
+redirectTo(uri: string) {
     this._router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this._router.navigate([uri]));
-  }
 
 }
 

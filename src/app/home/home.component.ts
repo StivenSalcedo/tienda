@@ -18,14 +18,13 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class HomeComponent implements OnInit {
     Categories: any = [];
     Products: any = [];
-    Products1: any = [];
-    Products2: any = [];
     Pages: any = [];
     Promotion: any = [];
     Testimonials: any = [];
     Blog: any = [];
     Slider: any = [];
     Footer: any = [];
+    Benefits: any = [];
     Loading: boolean = true;
     public Links: any = [];
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer) {
@@ -41,14 +40,16 @@ export class HomeComponent implements OnInit {
     }
 
     loadCategories() {
+        this.loadProducts();
         this.Service.getPosts('get', {}, '/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*')
             .subscribe({
                 next: categories => {
                     this.Categories = categories;
                     this.Categories = this.Categories.data;
-                    console.log(this.Categories);
-                    console.log("this.Categories");
-                    this.loadProducts();
+                   /* this.Categories.forEach((category: any, index2: number) => {
+                        category.products=[];
+                    })*/
+                 
                 },
                 error: error => {
 
@@ -71,10 +72,7 @@ export class HomeComponent implements OnInit {
                         console.log(category.products);
                     })
                     this.Products.forEach((data: any, index2: number) => {
-                       
-
                         if (data.attributes.imagen.data != null) {
-
                             var MainImage = data.attributes.imagen.data.filter((data1: any) => { return data1.attributes.caption == "1"; });
                             if (MainImage.length > 0) {
                                 data.imagen = MainImage[0].attributes;
@@ -100,31 +98,11 @@ export class HomeComponent implements OnInit {
                             data.imagen.url = this.Service.urlBase + "/uploads/blanco_17b7000fd4.jpg";
                         }
                     })
-                    this.Products1 = this.Products.filter((p: any) => {
-                        if (p.attributes.categoria.data[0].attributes.favoritos1) {
-                            return p;
-                        }
-
-                    });
-                    this.Products2 = this.Products.filter((p: any) => {
-                        if (p.attributes.categoria.data[0].attributes.favoritos2) {
-                            return p;
-                        }
-
-                    });
-
                 },
                 error: error => {
 
                 }
-
-
-
             });
-        // console.log('this.Products');
-        // console.log(this.Products);
-
-
     }
 
     loadContent() {
@@ -136,7 +114,7 @@ export class HomeComponent implements OnInit {
                     // console.log( this.Pages);
                     this.Pages.forEach((data: any, index2: number) => {
                         if (data.attributes.contenido != null) {
-                            data.attributes.contenido = this.sanitizer.bypassSecurityTrustHtml(data.attributes.contenido);
+                           // data.attributes.contenido = this.sanitizer.bypassSecurityTrustHtml(data.attributes.contenido);
                         }
 
                         if (data.attributes.imagen.data != null) {
@@ -173,30 +151,37 @@ export class HomeComponent implements OnInit {
                     });
 
                     this.Testimonials = this.Pages.filter((p: any) => {
-                        if (p.attributes.tipo.data.attributes.nombre == 'testimonio' && p.attributes.menu > 0) {
+                        if (p.attributes.tipo.data.attributes.nombre == 'testimonio'  && p.attributes.menu > -1) {
                             return p;
                         }
 
                     });
                     this.Blog = this.Pages.filter((p: any) => {
-                        if (p.attributes.tipo.data.attributes.nombre == 'blog' && p.attributes.menu > 0) {
+                        if (p.attributes.tipo.data.attributes.nombre == 'blog' && p.attributes.menu > -1) {
                             return p;
                         }
 
                     });
                     this.Slider = this.Pages.filter((p: any) => {
-                        if (p.attributes.tipo.data.attributes.nombre == 'slider1' && p.attributes.menu > 0) {
+                        if (p.attributes.tipo.data.attributes.nombre == 'slider' && p.attributes.menu > -1) {
                             return p;
                         }
                     });
                     this.Footer = this.Pages.filter((p: any) => {
-                        if (p.attributes.tipo.data.attributes.nombre == 'footer' && p.attributes.menu > 0) {
+                        if (p.attributes.tipo.data.attributes.nombre == 'footer' && p.attributes.menu > -1) {
+                            return p;
+                        }
+                    });
+                    this.Benefits = this.Pages.filter((p: any) => {
+                        if (p.attributes.tipo.data.attributes.nombre == 'beneficio'  && p.attributes.menu > -1) {
                             return p;
                         }
                     });
 
+
+
                     this.Loading = false;
-                    // console.log(this.Blog);
+                    console.log(this.Benefits);
                 },
                 error: error => {
 
@@ -208,5 +193,9 @@ export class HomeComponent implements OnInit {
 
 
 
+    }
+    getOtherAttributes(attribute:string,b:any){
+      return b.attributes.otros[attribute];
+return '#cart-outline';
     }
 }

@@ -1,4 +1,4 @@
-<app-header ></app-header>
+<app-header></app-header>
 <section *ngIf="Slider.length>0" id="billboard" class="position-relative overflow-hidden bg-light-blue">
   <div class="swiper main-swiper">
     <div class="swiper-wrapper">
@@ -8,7 +8,8 @@
             <div class="col-md-6">
               <div class="banner-content">
                 <h1 class="display-2 text-uppercase text-dark pb-5">{{p.attributes.titulo}}</h1>
-                <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Comprar producto</a>
+                <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}"
+                  class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Comprar producto</a>
               </div>
             </div>
             <div class="col-md-5">
@@ -32,90 +33,60 @@
     </svg>
   </div>
 </section>
-<section id="beneficios" class="padding-large">
+<section *ngIf="Benefits.length>0" id="benefits" class="padding-large">
   <div class="container">
     <div class="row">
-      <div class="col-lg-3 col-md-6 pb-3">
+      <div *ngFor="let b of Benefits | orderby:'attributes.menu'" class="col-lg-3 col-md-6 pb-3">
         <div class="icon-box d-flex">
           <div class="icon-box-icon pe-3 pb-3">
-            <svg class="cart-outline">
-              <use xlink:href="#cart-outline" />
+            <svg class="{{getOtherAttributes('icon',b)}}">
+              <use [attr.xlink:href]="'#'+getOtherAttributes('icon',b)" />
             </svg>
           </div>
           <div class="icon-box-content">
-            <h3 class="card-title text-uppercase text-dark">Entrega Gratis</h3>
-            <p>Descubre la libertad de comprar sin límites. Envío gratis en cada orden. Tu puerta, nuestro compromiso. Haz clic y disfruta sin preocupaciones.Nota: Aplica para compra mínima de 100.000 pesos colombianos, Animate!.</p>
+            <h3 class="card-title text-uppercase text-dark">{{b.attributes.titulo}}</h3>
+            <p>{{b.attributes.descripcion}}</p>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 pb-3">
-        <div class="icon-box d-flex">
-          <div class="icon-box-icon pe-3 pb-3">
-            <svg class="quality">
-              <use xlink:href="#quality" />
-            </svg>
-          </div>
-          <div class="icon-box-content">
-            <h3 class="card-title text-uppercase text-dark">Garantía de Calidad</h3>
-            <p>Tu confianza es nuestra prioridad. En nuestra tienda online, cada producto está respaldado por nuestra garantía de calidad. Nos comprometemos a ofrecerte solo lo mejor, porque tu satisfacción es nuestro mayor logro. Compra con tranquilidad, compra con confianza.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 pb-3">
-        <div class="icon-box d-flex">
-          <div class="icon-box-icon pe-3 pb-3">
-            <svg class="price-tag">
-              <use xlink:href="#price-tag" />
-            </svg>
-          </div>
-          <div class="icon-box-content">
-            <h3 class="card-title text-uppercase text-dark">Verdaderas Ofertas</h3>
-            <p>¡Ofertas reales para tiempos reales! En nuestra tienda online, las promociones son auténticas y verificadas. No te pierdas la oportunidad de ahorrar de verdad en cada compra. ¡Descubre nuestras ofertas genuinas y disfruta del mejor valor en cada producto que elijas!</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 pb-3">
-        <div class="icon-box d-flex">
-          <div class="icon-box-icon pe-3 pb-3">
-            <svg class="shield-plus">
-              <use xlink:href="#shield-plus" />
-            </svg>
-          </div>
-          <div class="icon-box-content">
-            <h3 class="card-title text-uppercase text-dark">100% Pago Seguro</h3>
-            <p>Tu tranquilidad es nuestra prioridad número uno. Con nuestro sistema de pago seguro en línea, tus transacciones están protegidas en cada paso del camino. Compra con confianza, sabiendo que tus datos están seguros. En nuestra tienda online, la seguridad es más que una promesa, es nuestro compromiso contigo.</p>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
-<section  *ngFor="let c of Categories | orderby:'orden'"  id="{{c.attributes.nombre}}" class="product-store position-relative padding-large no-padding-top">
+
+<section *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}"
+  class="product-store position-relative padding-large no-padding-top">
   <div *ngIf="c.products.length>0" class="container">
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
         <h2 class="display-7 text-dark text-uppercase">{{c.attributes.nombre}}</h2>
         <div class="btn-right">
-          <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}" class="btn btn-medium btn-normal text-uppercase">Ver Categoria</a>
+          <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}"
+            class="btn btn-medium btn-normal text-uppercase">Ver Categoria</a>
         </div>
       </div>
       <div class="swiper product-swiper">
         <div class="swiper-wrapper">
-         
-          <div *ngFor="let p of c.products | orderby:'orden'"  class="swiper-slide">
+
+          <div *ngFor="let p of c.products | orderby:'orden'" class="swiper-slide">
             <div class="product-card position-relative">
               <div class="image-holder">
-               
+
                 <img src="{{p.imagen.url}}" alt="{{p.imagen.alternativeText || p.attributes.titulo}}" class="img-fluid">
               </div>
               <div class="cart-concern position-absolute">
                 <div *ngIf="p.attributes.unidades>0" class="cart-button d-flex">
-                
-                  <a href="tienda?p={{p.attributes.titulo}}&Id={{p.id}}" class="btn btn-medium btn-black">Añadir al carro<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+
+                  <a href="tienda?p={{p.attributes.titulo}}&Id={{p.id}}" class="btn btn-medium btn-black">Añadir al
+                    carro<svg class="cart-outline">
+                      <use xlink:href="#cart-outline"></use>
+                    </svg></a>
                 </div>
-                
+
                 <div *ngIf="p.attributes.unidades<=0" class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Agotado<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                  <a href="#" class="btn btn-medium btn-black">Agotado<svg class="cart-outline">
+                      <use xlink:href="#cart-outline"></use>
+                    </svg></a>
                 </div>
               </div>
               <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
@@ -204,129 +175,21 @@
   </div>
   <div class="swiper-pagination position-absolute text-center"></div>
 </section>
-<!--<section *ngFor="let c of Categories | orderby:'orden'"  id="accesorios" class="product-store padding-large position-relative">
-  <div class="container">
-    <div class="row">
-      <div class="display-header d-flex justify-content-between pb-3">
-        <h2 class="display-7 text-dark text-uppercase">{{c.attributes.nombre}}</h2>
-        <div class="btn-right">
-          <a href="{{c.attributes.url}}" class="btn btn-medium btn-normal text-uppercase">Ir a la Tienda</a>
-        </div>
-      </div>
-      <div class="swiper product-watch-swiper">
-        <div class="swiper-wrapper">
-          <div *ngFor="let p of Products2 | orderby:'orden'"  class="swiper-slide">
-            <div class="product-card position-relative">
-              <div class="image-holder">
-               
-                <img src="{{p.imagen.url}}" alt="{{p.imagen.alternativeText || p.attributes.titulo}}" class="img-fluid">
-              </div>
-              <div class="cart-concern position-absolute">
-                <div *ngIf="p.attributes.unidades>0" class="cart-button d-flex">
-                  <a href="{{p.attributes.url}}" class="btn btn-medium btn-black">Añadir al carro<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-                
-                <div *ngIf="p.attributes.unidades<=0" class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Agotado<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-              </div>
-              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                <h3 class="card-title text-uppercase">
-                  <a href="#">{{p.attributes.titulo}}</a>
-                </h3>
-                <span class="item-price text-primary">{{p.attributes.precio | currency}}</span>
-              </div>
-            </div>
-          </div>
-        <div class="swiper-slide">
-            <div class="product-card position-relative">
-              <div class="image-holder">
-                <img src="assets/images/product-item7.jpg" alt="product-item" class="img-fluid">
-              </div>
-              <div class="cart-concern position-absolute">
-                <div class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-              </div>
-              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                <h3 class="card-title text-uppercase">
-                  <a href="#">Heavy watch</a>
-                </h3>
-                <span class="item-price text-primary">$680</span>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="product-card position-relative">
-              <div class="image-holder">
-                <img src="assets/images/product-item8.jpg" alt="product-item" class="img-fluid">
-              </div>
-              <div class="cart-concern position-absolute">
-                <div class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-              </div>
-              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                <h3 class="card-title text-uppercase">
-                  <a href="#">spotted watch</a>
-                </h3>
-                <span class="item-price text-primary">$750</span>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="product-card position-relative">
-              <div class="image-holder">
-                <img src="assets/images/product-item9.jpg" alt="product-item" class="img-fluid">
-              </div>
-              <div class="cart-concern position-absolute">
-                <div class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-              </div>
-              <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
-                <h3 class="card-title text-uppercase">
-                  <a href="#">black watch</a>
-                </h3>
-                <span class="item-price text-primary">$650</span>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="product-card position-relative">
-              <div class="image-holder">
-                <img src="assets/images/product-item10.jpg" alt="product-item" class="img-fluid">
-              </div>
-              <div class="cart-concern position-absolute">
-                <div class="cart-button d-flex">
-                  <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
-                </div>
-              </div>
-              <div class="card-detail d-flex justify-content-between pt-3">
-                <h3 class="card-title text-uppercase">
-                  <a href="#">black watch</a>
-                </h3>
-                <span class="item-price text-primary">$750</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="swiper-pagination position-absolute text-center"></div>
-</section>-->
-<section *ngIf="Promotion.length>0" id="yearly-sale" class="bg-light-blue overflow-hidden mt-5 padding-xlarge" style="background-image: url('{{Promotion[0].imagen.url}}');background-position: right; background-repeat: no-repeat;">
+
+<section *ngIf="Promotion.length>0" id="yearly-sale" class="bg-light-blue overflow-hidden mt-5 padding-xlarge"
+  style="background-image: url('{{Promotion[0].imagen.url}}');background-position: right; background-repeat: no-repeat;">
   <div class="row d-flex flex-wrap align-items-center">
     <div class="col-md-6 col-sm-12">
       <div class="text-content offset-4 padding-medium">
         <h3>{{Promotion[0].attributes.titulo}}</h3>
-        <h2 class="display-2 pb-5 text-uppercase text-dark" style="font-size: 2.5rem;">{{Promotion[0].attributes.descripcion}}</h2>
-        <a href="{{Promotion[0].attributes.url}}" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Ir a la Tienda</a>
+        <h2 class="display-2 pb-5 text-uppercase text-dark" style="font-size: 2.5rem;">
+          {{Promotion[0].attributes.descripcion}}</h2>
+        <a *ngIf="Promotion[0].attributes.url!='' && Promotion[0].attributes.url!=null" href="{{Promotion[0].attributes.url}}" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Ir a
+          la Tienda</a>
       </div>
     </div>
     <div class="col-md-6 col-sm-12">
-      
+
     </div>
   </div>
 </section>
@@ -335,12 +198,12 @@
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
         <h2 class="display-7 text-dark text-uppercase">Ultimos Posts</h2>
-        <div class="btn-right">
+        <div  *ngIf="Blog[0].attributes.url!='' && Blog[0].attributes.url!=null" class="btn-right">
           <a href="{{Blog[0].attributes.url}}" class="btn btn-medium btn-normal text-uppercase">Leer Blog</a>
         </div>
       </div>
       <div class="post-grid d-flex flex-wrap justify-content-between">
-        <div *ngFor="let b of Blog | orderby:'attributes.createdAt'"  class="col-lg-4 col-sm-12">
+        <div *ngFor="let b of Blog | orderby:'attributes.menu'" class="col-lg-4 col-sm-12">
           <div class="card border-none me-3">
             <div class="card-image">
               <img src="{{b.imagen.url}}" alt="" class="img-fluid">
@@ -360,11 +223,11 @@
     </div>
   </div>
 </section>
-<section *ngIf="Testimonials.length>0 && !Loading" id="testimonials" class="position-relative">
+<section *ngIf="Testimonials.length>0" id="testimonials" class="position-relative">
   <div class="container">
     <div class="row">
       <div class="review-content position-relative">
-        <div class="swiper-icon swiper-arrow swiper-arrow-prev position-absolute d-flex align-items-center">
+        <div *ngIf="Testimonials.length>1" class="swiper-icon swiper-arrow swiper-arrow-prev position-absolute d-flex align-items-center">
           <svg class="chevron-left">
             <use xlink:href="#chevron-left" />
           </svg>
@@ -376,36 +239,27 @@
             </svg>
           </div>
           <div class="swiper-wrapper">
-            <div *ngFor="let t of Testimonials | orderby:'attributes.createdAt'" [innerHTML]="t.attributes.contenido" class="swiper-slide text-center d-flex justify-content-center"></div>
-           <!-- <div class="swiper-slide text-center d-flex justify-content-center">
+            <div *ngFor="let t of Testimonials | orderby:'attributes.menu'"
+              class="swiper-slide text-center d-flex justify-content-center">
               <div class="review-item col-md-10">
                 <i class="icon icon-review"></i>
-                <blockquote>“A blog is a digital publication that can complement a website or exist independently. A blog may include articles, short posts, listicles, infographics, videos, and other digital content.”</blockquote>
+                <blockquote>{{t.attributes.descripcion}}</blockquote>
                 <div class="rating">
-                  <svg class="star star-fill">
+                  <svg *ngFor="let s of [].constructor(t.attributes.otros.starsok)" class="star star-fill">
                     <use xlink:href="#star-fill"></use>
                   </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-half">
-                    <use xlink:href="#star-half"></use>
-                  </svg>
-                  <svg class="star star-empty">
+                  <svg *ngFor="let s of [].constructor(t.attributes.otros.starsempty)" class="star star-empty">
                     <use xlink:href="#star-empty"></use>
                   </svg>
                 </div>
                 <div class="author-detail">
-                  <div class="name text-dark text-uppercase pt-2">Jennie Rose</div>
+                  <div class="name text-dark text-uppercase pt-2">{{t.attributes.titulo}}</div>
                 </div>
               </div>
-            </div>-->
+            </div>
           </div>
         </div>
-        <div class="swiper-icon swiper-arrow swiper-arrow-next position-absolute d-flex align-items-center">
+        <div *ngIf="Testimonials.length>1" class="swiper-icon swiper-arrow swiper-arrow-next position-absolute d-flex align-items-center">
           <svg class="chevron-right">
             <use xlink:href="#chevron-right" />
           </svg>
@@ -415,6 +269,8 @@
   </div>
   <div class="swiper-pagination"></div>
 </section>
+<br>
+<!--
 <section id="subscribe" class="container-grid padding-large position-relative overflow-hidden">
   <div class="container">
     <div class="row">
@@ -437,66 +293,6 @@
     </div>
   </div>
 </section>
-<!--<section id="instagram" class="padding-large overflow-hidden no-padding-top">
-  <div class="container">
-    <div class="row">
-      <div class="display-header text-uppercase text-dark text-center pb-3">
-        <h2 class="display-7">Shop Our Insta</h2>
-      </div>
-      <div class="d-flex flex-wrap">
-        <figure class="instagram-item pe-2">
-          <a href="https://therichpost.com/" class="image-link position-relative">
-            <img src="assets/images/insta-item1.jpg" alt="instagram" class="insta-image">
-            <div class="icon-overlay position-absolute d-flex justify-content-center">
-              <svg class="instagram">
-                <use xlink:href="#instagram"></use>
-              </svg>
-            </div>
-          </a>
-        </figure>
-        <figure class="instagram-item pe-2">
-          <a href="https://therichpost.com/" class="image-link position-relative">
-            <img src="assets/images/insta-item2.jpg" alt="instagram" class="insta-image">
-            <div class="icon-overlay position-absolute d-flex justify-content-center">
-              <svg class="instagram">
-                <use xlink:href="#instagram"></use>
-              </svg>
-            </div>
-          </a>
-        </figure>
-        <figure class="instagram-item pe-2">
-          <a href="https://therichpost.com/" class="image-link position-relative">
-            <img src="assets/images/insta-item3.jpg" alt="instagram" class="insta-image">
-            <div class="icon-overlay position-absolute d-flex justify-content-center">
-              <svg class="instagram">
-                <use xlink:href="#instagram"></use>
-              </svg>
-            </div>
-          </a>
-        </figure>
-        <figure class="instagram-item pe-2">
-          <a href="https://therichpost.com/" class="image-link position-relative">
-            <img src="assets/images/insta-item4.jpg" alt="instagram" class="insta-image">
-            <div class="icon-overlay position-absolute d-flex justify-content-center">
-              <svg class="instagram">
-                <use xlink:href="#instagram"></use>
-              </svg>
-            </div>
-          </a>
-        </figure>
-        <figure class="instagram-item pe-2">
-          <a href="https://therichpost.com/" class="image-link position-relative">
-            <img src="assets/images/insta-item5.jpg" alt="instagram" class="insta-image">
-            <div class="icon-overlay position-absolute d-flex justify-content-center">
-              <svg class="instagram">
-                <use xlink:href="#instagram"></use>
-              </svg>
-            </div>
-          </a>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>-->
-<app-footer ></app-footer>
+-->
 
+<app-footer></app-footer>
