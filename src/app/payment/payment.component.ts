@@ -1,6 +1,4 @@
 import { Component, Input, OnInit, afterRender } from '@angular/core';
-import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
-import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-payment',

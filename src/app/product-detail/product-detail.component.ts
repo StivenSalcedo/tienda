@@ -7,10 +7,9 @@ import { FooterComponent } from '../footer/footer.component';
 import { orderByPipe } from '../pipes/main.pipe';
 import { HttpClient } from '@angular/common/http';
 import { NgbTooltipModule,NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentCreateData } from 'mercadopago/dist/clients/payment/create/types';
-import { PreferenceCreateData } from 'mercadopago/dist/clients/preference/create/types';
+
 import { PaymentComponent } from '../payment/payment.component';
-import MercadoPagoConfig, { Preference } from 'mercadopago';
+
 
 @Component({
   selector: 'app-product-detail',
@@ -31,37 +30,7 @@ export class ProductDetailComponent implements OnInit {
   public DataSelects:any={};
   
   @ViewChild('ContentPayment') templateRefPayment: TemplateRef<any> | undefined;
-  preferenceData:PreferenceCreateData= {
-    body: {
-      additional_info: undefined,
-      auto_return: undefined,
-      back_urls: undefined,
-      binary_mode: undefined,
-      coupon_code: undefined,
-      coupon_labels: undefined,
-      date_of_expiration: undefined,
-      differential_pricing: undefined,
-      expiration_date_from: undefined,
-      expiration_date_to: undefined,
-      expires: undefined,
-      external_reference: undefined,
-      items:[],
-      marketplace: undefined,
-      marketplace_fee: undefined,
-      metadata: undefined,
-      notification_url: undefined,
-      operation_type: undefined,
-      payer: undefined,
-      payment_methods: undefined,
-      processing_modes: undefined,
-      purpose: undefined,
-      redirect_urls: undefined,
-      shipments: undefined,
-      statement_descriptor: undefined,
-      taxes: undefined,
-      tracks: undefined
-    }
-  };
+ 
  
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient, private _router: Router, public Service: ApiService,private modalService: NgbModal) {
     this.ProductId = this._Activatedroute.snapshot.queryParamMap.get("Id");
@@ -89,24 +58,7 @@ export class ProductDetailComponent implements OnInit {
     
   }
   ngOnInit(): void {
-    var client=new MercadoPagoConfig({ accessToken: 'TEST-7096063323697644-030520-5c4d187f3119c1f696971d2e758c5e57-555283711', options: { timeout: 5000, idempotencyKey: 'test123' } });
-    var preference= new Preference(client);
-  
-    this.preferenceData.body={
-      items: [
-        {
-          id:'',
-          title: 'My product',
-          quantity: 1,
-          unit_price: 2000
-        }
-      ]
-    }
-     preference.create(this.preferenceData).then((data)=>{
-     
-     this.DataSelects=data;
-      console.log(data.init_point);
-    }).catch(console.log);
+    
     
    
   }
