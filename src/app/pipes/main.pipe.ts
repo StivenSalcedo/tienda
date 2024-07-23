@@ -22,7 +22,6 @@ export class orderByPipe  implements PipeTransform {
    var attribute =field.split(".");
    if(attribute.length>1)
    {
-    console.log(attribute.length);
     array.sort((a: any, b: any) => {
       if (a[attribute[0]][attribute[1]] < b[attribute[0]][attribute[1]]) {
         return -1;

@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
     Footer: any = [];
     Benefits: any = [];
     Loading: boolean = true;
+    LoadingProducts: boolean = true;
     public Links: any = [];
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer) {
     }
@@ -40,16 +41,16 @@ export class HomeComponent implements OnInit {
     }
 
     loadCategories() {
-        this.loadProducts();
+       
         this.Service.getPosts('get', {}, '/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*')
             .subscribe({
                 next: categories => {
                     this.Categories = categories;
                     this.Categories = this.Categories.data;
-                   /* this.Categories.forEach((category: any, index2: number) => {
+                   this.Categories.forEach((category: any, index2: number) => {
                         category.products=[];
-                    })*/
-                 
+                    });
+                this.loadProducts();
                 },
                 error: error => {
 
@@ -98,9 +99,10 @@ export class HomeComponent implements OnInit {
                             data.imagen.url = this.Service.urlBase + "/uploads/blanco_17b7000fd4.jpg";
                         }
                     })
+                    this.LoadingProducts=false;
                 },
                 error: error => {
-
+                    this.LoadingProducts=false;
                 }
             });
     }

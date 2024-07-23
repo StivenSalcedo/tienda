@@ -8,8 +8,8 @@ import { CategoryDetailComponent } from './category-detail/category-detail.compo
 export const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'tienda', component: ProductDetailComponent},
-    { path: 'tienda/categoria', component: CategoryDetailComponent}
-    /*{ path: ':category', component: BaseComponent,children: [{
+    { path: 'tienda/categoria', component: CategoryDetailComponent},
+    { path: ':category', component: BaseComponent,children: [{
       path: ':slug',component: BaseComponent}]
     }/*
     ,{ path: '**', component: BaseComponent }*/

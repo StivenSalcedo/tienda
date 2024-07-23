@@ -90,12 +90,8 @@
 
 <div  class="search-popup">
   <div class="search-popup-container">
-
     <form role="search" method="get" class="search-form" action="">
-      
-     
-      <input  type="search" (keydown)="SearchProducts(SearchProduct)" [(ngModel)]="SearchProduct" id="search-form" class="search-field" placeholder="escribe el producto que buscas" value="" name="s" />
-      <button type="button" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
+      <input  type="search" #Search (keydown)="SearchProducts()" [(ngModel)]="SearchProduct" id="search-form" class="search-field" placeholder="escribe el producto que buscas" value="" name="s" />
     </form>
    
    
@@ -185,7 +181,7 @@
               <div class="user-items ps-5">
                 <ul class="d-flex justify-content-end list-unstyled">
                   <li class="search-item pe-3">
-                    <a href="#" class="search-button">
+                    <a (click)="Focus('search-form')" href="#" class="search-button">
                       <svg class="search">
                         <use xlink:href="#search"></use>
                       </svg>

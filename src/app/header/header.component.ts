@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, NgModule, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, NgModule, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -23,6 +23,8 @@ export class HeaderComponent implements OnInit {
   SearchProduct: string = '';
   Products:any=[];
   ProductsFiltered: any = [];
+  FocusInput:boolean=false;
+  @ViewChild('Search') Search: ElementRef | undefined;
 
   constructor(private Service: ApiService, private http: HttpClient, private _router: Router,@Inject(DOCUMENT) private document: Document) {
    
@@ -89,14 +91,23 @@ loadProducts() {
       });
 }
 
-SearchProducts(value:string) {
+Focus(value:string)
+{
+  setTimeout(() => {
+    this.Search?.nativeElement.focus();
+}, 500)
+}
+
+SearchProducts() {
   this.ProductsFiltered=[];
-  if(value!="" && value!=null)
+  setTimeout(() => {
+  if(this.SearchProduct!="" && this.SearchProduct!=null)
   {
-    setTimeout(() => {
-      this.ProductsFiltered= this.Products.filter((c: any) => { return c.attributes.titulo.toLowerCase().indexOf(value.toLowerCase()) !== -1 });
-     }, 1000)
+   
+      this.ProductsFiltered= this.Products.filter((c: any) => { return c.attributes.titulo.toLowerCase().indexOf(this.SearchProduct.toLowerCase()) !== -1 });
+     
   }
+}, 1000)
   
  
 }

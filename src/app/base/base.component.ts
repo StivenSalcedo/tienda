@@ -42,7 +42,7 @@ export class BaseComponent implements OnInit {
       this.CurrentUrl = '/home';
     }
     this.Counter = +1;
-    console.log(this.Counter);
+  
     // setTimeout(()=> {
 
     this.OnSearch(this.CurrentUrl, true);
@@ -53,7 +53,7 @@ export class BaseComponent implements OnInit {
 
 
   GetLinks(data: any) {
-    console.log(data);
+
     if (this.Links.length == 0) {
       this.Links = data;
     }
@@ -81,7 +81,7 @@ export class BaseComponent implements OnInit {
           this.Pages = data;
           //this.Links=this.Pages.data;
           //localStorage.setItem('paginas', JSON.stringify(data));
-          this.OnFilterPage(data, this.router.url);
+          this.OnFilterPage(data,decodeURI(this.router.url));
           var data1: any = [];
           // var data1={};
           data1.push({ Load: false });
@@ -96,16 +96,23 @@ export class BaseComponent implements OnInit {
 
   }
   OnFilterPage(Data: any, Page: String) {
-    console.log('Page');
-    console.log(Data);
-    var PageFilter = Data.data.filter((data: any) => { return data.attributes.url === Page || data.attributes.url === Page + '/' });
+   // console.log('Page');
+   // console.log(Page);
+    var PageFilter = Data.data.filter((data: any) => { return '/'+data.attributes.url === Page || '/'+data.attributes.url === Page + '/' });
     if (PageFilter.length > 0) {
 
       this.Page = PageFilter[0].attributes;
       if (this.Page.contenido != '' && this.Page.contenido != null) {
-        console.log(this.Page.contenido);
+      //  console.log(this.Page.contenido);
         this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
-        // this.Page.contenido = this.sanitizer.bypassSecurityTrustHtml(this.Page.contenido);
+        if (this.Page.imagen.data != null) {
+          console.log(this.Page.imagen.data);
+          this.Page.imagen.data.forEach((i: any, index2: number) => {
+            this.Page.contenido = this.Page.contenido.toString().replace('{IMAGEN'+(index2+1).toString()+'}',this.Service.urlBase+ i.attributes.url);
+          })
+
+        }
+        
       }
 
       if (this.Page.metadata != null) {
