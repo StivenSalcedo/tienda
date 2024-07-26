@@ -70,10 +70,6 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-             "sslKey":"",
-             "sslCert": ""
-          },
           "configurations": {
             "production": {
               "buildTarget": "Shop:build:production"
