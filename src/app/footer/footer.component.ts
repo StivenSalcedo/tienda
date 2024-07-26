@@ -10,11 +10,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   standalone: true,
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.sass',
-  imports: [CommonModule,
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-orderByPipe]
+  imports: [CommonModule,orderByPipe]
 })
 export class FooterComponent implements OnInit {
   Menu: any = [];
