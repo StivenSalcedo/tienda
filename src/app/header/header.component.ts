@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 import { FormsModule } from '@angular/forms';
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -26,7 +25,7 @@ export class HeaderComponent implements OnInit {
   FocusInput:boolean=false;
   @ViewChild('Search') Search: ElementRef | undefined;
 
-  constructor(private Service: ApiService, private http: HttpClient, private _router: Router,private cacheService:CacheService) {
+  constructor(private Service: ApiService, private http: HttpClient, private _router: Router) {
    
      
   }
@@ -35,7 +34,7 @@ export class HeaderComponent implements OnInit {
     this.loadMenu(true);
     this.loadCategories();
     this.loadProducts();
-    this.cacheService.openCache('test');
+  
   }
 
   loadCategories() {

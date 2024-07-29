@@ -7,13 +7,14 @@ import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.sass',
-    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule]
+    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbAlertModule]
 })
 export class HomeComponent implements OnInit {
     Categories: any = [];

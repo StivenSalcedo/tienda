@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <section *ngIf="Slider.length>0" id="billboard" class="position-relative overflow-hidden bg-light-blue">
   <div class="swiper main-swiper">
     <div class="swiper-wrapper">
@@ -104,7 +105,9 @@
   </div>
   <div class="swiper-pagination position-absolute text-center"></div>
 </section>
-
+<ngb-alert [dismissible]="false">
+	<strong>Warning!</strong> Better check yourself, you're not looking too good.
+</ngb-alert>
 
 <section *ngIf="Promotion.length>0" id="yearly-sale" class="bg-light-blue overflow-hidden mt-5 padding-xlarge"
   style="background-image: url('{{Promotion[0].imagen.url}}');background-position: right; background-repeat: no-repeat;">
