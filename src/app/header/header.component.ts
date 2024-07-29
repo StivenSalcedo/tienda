@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   FocusInput:boolean=false;
   @ViewChild('Search') Search: ElementRef | undefined;
 
-  constructor(private Service: ApiService, private http: HttpClient, private _router: Router,@Inject(DOCUMENT) private document: Document) {
+  constructor(private Service: ApiService, private http: HttpClient, private _router: Router,private cacheService:CacheService) {
    
      
   }
@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
     this.loadMenu(true);
     this.loadCategories();
     this.loadProducts();
+    this.cacheService.openCache('test');
   }
 
   loadCategories() {
@@ -120,8 +121,8 @@ redirectTo(uri: string) {
 }
 
   loadMenu(reload:boolean){
-    var localStorage = this.document.defaultView?.localStorage;
-    var localdata =reload?null: localStorage?.getItem('paginas');
+   
+    var localdata =null;
     var CurrentDate=new Date();
        if (localdata == null) {
         //'/paginas?filters[$or][0][tipo][nombre][$eq]=pagina&filters[$or][1][tipo][nombre][$eq]=footer&populate=*'
