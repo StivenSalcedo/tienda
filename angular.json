@@ -21,7 +21,8 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "sass",
@@ -34,7 +35,7 @@
               "src/assets/css/style.css"
             ],
             "scripts": ["src/assets/js/modernizr.js",
-            "node_modules/jquery/dist/jquery.min.js",
+          
             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"],
@@ -91,7 +92,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "sass",
@@ -104,7 +106,7 @@
               "src/assets/css/style.css"
             ],
             "scripts": ["src/assets/js/modernizr.js",
-            "src/assets/js/jquery-1.11.0.min.js",
+          
             "src/assets/js/bootstrap.bundle.min.js",
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"]
