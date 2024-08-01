@@ -1,5 +1,5 @@
 import { afterRender, Component, Inject, OnInit } from '@angular/core';
-import { CommonModule, DOCUMENT ,LowerCasePipe, CurrencyPipe} from '@angular/common';
+import { CommonModule ,LowerCasePipe, CurrencyPipe} from '@angular/common';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { orderByPipe } from '../pipes/main.pipe';
@@ -7,6 +7,7 @@ import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute,Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CacheService } from '../services/cache.service';
 
 @Component({
   selector: 'app-category-detail',
@@ -30,7 +31,7 @@ export class CategoryDetailComponent {
   CategoryId: string | null;
   CategoryName: string | null;
   showImage: boolean=true;
-  constructor(private _Activatedroute: ActivatedRoute,private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer) {
+  constructor(private _Activatedroute: ActivatedRoute,private Service: ApiService, private http: HttpClient, private _router: Router, private sanitizer: DomSanitizer,private cacheService: CacheService) {
     this.CategoryId = this._Activatedroute.snapshot.queryParamMap.get("Id");
     this.CategoryName = this._Activatedroute.snapshot.queryParamMap.get("c");
     if ((this.CategoryName === "" || this.CategoryName == null)) {
@@ -45,7 +46,7 @@ export class CategoryDetailComponent {
         this.Loading = false;
         
       })
-      this.loadCategories();
+      this.loadCategories('/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*');
       this.loadProductsByCategory();
     }
   }
@@ -54,31 +55,46 @@ export class CategoryDetailComponent {
 
   }
 
-
-  
-
   toggleImage(): void {
     this.showImage = !this.showImage;
   }
 
-  loadCategories() {
-    this.Service.getPosts('get', {}, '/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*')
+  loadCategories(url:string) {
+    const cachedData = this.cacheService.get(url,60);
+    if (cachedData==null) {
+    this.Service.getPosts('get', {}, url)
         .subscribe({
             next: categories => {
                 this.Categories = categories;
                 this.Categories = this.Categories.data;
-                if (this.CategoryId != '' && this.CategoryId != null) {
-                  this.CurrentCategory=this.Categories.filter((c: any) => { return c.id == this.CategoryId; })[0];
+                try {
+                  this.cacheService.set(url, this.Categories,new Date());
+                } catch (error) {
+                  console.error(error);
+                  // maneja el error como prefieras aquí
                 }
-                else if (this.CategoryName != '' && this.CategoryName != null) {
-                  this.CurrentCategory=this.Categories.filter((c: any) => { return c.attributes.nombre == this.CategoryName; })[0];
-                }
+                this.loadCurrentCategory();
                
             },
             error: error => {
 
             }
         });
+      }
+      else
+      {
+        this.Categories=cachedData;
+        this.loadCurrentCategory();
+      }
+}
+loadCurrentCategory()
+{
+  if (this.CategoryId != '' && this.CategoryId != null) {
+    this.CurrentCategory=this.Categories.filter((c: any) => { return c.id == this.CategoryId; })[0];
+  }
+  else if (this.CategoryName != '' && this.CategoryName != null) {
+    this.CurrentCategory=this.Categories.filter((c: any) => { return c.attributes.nombre == this.CategoryName; })[0];
+  }
 }
 
 getCategories(){
@@ -98,7 +114,10 @@ getCategories(){
     else {
       this.redirectTo('./');
     }
-    this.Service.getPosts('get', {},  Filter + this.CategoryId + ComplementQuery)
+    var Query=Filter + this.CategoryId + ComplementQuery;
+    const cachedData = this.cacheService.get(Query,60);
+    if (cachedData==null) {
+    this.Service.getPosts('get', {},  Query)
         .subscribe({
             next: data => {
 
@@ -132,17 +151,25 @@ getCategories(){
                         data.imagen = {};
                         data.imagen.url = this.Service.urlBase + "/uploads/blanco_17b7000fd4.jpg";
                     }
-                })
-                
+                });
+                try {
+                  this.cacheService.set(Query, this.Products,new Date());
+                } catch (error) {
+                  console.error(error);
+                  // maneja el error como prefieras aquí
+                }
 
             },
             error: error => {
 
             }
 
-
-
         });
+      }
+      else
+      {
+        this.Products=cachedData;
+      }
     
 
 

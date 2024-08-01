@@ -35,7 +35,7 @@
               "src/assets/css/style.css"
             ],
             "scripts": ["src/assets/js/modernizr.js",
-          
+            "node_modules/jquery/dist/jquery.min.js",
             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"],
@@ -106,7 +106,7 @@
               "src/assets/css/style.css"
             ],
             "scripts": ["src/assets/js/modernizr.js",
-          
+            "node_modules/jquery/dist/jquery.min.js",
             "src/assets/js/bootstrap.bundle.min.js",
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"]

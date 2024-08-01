@@ -1,10 +1,12 @@
-import { Component, ElementRef, EventEmitter, Inject, NgModule, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, NgModule, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { CacheService } from '../services/cache.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit,OnDestroy {
   LoadData:boolean=true;
   Menu:any=[];
   Categories:any=[];
@@ -24,34 +26,62 @@ export class HeaderComponent implements OnInit {
   ProductsFiltered: any = [];
   FocusInput:boolean=false;
   @ViewChild('Search') Search: ElementRef | undefined;
-
-  constructor(private Service: ApiService, private http: HttpClient, private _router: Router) {
+  private cacheSubscription: Subscription = new Subscription;
+  constructor(private cacheService: CacheService,private Service: ApiService, private http: HttpClient, private _router: Router,@Inject(DOCUMENT) private document: Document) {
    
      
   }
   
   ngOnInit(): void {
-    this.loadMenu(true);
-    this.loadCategories();
-    this.loadProducts();
+     // Nos suscribimos al BehaviorSubject en el servicio de caché para recibir actualizaciones de datos.
+    this.cacheSubscription = this.cacheService.cache$.subscribe(data => {
+    // this.data = data;
+     // console.log('this.data',this.data);
+    //  console.log(this.data);
+    });
+
+    
+
+    this.loadMenu('/paginas?filters[tipo][nombre][$eq]=pagina&populate=*');
+    this.loadCategories('/categorias?populate=*');
+    this.loadProducts('/productos?populate=*');
   
   }
 
-  loadCategories() {
-    this.Service.getPosts('get', {}, '/categorias?populate=*')
+  ngOnDestroy(): void {
+   this.cacheSubscription.unsubscribe();
+  }
+
+  loadCategories(url:string) {
+  const cachedData = this.cacheService.get(url,60);
+  if (cachedData==null) {
+    this.Service.getPosts('get', {}, url)
         .subscribe({
             next: categories => {
                 this.Categories = categories;
                 this.Categories = this.Categories.data;
+                try {
+                  this.cacheService.set(url, this.Categories,new Date());
+                } catch (error) {
+                  console.error(error);
+                  // maneja el error como prefieras aquí
+                }
             },
             error: error => {
 
             }
         });
+      }
+      else
+      {
+        this.Categories=cachedData;
+      }
 }
 
-loadProducts() {
-  this.Service.getPosts('get', {}, '/productos?populate=*')
+loadProducts(url:string) {
+  const cachedData = this.cacheService.get(url,60);
+  if (cachedData==null) {
+  this.Service.getPosts('get', {}, url)
       .subscribe({
           next: data => {
               this.Products = data;
@@ -84,11 +114,22 @@ loadProducts() {
                   }
               })
               this.LoadData=false;
+              try {
+                this.cacheService.set(url, this.Products,new Date());
+              } catch (error) {
+                console.error(error);
+                // maneja el error como prefieras aquí
+              }
           },
           error: error => {
 
           }
       });
+    }
+    else
+    {
+      this.Products=cachedData;
+    }
 }
 
 Focus(value:string)
@@ -103,9 +144,7 @@ SearchProducts() {
   setTimeout(() => {
   if(this.SearchProduct!="" && this.SearchProduct!=null)
   {
-   
       this.ProductsFiltered= this.Products.filter((c: any) => { return c.attributes.titulo.toLowerCase().indexOf(this.SearchProduct.toLowerCase()) !== -1 });
-     
   }
 }, 1000)
   
@@ -119,53 +158,36 @@ redirectTo(uri: string) {
 
 }
 
-  loadMenu(reload:boolean){
-   
-    var localdata =null;
-    var CurrentDate=new Date();
-       if (localdata == null) {
+  loadMenu(url:string){
+    const cachedData = this.cacheService.get(url,1);
+  if (cachedData==null) {
         //'/paginas?filters[$or][0][tipo][nombre][$eq]=pagina&filters[$or][1][tipo][nombre][$eq]=footer&populate=*'
-        this.Service.getPosts('get', {}, '/paginas?filters[tipo][nombre][$eq]=pagina&populate=*')
+        this.Service.getPosts('get', {}, url)
         .subscribe({
           next: data => {
             this.Menu= data;
+            try {
+              this.cacheService.set(url, this.Menu,new Date());
+            } catch (error) {
+              console.error(error);
+              // maneja el error como prefieras aquí
+            }
             this.Menu= this.Menu.data.filter((data: any) => {
               return data.attributes.menu>0 && data.attributes.tipo.data.attributes.nombre=='pagina';
             });
-            this.Menu.forEach((data: any, index2: number) => {
-              data.localcreated=CurrentDate;
-              data.menu=data.attributes.menu;
-            })
+            
+            
           },
           error: error => {
-          
           }
-         
-
-          
         });
-       
-     
        }
       else {
-        this.Menu=JSON.parse(localdata);
-        this.Menu=this.Menu.data;
-        var CurrentDate1=CurrentDate.getDate()-1;
-        this.Menu =this.Menu.filter((data: any) => {
-          var current=new Date(data.localcreated);
-          return current.getDate()>CurrentDate1 && data.attributes.menu>0;
+        this.Menu=cachedData;
+        this.Menu= this.Menu.data.filter((data: any) => {
+          return data.attributes.menu>0 && data.attributes.tipo.data.attributes.nombre=='pagina';
         });
-        this.Menu.forEach((data: any, index2: number) => {
-          data.menu=data.attributes.menu;
-        })
-        if(this.Menu.length==0)
-        {
-          this.loadMenu(true);
-        }
-      
       }
-     
-      
   }
 
 }

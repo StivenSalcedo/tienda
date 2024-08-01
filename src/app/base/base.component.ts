@@ -6,7 +6,7 @@ import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/api.service';
 import { orderByPipe } from '../pipes/main.pipe';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-base',
@@ -32,7 +32,7 @@ export class BaseComponent implements OnInit {
   pauseOnFocus = true;
   public Links: any = [];
   Counter: Number = 0;
-  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, config: NgbCarouselConfig, public meta: Meta, public title: Title, private Service: ApiService, private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {
+  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, config: NgbCarouselConfig, public meta: Meta, public title: Title, private Service: ApiService, private renderer: Renderer2) {
   }
   ngOnInit(): void {
 
@@ -42,94 +42,61 @@ export class BaseComponent implements OnInit {
       this.CurrentUrl = '/home';
     }
     this.Counter = +1;
-  
-    // setTimeout(()=> {
-
     this.OnSearch(this.CurrentUrl, true);
-
-
-    // }, 1000)
   }
 
-
   GetLinks(data: any) {
-
     if (this.Links.length == 0) {
       this.Links = data;
     }
-
   }
-
 
   OnSearch(value?: string, category?: boolean) {
     var SearchString = '';
     SearchString = value ? value : this.Search;
     this.Spin = true;
     this.InitForm = true;
-
-    var localStorage = this.document.defaultView?.localStorage;
-    var data = localStorage?.getItem('paginas');
-    /* if (data != null) {
-       this.Pages = JSON.parse(data);
-       this.OnFilterPage(this.Pages, this.router.url);
-     }*/
-    //else {
-    this.Service.getPosts('get', {}, '/paginas?populate=*')
+    //filters[url][$eq]='+this.router.url.replace('/','%2F')+'&
+    this.Service.getPosts('get', {}, '/paginas?filters[$and][0][url][$eq]='+this.router.url.replace('/','')+'&filters[$and][1][tipo][nombre][$eq]=pagina&populate=*')
       .subscribe({
         next: data => {
           this.Spin = false;
           this.Pages = data;
-          //this.Links=this.Pages.data;
-          //localStorage.setItem('paginas', JSON.stringify(data));
-          this.OnFilterPage(data,decodeURI(this.router.url));
+          console.log('this.Pages',this.Pages);
+          this.OnFilterPage(data, decodeURI(this.router.url));
           var data1: any = [];
-          // var data1={};
           data1.push({ Load: false });
-          //this.SendData.emit(data1);
         },
         error: error => {
           this.Spin = false;
         }
 
       });
-    //}
-
   }
+
   OnFilterPage(Data: any, Page: String) {
-   // console.log('Page');
-   // console.log(Page);
-    var PageFilter = Data.data.filter((data: any) => { return '/'+data.attributes.url === Page || '/'+data.attributes.url === Page + '/' });
+    var PageFilter = Data.data.filter((data: any) => { return '/' + data.attributes.url === Page || '/' + data.attributes.url === Page + '/' });
     if (PageFilter.length > 0) {
 
       this.Page = PageFilter[0].attributes;
       if (this.Page.contenido != '' && this.Page.contenido != null) {
-      //  console.log(this.Page.contenido);
+        //  console.log(this.Page.contenido);
         this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
         if (this.Page.imagen.data != null) {
           console.log(this.Page.imagen.data);
           this.Page.imagen.data.forEach((i: any, index2: number) => {
-            this.Page.contenido = this.Page.contenido.toString().replace('{IMAGEN'+(index2+1).toString()+'}',this.Service.urlBase+ i.attributes.url);
+            this.Page.contenido = this.Page.contenido.toString().replace('{IMAGEN' + (index2 + 1).toString() + '}', this.Service.urlBase + i.attributes.url);
           })
-
         }
-        
       }
 
       if (this.Page.metadata != null) {
         this.ChangeMeta(this.Page.metadata);
-
       }
-
       this.loading = false;
-
     }
     else {
-
       this.OnFilterPage(Data, '/pagina-no-encontrada');
-      /* this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-         this.router.navigate(['pagina-no-encontrada']));*/
-
-
     }
 
   }

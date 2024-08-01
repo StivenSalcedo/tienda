@@ -113,7 +113,7 @@
 
     <h5 *ngIf="Categories.length>0" class="cat-list-title">Buscar por Categorias</h5>
     <ul *ngIf="Categories.length>0" class="cat-list">
-      <li class="cat-list-item" *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}">
+      <li class="cat-list-item" *ngFor="let c of Categories | orderby:'attributes.orden'" id="{{c.attributes.nombre}}">
         <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}" title="{{c.attributes.nombre}}"><u>{{c.attributes.nombre}}</u></a>
       </li>
     </ul>
@@ -143,7 +143,7 @@
         </div>
         <div class="offcanvas-body">
           <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-            <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link" class="nav-item">
+            <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link" class="nav-item">
               <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
             </li>
 
