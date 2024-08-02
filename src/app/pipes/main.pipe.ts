@@ -51,4 +51,17 @@ export class orderByPipe  implements PipeTransform {
   }
 }
 
+@Pipe({name: 'replace',
+  pure:false,standalone:true})
+export class ReplacePipe implements PipeTransform {
+  transform(value: string, strToReplace: string, replacementStr: string): string {
+
+    if(!value || ! strToReplace || ! replacementStr)
+    {
+      return value;
+    }
+  return value.replace(new RegExp(strToReplace, 'g'), replacementStr);
+  }
+}
+
 

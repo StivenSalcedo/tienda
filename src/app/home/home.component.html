@@ -55,12 +55,11 @@
   </div>
 </section>
 
-<section *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}"
-  class="product-store position-relative padding-large no-padding-top">
+<section id="{{c.attributes.descripcion1 || c.attributes.nombre}}" *ngFor="let c of Categories | orderby:'orden'" class="product-store position-relative padding-large no-padding-top">
   <div *ngIf="c.products.length>0" class="container">
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
-        <h2 class="display-7 text-dark text-uppercase">{{c.attributes.nombre}}</h2>
+        <h2  class="display-7 text-dark text-uppercase">{{c.attributes.nombre}}</h2>
         <div class="btn-right">
           <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}"
             class="btn btn-medium btn-normal text-uppercase">Ver Categoria</a>

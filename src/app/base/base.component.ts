@@ -3,17 +3,18 @@ import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbCarouselConfig ,NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/api.service';
 import { orderByPipe } from '../pipes/main.pipe';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-base',
   standalone: true,
   templateUrl: './base.component.html',
   styleUrl: './base.component.sass',
-  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule]
+  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbCarousel]
 })
 export class BaseComponent implements OnInit {
   public DataResponse: any = [];
@@ -32,7 +33,9 @@ export class BaseComponent implements OnInit {
   pauseOnFocus = true;
   public Links: any = [];
   Counter: Number = 0;
-  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, config: NgbCarouselConfig, public meta: Meta, public title: Title, private Service: ApiService, private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, config: NgbCarouselConfig, public meta: Meta, public title: Title, private Service: ApiService, private renderer: Renderer2) {
+    this.Host = Service.urlBase;
   }
   ngOnInit(): void {
 
@@ -42,94 +45,81 @@ export class BaseComponent implements OnInit {
       this.CurrentUrl = '/home';
     }
     this.Counter = +1;
-  
-    // setTimeout(()=> {
-
     this.OnSearch(this.CurrentUrl, true);
-
-
-    // }, 1000)
   }
 
-
   GetLinks(data: any) {
-
     if (this.Links.length == 0) {
       this.Links = data;
     }
+  }
+  ngAfterViewInit() {
+    this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
+      console.log(event);
+      if (event.srcElement.id == "ShareText") {
+        this.ShareText();
+      }
+      else if (event.srcElement.id == "whatsapp") {
+        window.open("http://wa.me//573212472489", "_blank");
+      }
+
+    });
 
   }
-
 
   OnSearch(value?: string, category?: boolean) {
     var SearchString = '';
     SearchString = value ? value : this.Search;
     this.Spin = true;
     this.InitForm = true;
-
-    var localStorage = this.document.defaultView?.localStorage;
-    var data = localStorage?.getItem('paginas');
-    /* if (data != null) {
-       this.Pages = JSON.parse(data);
-       this.OnFilterPage(this.Pages, this.router.url);
-     }*/
-    //else {
-    this.Service.getPosts('get', {}, '/paginas?populate=*')
+    
+    //filters[url][$eq]='+this.router.url.replace('/','%2F')+'&
+    this.Service.getPosts('get', {}, '/paginas?filters[$and][0][url][$eq]=' + this.router.url.replace('/', '') + '&filters[$and][1][tipo][nombre][$eq]=pagina&populate=*')
       .subscribe({
         next: data => {
           this.Spin = false;
           this.Pages = data;
-          //this.Links=this.Pages.data;
-          //localStorage.setItem('paginas', JSON.stringify(data));
-          this.OnFilterPage(data,decodeURI(this.router.url));
+          console.log('this.Pages', this.Pages);
+          this.OnFilterPage(data, decodeURI(this.router.url));
           var data1: any = [];
-          // var data1={};
           data1.push({ Load: false });
-          //this.SendData.emit(data1);
         },
         error: error => {
           this.Spin = false;
         }
 
       });
-    //}
-
   }
+
+  ReturnHtml() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.Page.contenido);
+  }
+
   OnFilterPage(Data: any, Page: String) {
-   // console.log('Page');
-   // console.log(Page);
-    var PageFilter = Data.data.filter((data: any) => { return '/'+data.attributes.url === Page || '/'+data.attributes.url === Page + '/' });
+    var PageFilter = Data.data.filter((data: any) => { return '/' + data.attributes.url === Page || '/' + data.attributes.url === Page + '/' });
     if (PageFilter.length > 0) {
 
       this.Page = PageFilter[0].attributes;
       if (this.Page.contenido != '' && this.Page.contenido != null) {
-      //  console.log(this.Page.contenido);
-        this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
+        //console.log('this.Page.contenido',this.Page.contenido);
+        // this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
+        //this.Page.contenido = this.sanitizer.bypassSecurityTrustHtml(this.Page.contenido);
+        //  this.Page.contenido =this.Page.contenido.changingThisBreaksApplicationSecurity;
         if (this.Page.imagen.data != null) {
           console.log(this.Page.imagen.data);
           this.Page.imagen.data.forEach((i: any, index2: number) => {
-            this.Page.contenido = this.Page.contenido.toString().replace('{IMAGEN'+(index2+1).toString()+'}',this.Service.urlBase+ i.attributes.url);
+            this.Page.contenido = this.Page.contenido.toString().replace('{IMAGEN' + (index2 + 1).toString() + '}', this.Service.urlBase + i.attributes.url);
           })
-
         }
-        
       }
 
       if (this.Page.metadata != null) {
         this.ChangeMeta(this.Page.metadata);
-
       }
-
       this.loading = false;
-
     }
     else {
-
       this.OnFilterPage(Data, '/pagina-no-encontrada');
-      /* this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-         this.router.navigate(['pagina-no-encontrada']));*/
-
-
     }
 
   }
@@ -227,6 +217,47 @@ export class BaseComponent implements OnInit {
     }
   }
 
+  ShareText() {
+    console.log(this.Page.otros.settings.shareData);
+    let shareData =this.Page.otros.settings.shareData;
+    navigator.share(shareData)
+      .then((data) => {
+        console.log('shared successfully');
+      }).catch((e) => {
+        console.log('Error: ' + e)
+      });
+  }
 
+  HaveImages(): boolean {
+    if (this.Page.imagen.data != null) {
+      var Images = this.Page.imagen.data.filter((data: any) => { return data.attributes.ext == '.png' || data.attributes.ext == '.jpg' || data.attributes.ext == '.jpeg' || data.attributes.ext == '.gif' });
+      if (Images.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+  HaveVideos(): boolean {
+    if (this.Page.imagen.data != null) {
+      var Images = this.Page.imagen.data.filter((data: any) => { return data.attributes.ext == '.mp4' || data.attributes.ext == '.mov' });
+      if (Images.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  onSlide(slideEvent: NgbSlideEvent) {
+    if (this.unpauseOnArrow && slideEvent.paused &&
+      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)) {
+      this.togglePaused();
+    }
+    if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
+      this.togglePaused();
+    }
+  }
+  togglePaused() {
+    throw new Error('Method not implemented.');
+  }
 
 }
