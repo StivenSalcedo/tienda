@@ -33,13 +33,7 @@
             "styles": [
               "src/styles.sass"
             ],
-<<<<<<< HEAD
             "scripts": [
-=======
-            "scripts": ["src/assets/js/modernizr.js",
-            "node_modules/jquery/dist/jquery.min.js",
-            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
->>>>>>> e63c092bae5f4e6dad25ec0eb07def8f453ccf2c
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"],
             "server": "src/main.server.ts",
@@ -107,13 +101,7 @@
             "styles": [
               "src/styles.sass"
             ],
-<<<<<<< HEAD
             "scripts": [
-=======
-            "scripts": ["src/assets/js/modernizr.js",
-            "node_modules/jquery/dist/jquery.min.js",
-            "src/assets/js/bootstrap.bundle.min.js",
->>>>>>> e63c092bae5f4e6dad25ec0eb07def8f453ccf2c
             "src/assets/js/plugins.js",
             "src/assets/js/script.js"]
           }

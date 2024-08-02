@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   @ViewChild('Search') Search: ElementRef | undefined;
   private cacheSubscription: Subscription = new Subscription;
   
-  
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   constructor(private cacheService: CacheService, private Service: ApiService, private http: HttpClient, private _router: Router, config: NgbModalConfig, private modalService: NgbModal, private offcanvasService: NgbOffcanvas,) {
 
     // customize default values of modals used by this component tree
