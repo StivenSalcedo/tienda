@@ -1,1 +1,977 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap'
+
+
+//Variables
+
+$accent-color: #717171
+$gray-color: #F3F3F3
+$gray-color-500: #AEAEAE
+$light-gray-color: #D7DDDF
+$primary-color: #72AEC8
+$light-color: #f8f9fa
+$dark-color: #212529
+$light-blue-color: #EDF1F3
+
+
+$body-font: "Lato", sans-serif
+$heading-font: "Jost", sans-serif
+
+//Bootstrap
+
+
+.navbar-brand
+    margin-right: 0
+
+/* 1.1 General Styles
+
+
+
+
+html
+    box-sizing: border-box
+
+body
+    font-family: $body-font
+    font-size: 15px
+    font-weight: 500
+    line-height: 1.6
+    margin: 0
+
+p
+    font-size: 1.2em
+    color: $gray-color-500
+
+ul.inner-list li
+    font-size: 1.2em
+
+a
+    color: $dark-color
+    text-decoration: none
+    transition: 0.3s color ease-out
+
+    &.light
+        color: $light-color
+
+    &:hover
+        text-decoration: none
+        color: $primary-color
+
+/*------------ Background Color -----------
+
+.bg-gray
+    background: $gray-color
+
+.bg-dark
+    background: $dark-color
+
+.bg-light
+    background: $light-color
+
+.bg-light-blue
+    background: $light-blue-color
+
+/* - Section Padding
+ *--------------------------------------------------------------
+
+.padding-xsmall
+    padding-top: 0.5em
+    padding-bottom: 0.5em
+
+.padding-small
+    padding-top: 2em
+    padding-bottom: 2em
+
+.padding-medium
+    padding-top: 4em
+    padding-bottom: 4em
+
+.padding-large
+    padding-top: 7em
+    padding-bottom: 7em
+
+.padding-xlarge
+    padding-top: 9.5em
+    padding-bottom: 9.5em
+
+/* no padding
+
+.no-padding-top
+    padding-top: 0 !important
+
+.no-padding-right
+    padding-right: 0 !important
+
+.no-padding-bottom
+    padding-bottom: 0 !important
+
+.no-padding-left
+    padding-left: 0 !important
+
+.no-padding-tb
+    padding-top: 0 !important
+    padding-bottom: 0 !important
+
+.no-padding-lr
+    padding-left: 0 !important
+    padding-right: 0 !important
+
+.no-gutter, .no-padding
+    padding: 0 !important
+
+/* no padding and margin
+
+.no-margin
+    margin: 0 !important
+
+/* - Section margin
+ *--------------------------------------------------------------
+
+.margin-small
+    margin-top: 3em
+    margin-bottom: 3em
+
+.margin-medium
+    margin-top: 5em
+    margin-bottom: 5em
+
+.margin-large
+    margin-top: 7em
+    margin-bottom: 7em
+
+.margin-xlarge
+    margin-top: 9em
+    margin-bottom: 9em
+
+@media only screen and (max-width: 768px)
+    .margin-small, .margin-medium, .margin-large
+        margin-top: 1em
+        margin-bottom: 1em
+
+/* - Section Title
+ *--------------------------------------------------------------
+
+h3
+    &.card-title, &.cart-title
+        font-size: 1.5em
+
+/* - Section width
+ *--------------------------------------------------------------
+
+.u-full-width
+    width: 100%
+    border: none
+
+/*--------------------------------------------------------------
+ * 2.10 Buttons
+
+/* - Button Sizes
+ *-------------------------------------------------------------
+
+.btn
+    &.btn-small
+        padding: 0.8em 1.8em
+        font-size: 0.65em
+
+    &.btn-medium
+        padding: 0.8em 2.8em
+        font-size: 1.1em
+        letter-spacing: 2px
+
+    &.btn-large
+        padding: 2.4em 5.1em
+        font-size: 1.8em
+
+    &.btn-rounded
+        border-radius: 6px
+
+        &::after
+            border-radius: 6px
+
+    &.btn-pill
+        border-radius: 2em
+
+        &::after
+            border-radius: 2em
+
+    &.btn-outline-dark, &.btn-outline-light, &.btn-outline-accent
+        background: transparent
+        text-shadow: none
+        box-shadow: none
+
+    &.btn-outline-dark:hover::after, &.btn-outline-light:hover::after
+        background-color: transparent
+
+    &.btn-outline-dark
+        border-color: rgba(0, 0, 0, 1)
+        color: $dark-color
+
+        &:hover
+            background: $dark-color
+            color: $light-color
+
+    &.btn-outline-light
+        border-color: rgba(255, 255, 255, 0.5)
+        color: $light-color
+
+        &:hover
+            background: $primary-color
+            color: $light-color
+            border-color: $primary-color
+
+    &.btn-outline-accent
+        background: transparent
+        border-color: $accent-color
+        color: $dark-color
+
+        &:hover
+            border-color: $dark-color
+            color: $dark-color !important
+
+    &.btn-full
+        display: block
+        margin: .85em 0
+        width: 100%
+        letter-spacing: 0.12em
+
+/* - Button Shapes
+ *-------------------------------------------------------------
+
+/* button outline
+
+/* no border radius
+
+.btn-rounded-none
+    border-radius: 0
+
+    &::after
+        border-radius: 0
+
+/* - Buttons Color Scheme
+ *-------------------------------------------------------------
+
+.btn
+    &.btn-normal
+        text-decoration: underline
+        border: none
+
+        &:hover
+            text-decoration: none
+
+    &.btn-accent
+        color: $light-color
+        background-color: $accent-color
+        border: none
+
+        &:hover
+            color: $light-color !important
+            background-color: $primary-color
+
+    &.btn-black
+        background-color: $dark-color
+        color: $light-color
+        border: none
+
+        &:hover
+            background-color: $primary-color
+            color: $light-color
+
+    &.btn-light
+        background-color: $light-color
+        color: $dark-color
+        border: none
+
+        &:hover
+            background-color: $primary-color
+            color: $light-color
+
+    &.btn-primary
+        background: $primary-color
+        color: $light-color
+        border: none
+
+        &:hover
+            background-color: $dark-color
+            color: $light-color
+
+/* - Buttons Aligns
+ *-------------------------------------------------------------
+
+.btn-left
+    text-align: left
+    display: block
+
+.btn-center
+    text-align: center
+    display: block
+
+.btn-right
+    text-align: right
+    display: block
+
+/*----------------------------------------------
+/* 2 SITE STRUCTURE
+/*----------------------------------------------
+
+/* - Search Bar
+ *-------------------------------------------------------------
+
+.search-box
+    background: $gray-color
+    position: relative
+
+.close-button
+    position: absolute
+    top: 20px
+    right: 120px
+    cursor: pointer
+    z-index: 9
+
+.search-box
+    input.search-input
+        font-size: 1.3em
+        width: 70%
+        height: 30px
+        padding: 25px
+        border-radius: 80px
+        border-color: rgb(0 0 0 / 25%)
+        background: transparent
+
+    svg
+        width: 22px
+        height: 22px
+        color: $primary-color
+
+        &.search
+            margin-left: -50px
+
+/** Search Form
+ *--------------------------------------------------------------
+
+.search-form
+    input[type="search"].search-field
+        border: none
+        background: #f1f1f1
+        width: 100%
+        border-radius: 50px
+        padding: 10px 40px
+
+        &::focus
+            border-color: #af9aaa
+
+    button
+        position: absolute
+        top: 6px
+        right: 9px
+        background: transparent
+        border: none
+
+/** Search Popup
+ *--------------------------------------------------------------
+
+.search-popup
+    background-color: #fff
+    position: fixed
+    left: 0
+    top: 0
+    width: 100%
+    height: 100%
+    opacity: 0
+    visibility: hidden
+    z-index: 9999
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s
+    transition: opacity 0.3s 0s, visibility 0s 0.3s
+
+    &.is-visible
+        opacity: 1
+        visibility: visible
+        cursor: -webkit-image-set(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23FFF' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 1x, url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 2x), pointer
+        cursor: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E"), pointer
+        -webkit-transition: opacity 0.3s 0s, visibility 0s 0s
+        -moz-transition: opacity 0.3s 0s, visibility 0s 0s
+        transition: opacity 0.3s 0s, visibility 0s 0s
+
+.search-popup-container
+    background-color: transparent
+    position: relative
+    top: 50%
+    margin: 0 auto
+    padding: 0
+    width: 90%
+    max-width: 800px
+    text-align: center
+    box-shadow: none
+    cursor: default
+    -webkit-transform: translateY(-40px)
+    transform: translateY(-40px)
+    -webkit-backface-visibility: hidden
+    -webkit-transition-property: -webkit-transform
+    transition-property: transform
+    -webkit-transition-duration: 0.3s
+    transition-duration: 0.3s
+
+.is-visible .search-popup-container
+    -webkit-transform: translateY(-50%)
+    transform: translateY(-50%)
+
+.search-popup-form
+    position: relative
+    margin: 0 0 3em 0
+
+    .form-control
+        padding: 0 0 .375em 0
+        font-size: 2em
+
+    #search-popup-submit
+        display: none
+
+.search-popup
+    .search-popup-close
+        display: block
+        position: absolute
+        top: 2em
+        right: 2em
+        margin: -0.5em
+        padding: 0.5em
+        line-height: 0
+
+        &:hover
+            -webkit-transform: rotate(90deg)
+            -ms-transform: rotate(90deg)
+            transform: rotate(90deg)
+
+        i
+            display: block
+            position: relative
+            width: 1em
+            height: 1em
+            fill: rgba(0, 0, 0, 0.5)
+
+        &:hover i
+            fill: rgba(0, 0, 0, 1)
+
+    .cat-list-title
+        margin-top: 40px
+        margin-bottom: 10px
+        font-size: 0.6em
+        font-weight: normal
+        text-transform: uppercase
+        letter-spacing: 0.1em
+
+    .cat-list
+        margin: 0
+        list-style-type: none
+
+    .cat-list-item
+        display: inline-block
+        margin-bottom: 0
+        letter-spacing: 0.015em
+        font-size: 2em
+
+        a
+            position: relative
+
+        &::after
+            background: none repeat scroll 0 0 #fff
+            content: ""
+            height: 1px
+            border-bottom: 1px solid #ff9697
+            left: 0
+            opacity: 0
+            position: absolute
+            top: 100%
+            width: 100%
+            -webkit-transition: height 0.3s,opacity 0.3s,-webkit-transform 0.3s
+            transition: height 0.3s,opacity 0.3s,transform 0.3s
+            -webkit-transform: translateY(-5px)
+            transform: translateY(-5px)
+
+        &:hover::after
+            height: 1px
+            opacity: 1
+            -webkit-transform: translateY(2px)
+            transform: translateY(2px)
+
+        &::after
+            content: "/"
+            padding: 0 5px
+            line-height: 1
+            color: rgba(0, 0, 0, 0.5)
+            vertical-align: text-top
+
+        &:last-child::after
+            display: none
+
+    input[type="search"]
+        font-size: 24px
+        height: 60px
+        padding: 26px
+
+    .search-form button
+        top: 12px
+        right: 15px
+
+        svg
+            height: 28px
+            width: 28px
+
+@media only screen and (max-width: 991px)
+    .search-popup .cat-list-item, .search-popup-form .form-control
+        font-size: 1.425em
+
+@media only screen and (max-width: 767px)
+    .search-popup .search-popup-close
+        top: 1em
+        right: 1em
+
+@media only screen and (max-width: 575px)
+    .search-popup .cat-list-item, .search-popup-form .form-control
+        font-size: 1.125em
+
+    .search-popup .search-popup-close
+        top: 1em
+        right: 1em
+
+/* 1. Header
+ */
+
+.site-header
+    position: fixed
+    width: 100%
+    z-index: 10
+    transition: background 0.3s ease-out
+
+.navbar-toggler svg.navbar-icon
+    width: 20px
+    height: 20px
+
+.navbar-nav .nav-item a.nav-link
+    color: $accent-color
+
+    &.active, &:focus, &:hover
+        color: $primary-color
+
+/*------------ Offcanvas --------------
+
+#header-nav
+    .navbar-toggler:focus
+        box-shadow: none
+
+    .offcanvas.show
+        z-index: 9999
+        background-color: $light-blue-color
+
+    .offcanvas-end
+        width: 500px
+
+.offcanvas.show
+    .nav-item a.nav-link
+        font-size: 2em
+
+    .offcanvas-body .navbar-nav
+        align-items: unset !important
+        padding-left: 20px
+
+/*------------ Top User Icons -----------
+
+.site-header .user-items svg
+    width: 18px
+    height: 18px
+    cursor: pointer
+
+
+
+/* 2. Billboard
+ */
+/*------------Swiper Arrow -----------
+
+#billboard .swiper-arrow
+    position: absolute
+    top: 0
+    bottom: 0
+    z-index: 2
+    display: flex
+    align-items: center
+
+.swiper-icon.swiper-arrow
+    svg
+        fill: $light-gray-color
+
+        &:hover svg, &:focus svg
+            fill: $primary-color
+
+#billboard .swiper-arrow
+    &.swiper-arrow-prev
+        left: 0
+
+    &.swiper-arrow-next
+        right: 0
+
+@media only screen and (max-width: 767px)
+    #billboard
+        .banner-content
+            margin-top: 210px
+
+        .image-holder
+            margin-top: -390px
+            opacity: 0.3
+
+        .swiper-arrow
+            top: 400px
+
+/* 3. Icon Box - Company Services
+ */
+
+.icon-box .icon-box-icon svg
+    width: 26px
+    height: 26px
+    fill: $primary-color
+
+@media only screen and (max-width: 991px)
+    #company-services .icon-box
+        flex-wrap: wrap
+
+/* 4. Product
+ */
+
+.product-store .product-card
+    .cart-concern
+        bottom: 75px
+        width: 100%
+        display: flex
+        justify-content: center
+        cursor: pointer
+        text-transform: uppercase
+        transition: all 0.3s ease-out
+        opacity: 0
+
+        &:hover .cart-concern
+            bottom: 90px
+            opacity: 1
+
+.product-card
+    .cart-concern svg
+        width: 16px
+        height: 16px
+        fill: $light-color
+        margin-left: 9px
+
+    .card-detail span
+        font-size: 1.5em
+
+@media only screen and (max-width: 575px)
+    .product-store .product-card .card-detail
+        padding: 10px
+
+/*------------Swiper Pagination -----------
+
+.product-store .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal
+    bottom: 35px
+
+.swiper-pagination span.swiper-pagination-bullet
+    width: 15px
+    height: 15px
+
+/* 5. Testimonial
+ */
+
+.review-item blockquote
+    font-size: 2.5em
+    font-weight: 300
+    line-height: 1.2
+
+.rating svg.star
+    width: 16px
+    height: 16px
+    fill: $primary-color
+
+#testimonials .swiper-arrow svg
+    width: 45px
+    height: 45px
+    fill: $light-gray-color
+
+.review-content
+    .swiper-arrow
+        top: 0
+        bottom: 0
+        z-index: 2
+
+        &.swiper-arrow-next
+            right: 0
+
+    .quotation svg.quote
+        color: $light-blue-color
+
+@media only screen and (max-width: 767px)
+    #testimonials blockquote
+        font-size: 2em
+
+    .review-content .swiper-arrow
+        bottom: -420px
+
+/* 6. Subscribe
+ */
+
+.subscribe-content p
+    color: $gray-color-500
+
+@media only screen and (max-width: 1199px)
+    .subscription-form
+        input.form-control, button
+            width: 100%
+            margin-bottom: 10px
+
+/* 7. Instagram
+ */
+
+#instagram figure.instagram-item
+    width: 20%
+
+figure.instagram-item img.insta-image
+    width: 100%
+    height: 100%
+    object-fit: cover
+
+.instagram-item
+    .icon-overlay
+        top: 30px
+        left: 0
+        width: 100%
+        height: auto
+        color: $light-color
+        opacity: 0
+        transition: 0.9s ease-out
+
+        &:hover .icon-overlay
+            top: 0
+            opacity: 1
+
+    .icon-overlay svg.instagram
+        height: 50px
+
+@media only screen and (max-width: 767px)
+    #instagram figure.instagram-item
+        width: 30%
+
+@media only screen and (max-width: 501px)
+    #instagram figure.instagram-item
+        width: 100%
+
+/* 8. Footer
+/*------------ Social Icon -----------
+
+.social-links
+    svg
+        width: 20px
+        height: 20px
+        color: $light-gray-color
+
+        &:hover
+            color: $primary-color
+
+    li
+        padding-right: 30px
+
+/* 9. About Us Page
+/*------------ Video Icon -----------
+
+.video-item
+    a
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+
+    svg.video-player
+        width: 80px
+        height: 80px
+        padding: 19px
+        border-radius: 50%
+
+/* - Shop Page
+ *--------------------------------------------------------------
+/* ----------- Search Bar -----------
+
+.shopify-grid select#input-sort
+    font-size: 1.2em
+    color: $gray-color
+    border: none
+    padding: 0
+    text-align: center
+
+/* ----------- SideBar -----------
+
+.sidebar
+    input.search-field
+        width: 290px
+        height: 50px
+        box-shadow: 5px 5px 15px 5px #eee
+        border: 1px solid #eee
+        padding-left: 20px
+        outline-offset: 0
+
+    .search-icon
+        padding: 14px
+
+    svg.search
+        width: 20px
+        height: 20px
+
+    h5.widget-title
+        font-size: 1.4em
+        margin-bottom: 15px
+
+    .sidebar-list li
+        font-size: 1.2em
+
+        a
+            color: $dark-color
+
+        &:hover
+            color: $primary-color
+
+@media only screen and (max-width: 991px)
+    .widget-search-bar form
+        flex-wrap: wrap
+
+/* ----------- Pagination -----------
+
+.paging-navigation .pagination
+    .page-numbers
+        font-size: 1.4em
+        color: $gray-color-500
+
+        &:hover
+            color: $primary-color
+
+    svg
+        width: 35px
+
+/* 10. Single Product Page
+/*------------ Product Info -----------
+
+.product-info
+    .rating svg.star-fill
+        fill: $dark-color
+
+    .select-list li.select-item
+        font-size: 1.2em
+
+.product-quantity
+    .input-group
+        width: 140px
+        gap: 2px
+
+    #quantity
+        height: auto
+        width: 20px
+        border: none
+        margin: 0
+        padding: 0
+        width: 40px
+        height: 40px
+        text-align: center
+        background: #FFFFFF
+        border: 1px solid #E2E2E2
+        border-radius: 6px
+        color: #222
+        padding: 0
+
+    .btn-number
+        width: 40px
+        height: 40px
+        text-align: center
+        background: #FFFFFF
+        border: 1px solid #E2E2E2
+        border-radius: 6px
+        color: #222
+        padding: 0
+
+.single-product
+    .cart-wrap h4.item-title
+        font-size: 1.5em
+
+    .product-quantity .stock-number
+        font-size: 1.2em
+
+.meta-product h4.item-title
+    font-size: 1.2em
+
+/*------------ Product Info Tabs -----------
+
+.product-info-tabs
+    .tabs-listing button
+        font-size: 2em
+        color: $dark-color
+
+    .nav-tabs
+        .nav-link
+            border: none
+
+        .nav-item.show .nav-link, .nav-link.active
+            color: $primary-color
+
+@media only screen and (max-width: 991px)
+    .product-info-tabs .tabs-listing button
+        font-size: 1.2em
+        padding-right: 20px !important
+
+/* 10. Cart Page
+ *-----------------------------------------------------
+
+.shopify-cart
+    .card-price .money
+        font-size: 1.5em
+
+    .total-price .money
+        font-size: 2.9em
+
+.total-price .cart-totals
+    font-size: 1.5em
+
+.shopify-cart .table th
+    width: 30%
+
+/* 11. Checkout Page
+ *--------------------------------------------------------------
+
+.list-group-item span, .sidebar-post-item h4.card-title
+    font-size: 1.2em
+
+/* 12. Blog Page
+ *--------------------------------------------------------------
+/*------------ Sidebar -----------
+
+/* 13. Sibgle Post Page
+ *--------------------------------------------------------------
+
+#single-post-navigation .post-navigation span.page-nav-title
+    font-size: 1.5em
+
+.post-navigation
+    svg
+        width: 30px
+        height: 45px
+
+        &:hover svg, &:focus svg
+            fill: $primary-color
+
+// 14. backgrounds
+
+.bg-img-product
+    background-repeat: no-repeat
+    background-size: contain
+    background-position-y: center
+    background-position-x: center
+    height: 320px
+    width: 100%
+    background-color: white
+
+//15. modals
+
+
+//16. modals
+

@@ -5,17 +5,27 @@ import { Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbModalConfig, NgbOffcanvas, NgbOffcanvasConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.sass',
   standalone: true,
-  imports: [CommonModule,orderByPipe,FormsModule],
+  imports: [CommonModule,orderByPipe,FormsModule, NgbCarouselModule],
+  // add NgbModalConfig and NgbModal to the component providers
+	providers: [NgbModalConfig, NgbModal, NgbOffcanvas, NgbOffcanvasConfig],
 
 })
 
 
 export class HeaderComponent implements OnInit {
+
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+
+  openScrollableContent(longContent: any) {
+		this.modalService.open(longContent, { scrollable: true });
+	}
   LoadData:boolean=true;
   Menu:any=[];
   Categories:any=[];
@@ -24,11 +34,26 @@ export class HeaderComponent implements OnInit {
   ProductsFiltered: any = [];
   FocusInput:boolean=false;
   @ViewChild('Search') Search: ElementRef | undefined;
+  
+  
+  constructor(private Service: ApiService, private http: HttpClient, private _router: Router, config: NgbModalConfig, private modalService: NgbModal, private offcanvasService: NgbOffcanvas,) {
 
-  constructor(private Service: ApiService, private http: HttpClient, private _router: Router) {
+    // customize default values of modals used by this component tree
+		config.backdrop = 'static';
+		config.keyboard = false;
+    config.fullscreen = true;
+    config.backdropClass = 'bg-white';
    
      
   }
+
+  open(content: any) {
+		this.modalService.open(content);
+	}
+
+  openTwo(contents: any) {
+		this.offcanvasService.open(contents);
+	}
   
   ngOnInit(): void {
     this.loadMenu(true);

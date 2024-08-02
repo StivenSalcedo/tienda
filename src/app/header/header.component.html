@@ -87,125 +87,180 @@
       d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
   </symbol>
 </svg>
+<!-- Search -->
+<ng-template #longContent let-modal>
+  <div class="modal-header">
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container p-sm-5 p-3">
+      <form role="search" method="get" class="search-form" action="">
+        <input type="search" #Search (keydown)="SearchProducts()" [(ngModel)]="SearchProduct" id="search-form"
+          class="search-field" placeholder="escribe el producto que buscas" value="" name="s" />
+      </form>
 
-<div  class="search-popup">
-  <div class="search-popup-container">
-    <form role="search" method="get" class="search-form" action="">
-      <input  type="search" #Search (keydown)="SearchProducts()" [(ngModel)]="SearchProduct" id="search-form" class="search-field" placeholder="escribe el producto que buscas" value="" name="s" />
-    </form>
-   
-   
-    <div *ngIf="ProductsFiltered.length>0" id="NavbarSearchProduct" class="mt-4">  
-      <div class="container px-3">
-          <div class="row">
-              <div *ngFor="let p of ProductsFiltered.slice(0, 10);"
-                  (click)="redirectTo('tienda?p='+p.attributes.titulo+'&Id='+p.id);"
-                  class="col-6 col-sm-4 mb-4">
-                  <div  class="d-flex align-content-end flex-wrap bg-img-product wh-3"  style="background-image:url({{p.imagen.url}});">                    
-                      <div class="bg-title-mc text-center p-3 w-100">
-                        <div class="fw-bold text-truncate">{{p.attributes.tittle}}</div>                              
-                      </div>                        
-                  </div>
+
+      <div class="mt-5" *ngIf="ProductsFiltered.length>0">
+        <div class="row g-5">
+          <div *ngFor="let p of ProductsFiltered.slice(0, 10);"
+            (click)="redirectTo('tienda?p='+p.attributes.titulo+'&Id='+p.id);" class="col-12 col-md-6">
+            <div class="border rounded p-3">
+              <div class="d-flex align-items-center">
+                <div class="fw-bold text-center me-auto">{{p.attributes.titulo}}</div>
+                <div class="item-price text-primary item-price text-primary">{{p.attributes.precio | currency}}</div>
+              </div>              
+              <div class="bg-img-product" style="background-image:url({{p.imagen.url}});">
               </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary">add to cart</button>
+              </div>
+              
+            </div>
+
           </div>
+        </div>
+
       </div>
+
+      <h5 *ngIf="Categories.length>0" class="cat-list-title mt-5">Buscar por Categorias</h5>
+      <ul *ngIf="Categories.length>0" class="cat-list">
+        <li class="cat-list-item" *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}">
+          <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}"
+            title="{{c.attributes.nombre}}"><u>{{c.attributes.nombre}}</u></a>
+        </li>
+      </ul>
+    </div>
   </div>
 
-    <h5 *ngIf="Categories.length>0" class="cat-list-title">Buscar por Categorias</h5>
-    <ul *ngIf="Categories.length>0" class="cat-list">
-      <li class="cat-list-item" *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}">
-        <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}" title="{{c.attributes.nombre}}"><u>{{c.attributes.nombre}}</u></a>
+</ng-template>
+<!-- offcanvas -->
+<ng-template #contents let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Offcanvas title</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
+      <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+        <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
       </li>
-    </ul>
 
+      <!-- <li class="nav-item dropdown">
+          <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="#" class="dropdown-item">About</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Blog</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Shop</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Cart</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Checkout</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Single Post</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Single Product</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Contact</a>
+            </li>
+          </ul>
+        </li>-->
+    </ul>
   </div>
-</div>
+</ng-template>
+
+
 
 <header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
-  <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
+  <nav id="header-nav" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="assets/images/main-logo.png" class="logo">
-      </a>
-      <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler d-flex d-lg-none order-1 p-2" type="button" data-bs-toggle="offcanvas"
+        (click)="openTwo(contents)" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false"
+        aria-label="Toggle navigation">
         <svg class="navbar-icon">
           <use xlink:href="#navbar-icon"></use>
         </svg>
       </button>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
-        <div class="offcanvas-header px-4 pb-0">
-          <a class="navbar-brand" href="#">
-            <img src="assets/images/main-logo.png" class="logo">
-          </a>
-          <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close"
-            data-bs-target="#bdNavbar"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-            <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link" class="nav-item">
-              <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
-            </li>
+      <a class="navbar-brand order-2" href="#">
+        <img src="assets/images/main-logo.png" class="logo">
+      </a>
 
-            <!-- <li class="nav-item dropdown">
-                <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="#" class="dropdown-item">About</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Blog</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Shop</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Cart</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Checkout</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Single Post</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Single Product</a>
-                  </li>
-                  <li>
-                    <a href="#" class="dropdown-item">Contact</a>
-                  </li>
-                </ul>
-              </li>-->
-              
-            <li class="nav-item">
-              <div class="user-items ps-5">
-                <ul class="d-flex justify-content-end list-unstyled">
-                  <li class="search-item pe-3">
-                    <a (click)="Focus('search-form')" href="#" class="search-button">
-                      <svg class="search">
-                        <use xlink:href="#search"></use>
-                      </svg>
-                    </a>
-                  </li>
-                 <!-- <li class="pe-3">
-                    <a href="#">
-                      <svg class="user">
-                        <use xlink:href="#user"></use>
-                      </svg>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <svg class="cart">
-                        <use xlink:href="#cart"></use>
-                      </svg>
-                    </a>
-                  </li>-->
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </div>
+      <div class="order-3 d-none d-lg-block">
+        <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
+          <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+            <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
+          </li>
+
+          <!-- <li class="nav-item dropdown">
+              <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#" class="dropdown-item">About</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Blog</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Shop</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Cart</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Checkout</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Single Post</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Single Product</a>
+                </li>
+                <li>
+                  <a href="#" class="dropdown-item">Contact</a>
+                </li>
+              </ul>
+            </li>-->
+        </ul>
+      </div>
+      <div class="order-4">
+        <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center">
+          <li class="nav-item">
+            <div class="user-items">
+              <ul class="d-flex justify-content-end list-unstyled">
+                <li class="search-item pe-3">
+                  <a (click)="open(longContent)" href="#" class="search-button">
+                    <svg class="search">
+                      <use xlink:href="#search"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li class="pe-3">
+                  <a href="#">
+                    <svg class="user">
+                      <use xlink:href="#user"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <svg class="cart">
+                      <use xlink:href="#cart"></use>
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
