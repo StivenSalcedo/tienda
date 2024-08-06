@@ -54,7 +54,7 @@
     </div>
   </div>
 </section>
-
+<p>lopo</p>
 <section id="{{c.attributes.descripcion1 || c.attributes.nombre}}" *ngFor="let c of Categories | orderby:'orden'" class="product-store position-relative padding-large no-padding-top">
   <div *ngIf="c.products.length>0" class="container">
     <div class="row">
@@ -65,13 +65,39 @@
             class="btn btn-medium btn-normal text-uppercase">Ver Categoria</a>
         </div>
       </div>
-      <div class="swiper product-swiper">
+
+      <div class="d-flex mt-5" >
+        <div *ngFor="let p of c.products | orderby:'orden'">
+          <div class="border rounded p-3">
+            <div class="d-flex align-items-center">
+              <div class="fw-bold text-center me-auto">{{p.attributes.titulo}}</div>
+              <div class="item-price text-primary item-price text-primary">{{p.attributes.precio | currency}}</div>
+            </div>              
+            <div class="image-holder">
+              <img src="{{p.imagen.url}}" alt="{{p.imagen.alternativeText || p.attributes.titulo}}" class="img-fluid">
+            </div>
+            <div class="d-flex justify-content-center" *ngIf="p.attributes.unidades>0">
+              <!-- <button type="button" class="btn btn-primary">add to cart</button> -->
+              <a href="tienda?p={{p.attributes.titulo}}&Id={{p.id}}" class="btn btn-medium btn-black">Añadir al
+                carro<svg class="cart-outline">
+                  <use xlink:href="#cart-outline"></use>
+                </svg></a>
+            </div>
+            <div *ngIf="p.attributes.unidades<=0" class="cart-button d-flex">
+              <a href="#" class="btn btn-medium btn-black">Agotado<svg class="cart-outline">
+                  <use xlink:href="#cart-outline"></use>
+                </svg></a>
+            </div>           
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="swiper product-swiper">
         <div class="swiper-wrapper">
 
           <div *ngFor="let p of c.products | orderby:'orden'" class="swiper-slide">
             <div class="product-card position-relative">
               <div class="image-holder">
-
                 <img src="{{p.imagen.url}}" alt="{{p.imagen.alternativeText || p.attributes.titulo}}" class="img-fluid">
               </div>
               <div class="cart-concern position-absolute">
@@ -99,7 +125,7 @@
           </div>
           
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="swiper-pagination position-absolute text-center"></div>
