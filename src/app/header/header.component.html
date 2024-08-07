@@ -124,7 +124,7 @@
 
       <h5 *ngIf="Categories.length>0" class="cat-list-title mt-5">Buscar por Categorias</h5>
       <ul *ngIf="Categories.length>0" class="cat-list">
-        <li class="cat-list-item" *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}">
+        <li class="cat-list-item" *ngFor="let c of Categories | orderby:'attributes.orden'" id="{{c.attributes.nombre}}">
           <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}"
             title="{{c.attributes.nombre}}"><u>{{c.attributes.nombre}}</u></a>
         </li>
@@ -141,7 +141,7 @@
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-      <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+      <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link nav-item">
         <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
       </li>
 
@@ -178,39 +178,6 @@
   </div>
 </ng-template>
 
-@if (images) {
-	<ngb-carousel>
-		<ng-template ngbSlide>
-			<div class="picsum-img-wrapper">
-				<img [src]="images[0]" alt="Random first slide" />
-			</div>
-			<div class="carousel-caption">
-				<h3>First slide label</h3>
-				<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-			</div>
-		</ng-template>
-		<ng-template ngbSlide>
-			<div class="picsum-img-wrapper">
-				<img [src]="images[1]" alt="Random second slide" />
-			</div>
-			<div class="carousel-caption">
-				<h3>Second slide label</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-			</div>
-		</ng-template>
-		<ng-template ngbSlide>
-			<div class="picsum-img-wrapper">
-				<img [src]="images[2]" alt="Random third slide" />
-			</div>
-			<div class="carousel-caption">
-				<h3>Third slide label</h3>
-				<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-			</div>
-		</ng-template>
-	</ngb-carousel>
-}
-
-
 <header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
   <nav id="header-nav" class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -227,7 +194,7 @@
 
       <div class="order-3 d-none d-lg-block">
         <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-          <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+          <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link nav-item">
             <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
           </li>
 

@@ -7,15 +7,16 @@ import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { CacheService } from '../services/cache.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.sass',
-    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbAlertModule,ReplacePipe]
+    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbAlertModule,ReplacePipe,NgbCarouselModule,LoaderComponent]
 })
 export class HomeComponent implements OnInit {
     Categories: any = [];
@@ -29,13 +30,18 @@ export class HomeComponent implements OnInit {
     Benefits: any = [];
     Loading: boolean = true;
     LoadingProducts: boolean = true;
+    paused = false;
+  unpauseOnArrow = false;
+  pauseOnIndicator = false;
+  pauseOnHover = true;
+  pauseOnFocus = true;
     public Links: any = [];
  
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer,private cacheService: CacheService) {
     }
     ngOnInit(): void {
 
-        this.loadCategories('/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*');
+        this.loadCategories('/categorias?&filters[$or][1][favoritos2][$eq]=1&filters[$or][0][favoritos1][$eq]=1&populate=*');
         this.loadContent('/paginas?filters[tipo][nombre][$ne]=pagina&populate=*');
 
     }
@@ -51,7 +57,7 @@ export class HomeComponent implements OnInit {
                 next: categories => {
                     this.Categories = categories;
                     this.Categories = this.Categories.data;
-                   this.Categories.forEach((category: any, index2: number) => {
+                    this.Categories.forEach((category: any, index2: number) => {
                         category.products=[];
                     });
                     try {
@@ -70,11 +76,23 @@ export class HomeComponent implements OnInit {
         else
         {
             this.Categories=cachedData;
+            this.LoadingProducts=false;
         }
     }
     getProductsByCategory(id: number) {
         return this.Products.filter((p: any) => { return p.attributes.categoria.data.filter((c: any) => { return Number(c.id) == id; }).length>0 });
     }
+
+    openLargeImage(product: any) {
+        // Implementa la lógica para mostrar la imagen grande
+        console.log('Abrir imagen grande de', product.name);
+      }
+    
+      goToDetails(product: any) {
+        // Implementa la navegación al detalle del producto
+        console.log('Ir a detalles de', product.name);
+      }
+
     loadProducts(url:string) {
         var Query='/productos?filters[$or][0][categoria][favoritos1][$eq]=1&filters[$or][1][categoria][favoritos2][$eq]=1&populate=*';
         this.Service.getPosts('get', {}, Query)

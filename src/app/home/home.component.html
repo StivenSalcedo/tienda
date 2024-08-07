@@ -1,6 +1,20 @@
 <app-header></app-header>
+<app-loader *ngIf="LoadingProducts"></app-loader>
+<ngb-carousel [interval]="4000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus" >
+  <ng-template ngbSlide *ngFor="let p of Slider | orderby:'orden'">
+      <div class="picsum-img-wrapper">
+          <img  [src]="p.imagen.url" alt="{{p.imagen.alternativeText}}">
+      </div>
+      <div class="carousel-caption">
+          <h3 class="col-md-6 display-2 text-uppercase text-dark pb-5">{{p.attributes.titulo}}</h3>
+          <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}"
+          class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Ver producto</a>
+        
+      </div>
+  </ng-template>
+</ngb-carousel>
 
-<section *ngIf="Slider.length>0" id="billboard" class="position-relative overflow-hidden bg-light-blue">
+<!--<section *ngIf="Slider.length>0" id="billboard" class="position-relative overflow-hidden bg-light-blue">
   <div class="swiper main-swiper">
     <div class="swiper-wrapper">
       <div *ngFor="let p of Slider | orderby:'orden'" class="swiper-slide">
@@ -33,7 +47,7 @@
       <use xlink:href="#chevron-right" />
     </svg>
   </div>
-</section>
+</section>-->
 <section *ngIf="Benefits.length>0" id="benefits" class="padding-large">
   <div class="container">
     <div class="row">
@@ -55,7 +69,37 @@
   </div>
 </section>
 
-<section id="{{c.attributes.descripcion1 || c.attributes.nombre}}" *ngFor="let c of Categories | orderby:'orden'" class="product-store position-relative padding-large no-padding-top">
+@if (Categories[1].products) {
+
+<div class="product-carousel">
+  <div *ngIf="LoadingProducts" class="loading-animation">
+    <!-- Aquí iría tu animación de carga, por ejemplo: -->
+    <div class="spinner"></div>
+  </div>
+
+  <div  class="carousel-container">
+    <div class="carousel-track">
+      
+      <div *ngFor="let product of Categories[1].products" class="product-card">
+        <div class="image-container">
+          <img [src]="product.imagen.url" [alt]="product.attributes.nombre">
+          <button class="magnify-btn" (click)="openLargeImage(product)">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <h3>{{ product.attributes.nombre }}</h3>
+        <p class="price">{{ product.attributes.precio  | currency }}</p>
+        <button class="details-btn" (click)="goToDetails(product)">Ver detalles</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+   
+
+
+<section id="{{c.attributes.descripcion1 || c.attributes.nombre}}" *ngFor="let c of Categories | orderby:'attributes.orden'" class="product-store position-relative padding-large no-padding-top">
   <div *ngIf="c.products.length>0" class="container">
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
@@ -68,7 +112,7 @@
       <div class="swiper product-swiper">
         <div class="swiper-wrapper">
 
-          <div *ngFor="let p of c.products | orderby:'orden'" class="swiper-slide">
+          <div *ngFor="let p of c.products | orderby:'attributes.orden'" class="swiper-slide">
             <div class="product-card position-relative">
               <div class="image-holder">
 

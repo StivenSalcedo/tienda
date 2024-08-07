@@ -33,9 +33,7 @@
             "styles": [
               "src/styles.sass"
             ],
-            "scripts": [
-            "src/assets/js/plugins.js",
-            "src/assets/js/script.js"],
+            "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -101,9 +99,7 @@
             "styles": [
               "src/styles.sass"
             ],
-            "scripts": [
-            "src/assets/js/plugins.js",
-            "src/assets/js/script.js"]
+            "scripts": []
           }
         }
       }
