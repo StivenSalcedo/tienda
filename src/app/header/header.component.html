@@ -95,7 +95,7 @@
   <div class="modal-body">
     <div class="container p-sm-5 p-3">
       <form role="search" method="get" class="search-form" action="">
-        <input type="search" #Search (keydown)="SearchProducts()" [(ngModel)]="SearchProduct" id="search-form"
+        <input type="Search" #Search (keydown)="SearchProducts()" [(ngModel)]="SearchProduct" id="search-form"
           class="search-field" placeholder="escribe el producto que buscas" value="" name="s" />
       </form>
 
@@ -103,7 +103,7 @@
       <div class="mt-5" *ngIf="ProductsFiltered.length>0">
         <div class="row g-5">
           <div *ngFor="let p of ProductsFiltered.slice(0, 10);"
-            (click)="redirectTo('tienda?p='+p.attributes.titulo+'&Id='+p.id);" class="col-12 col-md-6">
+          (click)="goToDetails(p,modal)" class="col-12 col-md-6">
             <div class="border rounded p-3">
               <div class="d-flex align-items-center">
                 <div class="fw-bold text-center me-auto">{{p.attributes.titulo}}</div>
@@ -112,7 +112,7 @@
               <div class="bg-img-product" style="background-image:url({{p.imagen.url}});">
               </div>
               <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-primary">add to cart</button>
+                <button type="button" class="btn btn-medium btn-dark">add to cart</button>
               </div>
               
             </div>
@@ -235,13 +235,13 @@
             <div class="user-items">
               <ul class="d-flex justify-content-end list-unstyled">
                 <li class="search-item pe-3">
-                  <a (click)="open(longContent)" href="#" class="search-button">
+                  <a (click)="open(longContent)" class="search-button">
                     <svg class="search">
                       <use xlink:href="#search"></use>
                     </svg>
                   </a>
                 </li>
-                <li class="pe-3">
+               <!-- <li class="pe-3">
                   <a href="#">
                     <svg class="user">
                       <use xlink:href="#user"></use>
@@ -254,7 +254,7 @@
                       <use xlink:href="#cart"></use>
                     </svg>
                   </a>
-                </li>
+                </li>-->
               </ul>
             </div>
           </li>

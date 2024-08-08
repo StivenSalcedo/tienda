@@ -63,14 +63,7 @@ export class ProductDetailComponent implements OnInit {
    
   }
 
-  Pay(){
-   
-    
-
-       
-     this.modalService.open(this.templateRefPayment, { fullscreen: false,size:'lg' });
-     
-  }
+  
   ShowProduct(id: any) {
     console.log(this.ProductDetail);
     console.log(this.Products);

@@ -1,6 +1,6 @@
 <app-header></app-header>
 <app-loader *ngIf="LoadingProducts"></app-loader>
-<ngb-carousel [interval]="4000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
+<ngb-carousel [interval]="1000" [pauseOnHover]="pauseOnHover"  [pauseOnFocus]="pauseOnFocus">
   <ng-template ngbSlide *ngFor="let p of Slider | orderby:'orden'">
     <div class="picsum-img-wrapper">
       <img [src]="p.imagen.url" alt="{{p.imagen.alternativeText}}">
