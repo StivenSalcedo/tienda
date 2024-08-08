@@ -1,87 +1,171 @@
-.product-carousel 
-	position: relative
-	width: 100%
-	overflow: hidden
-	display: flex
-	justify-content: center
-	align-items: center
-	height: 200px
-	width: 50px
-	height: 50px
-	border: 3px solid #f3f3f3
-	border-top: 3px solid #3498db
-	border-radius: 50%
-	animation: spin 1s linear infinite
+.product-carousel
+  position: relative
+  width: 100%
+  overflow: hidden
 
-.carousel-container 
-	width: 100%
-	overflow-x: auto
-	-webkit-overflow-scrolling: touch
-	scroll-behavior: smooth
-	display: none
+  .loading-animation
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 200px
 
-.carousel-track 
-	display: flex
-	padding: 1rem
+    .spinner
+      width: 50px
+      height: 50px
+      border: 3px solid #f3f3f3
+      border-top: 3px solid #3498db
+      border-radius: 50%
+      animation: spin 1s linear infinite
 
-.product-card 
-	flex: 0 0 auto
-	width: 200px
-	margin-right: 1rem
-	background-color: #fff
-	border-radius: 8px
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
-	padding: 1rem
-	position: relative
-	width: 100%
-	height: 150px
-	margin-bottom: 1rem
-	width: 100%
-	height: 100%
-	object-fit: cover
-	border-radius: 4px
+  .carousel-container
+    width: 100%
+    overflow-x: auto
+    -webkit-overflow-scrolling: touch
+    scroll-behavior: smooth
 
-.magnify-btn 
-	position: absolute
-	top: 5px
-	right: 5px
-	background-color: rgba(255, 255, 255, 0.8)
-	border: none
-	border-radius: 50%
-	width: 30px
-	height: 30px
-	display: flex
-	justify-content: center
-	align-items: center
-	cursor: pointer
-	transition: background-color 0.3s
-	background-color: rgba(255, 255, 255, 1)
+    &::-webkit-scrollbar
+      display: none
 
-h3 
-	font-size: 1rem
-	margin-bottom: 0.5rem
+  .carousel-track
+    display: flex
+    padding: 1rem
 
-.price 
-	font-weight: bold
-	color: #2ecc71
-	margin-bottom: 1rem
+  .product-card
+    flex: 0 0 auto
+    width: 200px
+    margin-right: 1rem
+    background-color: #fff
+    border-radius: 8px
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
+    padding: 1rem
 
-.details-btn 
-	width: 100%
-	padding: 0.5rem
-	background-color: #3498db
-	color: #fff
-	border: none
-	border-radius: 4px
-	cursor: pointer
-	transition: background-color 0.3s
-	background-color: #2980b9
+    .image-container
+      position: relative
+      width: 100%
+      height: 150px
+      margin-bottom: 1rem
 
-keyframes spin 
-	transform: rotate(0deg)
+      img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        border-radius: 4px
 
- 
-	transform: rotate(360deg)
-	&.product-card 
-		width: 250px
+      .magnify-btn
+        position: absolute
+        top: 5px
+        right: 5px
+        background-color: rgba(255, 255, 255, 0.8)
+        border: none
+        border-radius: 50%
+        width: 30px
+        height: 30px
+        display: flex
+        justify-content: center
+        align-items: center
+        cursor: pointer
+        transition: background-color 0.3s
 
+        &:hover
+          background-color: rgba(255, 255, 255, 1)
+
+    h3
+      font-size: 1rem
+      margin-bottom: 0.5rem
+
+    .price
+      font-weight: bold
+      color: #2ecc71
+      margin-bottom: 1rem
+
+    .details-btn
+      width: 100%
+      padding: 0.5rem
+      background-color: #3498db
+      color: #fff
+      border: none
+      border-radius: 4px
+      cursor: pointer
+      transition: background-color 0.3s
+
+      &:hover
+        background-color: #2980b9
+
+@keyframes spin
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
+
+@media (min-width: 768px)
+  .product-carousel
+    .carousel-track
+      justify-content: flex-start
+
+    .product-card
+      width: 250px
+
+/* 11. Checkout Page
+ *--------------------------------------------------------------
+
+.comments-carousel
+  position: relative
+  width: 100%
+  overflow: hidden
+
+  .comments-container
+    display: flex
+    overflow-x: hidden
+    scroll-behavior: smooth
+    -webkit-overflow-scrolling: touch
+
+  .comment
+    flex: 0 0 100%
+    padding: 20px
+    box-sizing: border-box
+
+    .description
+      margin-bottom: 10px
+
+    .stars
+      color: #ddd
+      font-size: 24px
+
+      .filled
+        color: gold
+
+    .username
+      font-weight: bold
+      margin-top: 10px
+
+  .arrow
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    background: rgba(0,0,0,0.5)
+    color: white
+    border: none
+    padding: 10px 15px
+    font-size: 18px
+    cursor: pointer
+    z-index: 1
+
+    &:left
+        left: 0
+    &:right
+        right: 0
+    &:hover
+         background: rgba(0,0,0,0.7)
+
+@media (min-width: 768px)
+  .comments-carousel
+    max-width: 600px
+    margin: 0 auto
+
+@media (max-width: 767px)
+  .comments-carousel
+    .arrow
+      display: none
+
+    .comments-container
+      overflow-x: auto
