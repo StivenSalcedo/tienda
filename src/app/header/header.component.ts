@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 import { FormsModule } from '@angular/forms';
-import { NgbModal, NgbModalConfig, NgbOffcanvas, NgbOffcanvasConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { CacheService } from '../services/cache.service';
 
@@ -14,7 +14,7 @@ import { CacheService } from '../services/cache.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.sass',
   standalone: true,
-  imports: [CommonModule,orderByPipe,FormsModule, NgbCarouselModule],
+  imports: [CommonModule,orderByPipe,FormsModule],
   // add NgbModalConfig and NgbModal to the component providers
 	providers: [NgbModalConfig, NgbModal, NgbOffcanvas, NgbOffcanvasConfig],
 

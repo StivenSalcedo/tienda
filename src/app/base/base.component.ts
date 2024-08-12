@@ -3,10 +3,11 @@ import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
-import { NgbCarousel, NgbCarouselConfig ,NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbCarouselConfig ,NgbSlideEvent, NgbSlideEventSource,NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/api.service';
 import { orderByPipe } from '../pipes/main.pipe';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from '../loader/loader.component';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './base.component.html',
   styleUrl: './base.component.sass',
-  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbCarousel]
+  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbCarouselModule,LoaderComponent]
 })
 export class BaseComponent implements OnInit {
   public DataResponse: any = [];
@@ -38,7 +39,7 @@ export class BaseComponent implements OnInit {
     this.Host = Service.urlBase;
   }
   ngOnInit(): void {
-
+    this.loading = true;
     this.Page.imagen = {};
     this.CurrentUrl = this.router.url;
     if (this.CurrentUrl == '' || this.CurrentUrl == '/') {
@@ -64,6 +65,7 @@ export class BaseComponent implements OnInit {
       }
 
     });
+   
 
   }
 
@@ -116,11 +118,17 @@ export class BaseComponent implements OnInit {
       if (this.Page.metadata != null) {
         this.ChangeMeta(this.Page.metadata);
       }
-      this.loading = false;
+      
+      
     }
     else {
-      this.OnFilterPage(Data, '/pagina-no-encontrada');
+      //this.OnFilterPage(Data, 'pagina-no-encontrada');
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+        this.router.navigate(['/pagina-no-encontrada']));
     }
+    // setTimeout(()=>{
+      this.loading = false;
+   // },2000)
 
   }
 

@@ -124,7 +124,7 @@
 
       <h5 *ngIf="Categories.length>0" class="cat-list-title mt-5">Buscar por Categorias</h5>
       <ul *ngIf="Categories.length>0" class="cat-list">
-        <li class="cat-list-item" *ngFor="let c of Categories | orderby:'orden'" id="{{c.attributes.nombre}}">
+        <li class="cat-list-item" *ngFor="let c of Categories | orderby:'attributes.orden'" id="{{c.attributes.nombre}}">
           <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}"
             title="{{c.attributes.nombre}}"><u>{{c.attributes.nombre}}</u></a>
         </li>
@@ -141,7 +141,7 @@
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-      <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+      <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link nav-item">
         <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
       </li>
 
@@ -177,8 +177,9 @@
     </ul>
   </div>
 </ng-template>
-<header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
-  <nav id="header-nav" class="navbar navbar-expand-lg">
+
+<header id="header" class="site-header header-scrolled position-fixed text-black bg-light" style="height: 74px;">
+  <nav id="header-nav" class="navbar navbar-expand-lg" style="height: 100%;">
     <div class="container-fluid">
       <button class="navbar-toggler d-flex d-lg-none order-1 p-2" type="button" data-bs-toggle="offcanvas"
         (click)="openTwo(contents)" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false"
@@ -187,13 +188,13 @@
           <use xlink:href="#navbar-icon"></use>
         </svg>
       </button>
-      <a class="navbar-brand order-2" href="#">
-        <img src="assets/images/main-logo.png" class="logo">
+      <a class="navbar-brand wrap-logo order-2" href="#">
+        <img src="assets/images/main-logo.png">
       </a>
 
       <div class="order-3 d-none d-lg-block">
         <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-          <li *ngFor="let m of Menu | orderby:'menu'" class="nav-link nav-item">
+          <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link nav-item">
             <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
           </li>
 

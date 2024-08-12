@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap'
+//variables bootstrap
+$black: #000
+$carousel-control-color: $black
 
-
-//Variables
+//variables general
 
 $accent-color: #717171
 $gray-color: #F3F3F3
@@ -15,20 +15,20 @@ $light-color: #f8f9fa
 $dark-color: #212529
 $light-blue-color: #EDF1F3
 
-
 $body-font: "Lato", sans-serif
 $heading-font: "Jost", sans-serif
 
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap'
+
 //Bootstrap
-
-
 .navbar-brand
     margin-right: 0
 
+// .carousel-inner
+//     height: 710px
+
 /* 1.1 General Styles
-
-
-
 
 html
     box-sizing: border-box
@@ -49,15 +49,32 @@ ul.inner-list li
 
 a
     color: $dark-color
-    text-decoration: none
+    text-decoration: underline
     transition: 0.3s color ease-out
 
     &.light
         color: $light-color
 
     &:hover
-        text-decoration: none
+        text-decoration: underline
         color: $primary-color
+
+
+
+img
+    max-width: 100%
+    height: auto
+
+.wrap-logo
+    
+
+    @media only screen and (max-width: 992px)
+        width: 50%
+        display: flex
+        justify-content: center
+
+    @media only screen and (max-width: 576px)
+        width: 35%
 
 /*------------ Background Color -----------
 
@@ -540,6 +557,7 @@ h3
 
 .site-header
     position: fixed
+    top: 0
     width: 100%
     z-index: 10
     transition: background 0.3s ease-out
@@ -581,8 +599,6 @@ h3
     width: 18px
     height: 18px
     cursor: pointer
-
-
 
 /* 2. Billboard
  */
@@ -970,8 +986,93 @@ figure.instagram-item img.insta-image
     width: 100%
     background-color: white
 
-//15. modals
+.bg-img-product-2
+    background-repeat: no-repeat
+    background-size: contain
+    background-position-y: center
+    background-position-x: center
+    height: 710px
+    width: 100%
+    background-color: white
 
+//15. modals
 
 //16. modals
 
+//17.loader
+
+.loader-overlay
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: rgba(0, 0, 0, 0.7)
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 9999
+
+.loader
+    $size: 80px
+    width: $size
+    height: $size
+    border: 8px solid #f3f3f3
+    border-top: 8px solid #3498db
+    border-radius: 50%
+    animation: spin 1s linear infinite
+
+@keyframes spin
+    0%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
+
+.lds-general
+    box-sizing: border-box
+    display: inline-block
+    position: relative
+    width: 80px
+    height: 80px
+
+    div
+        box-sizing: border-box
+        position: absolute
+        border: 4px solid currentColor
+        opacity: 1
+        border-radius: 50%
+        animation: lds-general 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
+
+        &:nth-child(2)
+            animation-delay: -0.5s            
+
+@keyframes lds-general
+    0%
+        top: 36px
+        left: 36px
+        width: 8px
+        height: 8px
+        opacity: 0
+
+    4.9%
+        top: 36px
+        left: 36px
+        width: 8px
+        height: 8px
+        opacity: 0
+
+    5%
+        top: 36px
+        left: 36px
+        width: 8px
+        height: 8px
+        opacity: 1
+
+    100%
+        top: 0
+        left: 0
+        width: 80px
+        height: 80px
+        opacity: 0
+
+//18.loader
