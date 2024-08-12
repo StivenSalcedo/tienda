@@ -1,1 +1,37 @@
-<iframe [src]="Data.Url" width="100%" height="90%"></iframe>
+<div class="payment-container">
+    <div class="progress-bar">
+      <div *ngFor="let step of steps; let i = index"
+           [class.active]="currentStep === i"
+           (click)="goToStep(i)">
+        {{ step }}
+      </div>
+    </div>
+
+    <div [ngSwitch]="currentStep" class="step-content">
+      <div *ngSwitchCase="0">
+        <h2>1. Pedido</h2>
+      
+        <!-- Add order details form -->
+      </div>
+      <div *ngSwitchCase="1">
+        <h2>2. Datos de contacto</h2>
+        <p>Ciudad actual: {{city}}</p>
+        <!-- Add contact information form -->
+      </div>
+      <div *ngSwitchCase="2">
+        <h2>3. Método de pago</h2>
+        <!-- Add payment method selection -->
+      </div>
+      <div *ngSwitchCase="3">
+        <h2>4. Confirmación</h2>
+        <!-- Add order summary and confirm button -->
+      </div>
+    </div>
+
+    <div class="navigation">
+      <button (click)="prevStep()" [disabled]="currentStep === 0">Anterior</button>
+      <button (click)="nextStep()" [disabled]="currentStep === steps.length - 1">Siguiente</button>
+    </div>
+  </div>
+
+  <!--https://api.whatsapp.com/send?phone=573108272370&text=_Hola,%20hice%20un%20pedido%20en%20tu%20tienda%20FrutGO%20mercado%20en%20casa_%0A%0ADETALLE%20DEL%20*PEDIDO%20N%C2%B0%20503*%0A%0A*1x%20Ar%C3%A1ndanos%20x%201lb*%0A*1x%20Ghee%20Mantequilla%20Clarificada%20640%20g*%0A%0ASubtotal%20$%C2%A087.000%0ACosto%20de%20env%C3%ADo%20:%20$%C2%A03.000%0A------------------------------%0A*TOTAL%20$%C2%A090.000*%0A------------------------------%0A%0A%0A*MIS%20DATOS*%0A%0A*Nombre:*%20FFDTGHYFGH%20%0A*Tel%C3%A9fono:*%2034534345%20%0A*Correo:*%20GHJGHJ@GMAIL.COM%20%0A%0A*Direcci%C3%B3n%20de%20env%C3%ADo:*%20DFGDGDFG%20%0A*Ciudad:*%20Bogot%C3%A1,%20D.C.%20%0A%0A%0A_Con%20tecnolog%C3%ADa%20de_%20www.alegra.com-->

@@ -14,7 +14,7 @@ import { PaymentComponent } from '../payment/payment.component';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule,PaymentComponent],
+  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.sass'
 })
