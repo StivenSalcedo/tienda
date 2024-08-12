@@ -45,7 +45,17 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   open(content: any) {
 		this.modalService.open(content);
+    this.Focus('');
 	}
+
+  goToDetails(p: any,modal:any) {
+    var uri=decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
+    this._router.navigateByUrl(uri, { skipLocationChange: false }).then(() =>
+      window.location.reload()
+  );
+  
+    modal.dismiss('Cross click')
+}
 
   openTwo(contents: any) {
 		this.offcanvasService.open(contents);

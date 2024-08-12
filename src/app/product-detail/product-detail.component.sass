@@ -1,0 +1,59 @@
+.product-detail
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  padding: 150px
+
+  .product-image-gallery
+    flex: 1 1 300px
+    margin-right: 20px
+
+    .main-image
+      img
+        max-width: 100%
+        height: auto
+
+    .thumbnail-images
+      display: flex
+      justify-content: center
+      margin-top: 10px
+
+      img
+        width: 50px
+        height: 50px
+        margin: 0 5px
+        cursor: pointer
+        border: 2px solid transparent
+
+        &.active
+          border-color: #333
+
+  .product-info
+    flex: 1 1 300px
+
+    h1
+      font-size: 24px
+      margin-bottom: 10px
+
+    p
+      margin-bottom: 20px
+
+    .color-variation,
+    .quantity
+      margin-bottom: 15px
+
+    .add-to-cart
+      background-color: #333
+      color: #fff
+      border: none
+      padding: 10px 20px
+      cursor: pointer
+
+@media (max-width: 767px)
+  .product-detail
+    flex-direction: column
+    align-items: center
+
+    .product-image-gallery
+      margin-right: 0
+      margin-bottom: 20px

@@ -14,7 +14,7 @@ import { PaymentComponent } from '../payment/payment.component';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule,PaymentComponent],
+  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.sass'
 })
@@ -63,14 +63,7 @@ export class ProductDetailComponent implements OnInit {
    
   }
 
-  Pay(){
-   
-    
-
-       
-     this.modalService.open(this.templateRefPayment, { fullscreen: false,size:'lg' });
-     
-  }
+  
   ShowProduct(id: any) {
     console.log(this.ProductDetail);
     console.log(this.Products);
