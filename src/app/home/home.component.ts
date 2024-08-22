@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
     public Links: any = [];
     @ViewChild('commentsContainer')
     commentsContainer!: ElementRef;
+    @ViewChild('commentsContainer2')
+    commentsContainer2!: ElementRef;
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer, private cacheService: CacheService) {
     }
     ngOnInit(): void {
@@ -89,17 +91,51 @@ export class HomeComponent implements OnInit {
     }
 
     goToDetails(p: any) {
-        var uri=decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
+        var uri = decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
         this._router.navigateByUrl(uri, { skipLocationChange: false });
+    }
+
+    AddtoCart(p: any) {
+
+        var cachedData = this.cacheService.get('cart', 600);
+        if (cachedData == null) {
+            cachedData = [];
+        }
+        var url = "";
+        try {
+            url = p.imagen.data[0].attributes.formats.thumbnail.url;
+
+        }
+        catch (ex) { }
+        var filter = cachedData.filter((item: { id: number; }) => item.id == p.id);
+        if (filter.length > 0) {
+            cachedData.find((item: { id: number; }) => item.id === p.id).quantity++;
+        }
+        else {
+            cachedData.push({ "id": p.id, "name": p.titulo, "price": p.precio, "quantity": 1, "image": this.Service.urlBase + url });
+        }
+
+        this.cacheService.set('cart', cachedData, new Date());
+        this._router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this._router.navigate(['/carrito']));
+
     }
 
     scrollLeft() {
         this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-      }
-    
-      scrollRight() {
+    }
+
+    scrollRight() {
         this.commentsContainer.nativeElement.scrollBy({ left: this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-      }
+    }
+
+    scrollLeft2() {
+        this.commentsContainer2.nativeElement.scrollBy({ left: -this.commentsContainer2.nativeElement.offsetWidth, behavior: 'smooth' });
+    }
+
+    scrollRight2() {
+        this.commentsContainer2.nativeElement.scrollBy({ left: this.commentsContainer2.nativeElement.offsetWidth, behavior: 'smooth' });
+    }
 
     loadProducts(url: string) {
         var Query = '/productos?filters[$or][0][categoria][favoritos1][$eq]=1&filters[$or][1][categoria][favoritos2][$eq]=1&populate=*';
@@ -139,7 +175,8 @@ export class HomeComponent implements OnInit {
                     })
                     this.Categories.forEach((category: any, index2: number) => {
                         category.products = this.getProductsByCategory(category.id);
-                    })
+                    });
+                    this.Categories=this.Categories.filter((cat:any)=>{return cat.products.length>0;});
                     try {
                         this.cacheService.set(url, this.Categories, new Date());
                     } catch (error) {
