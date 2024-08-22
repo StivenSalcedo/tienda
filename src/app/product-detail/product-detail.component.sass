@@ -57,3 +57,59 @@
     .product-image-gallery
       margin-right: 0
       margin-bottom: 20px
+      
+.product
+  position: relative
+  width: 300px
+  padding: 20px
+  border: 1px solid #ddd
+  border-radius: 8px
+  text-align: center
+
+  img
+    width: 100%
+    max-width: 200px
+    height: auto
+    margin-bottom: 15px
+
+  button
+    background-color: #4CAF50
+    color: white
+    border: none
+    padding: 10px 20px
+    border-radius: 4px
+    cursor: pointer
+    transition: background-color 0.3s
+
+    &:hover
+      background-color: #45a049
+
+.cart-icon
+  position: fixed
+  top: 20px
+  right: 20px
+  font-size: 24px
+
+.feedback
+  position: fixed
+  top: 60px
+  right: 20px
+  background-color: #4CAF50
+  color: white
+  padding: 10px
+  border-radius: 4px
+  animation: fadeInOut 2s ease-in-out
+
+@keyframes fadeInOut
+  0%,
+  100%
+    opacity: 0
+  10%,
+  90%
+    opacity: 1
+
+@media (max-width: 768px)
+  .product
+    width: 100%
+    max-width: 300px
+    margin: 0 auto

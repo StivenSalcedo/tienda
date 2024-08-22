@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
-import { ApiService } from './services/api.service';
-
-
 @Component({
     selector: 'app-root',
     standalone: true,

@@ -1,37 +1,104 @@
+
 <div class="payment-container">
-    <div class="progress-bar">
-      <div *ngFor="let step of steps; let i = index"
-           [class.active]="currentStep === i"
-           (click)="goToStep(i)">
-        {{ step }}
-      </div>
-    </div>
-
-    <div [ngSwitch]="currentStep" class="step-content">
-      <div *ngSwitchCase="0">
-        <h2>1. Pedido</h2>
-      
-        <!-- Add order details form -->
-      </div>
-      <div *ngSwitchCase="1">
-        <h2>2. Datos de contacto</h2>
-        <p>Ciudad actual: {{city}}</p>
-        <!-- Add contact information form -->
-      </div>
-      <div *ngSwitchCase="2">
-        <h2>3. Método de pago</h2>
-        <!-- Add payment method selection -->
-      </div>
-      <div *ngSwitchCase="3">
-        <h2>4. Confirmación</h2>
-        <!-- Add order summary and confirm button -->
-      </div>
-    </div>
-
-    <div class="navigation">
-      <button (click)="prevStep()" [disabled]="currentStep === 0">Anterior</button>
-      <button (click)="nextStep()" [disabled]="currentStep === steps.length - 1">Siguiente</button>
+  <div class="progress-bar">
+    <div *ngFor="let step of steps; let i = index" [class.active]="currentStep === i" (click)="goToStep(i)">
+      {{ step }}
     </div>
   </div>
 
-  <!--https://api.whatsapp.com/send?phone=573108272370&text=_Hola,%20hice%20un%20pedido%20en%20tu%20tienda%20FrutGO%20mercado%20en%20casa_%0A%0ADETALLE%20DEL%20*PEDIDO%20N%C2%B0%20503*%0A%0A*1x%20Ar%C3%A1ndanos%20x%201lb*%0A*1x%20Ghee%20Mantequilla%20Clarificada%20640%20g*%0A%0ASubtotal%20$%C2%A087.000%0ACosto%20de%20env%C3%ADo%20:%20$%C2%A03.000%0A------------------------------%0A*TOTAL%20$%C2%A090.000*%0A------------------------------%0A%0A%0A*MIS%20DATOS*%0A%0A*Nombre:*%20FFDTGHYFGH%20%0A*Tel%C3%A9fono:*%2034534345%20%0A*Correo:*%20GHJGHJ@GMAIL.COM%20%0A%0A*Direcci%C3%B3n%20de%20env%C3%ADo:*%20DFGDGDFG%20%0A*Ciudad:*%20Bogot%C3%A1,%20D.C.%20%0A%0A%0A_Con%20tecnolog%C3%ADa%20de_%20www.alegra.com-->
+  <div [ngSwitch]="getcurrentStep()" class="step-content">
+    <div *ngSwitchCase="''">
+      <h2>Gracias por confiar en nosotros, ya esta en tramite su pedido, si no enviaste la confirmacion , no te preocupes nosotros te contactamos cualquier duda.</h2>
+    </div>
+    <div *ngSwitchCase="'pedido'">
+      @if (cartItems.length>0) {
+      <div class="shopping-cart">
+        <h2>1. Pedido</h2>
+        <div class="cart-items">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <img [src]="item.image" [alt]="item.name" class="item-thumbnail">
+            <div class="item-details">
+              <h3>{{item.name}}</h3>
+              <p>Price: ${{item.price}}</p>
+              <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item.id, item.quantity)">
+            </div>
+            <button (click)="removeItem(item.id)">Remove</button>
+          </div>
+        </div>
+        <div class="cart-total">
+          <h3>Total: {{getTotal()| currency}}</h3>
+        </div>
+      
+      </div>
+    }
+    @if (cartItems.length==0) {
+    <div>No hay items en el caroo</div>
+    }
+      <!-- Add order details form -->
+    </div>
+    <div *ngSwitchCase="'datos de contacto'">
+
+      <h2>2. Datos de contacto</h2>
+
+      <form [formGroup]="form"  class="form">
+        <div class="form-field" *ngIf="!loading">
+          <label for="typeahead-template">Ciudad</label>
+          <input formControlName="city" id="typeahead-focus" type="text" class="form-control" [(ngModel)]="clientcity"
+            [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [selectOnExact]="true"
+            [editable]="false" (focus)="focus$.next($any($event).target.value)"
+            (click)="click$.next($any($event).target.value);" #instance1 #instance="ngbTypeahead"
+            (blur)="instance.dismissPopup()" (change)="Focused()" />
+          <div class="error" *ngIf="form.get('city')?.touched && form.get('city')?.invalid">
+            Ciudad requerida
+          </div>
+          <label for="nombre">Nombre</label>
+          <input id="name" type="text" formControlName="name" #ClientName>
+          <div class="error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+            Nombre es requerido y debe tener al menos 2 caracteres
+          </div>
+
+          <label for="mail">Email</label>
+          <input id="mail" type="text" formControlName="mail">
+          <div class="error" *ngIf="form.get('mail')?.touched && form.get('mail')?.invalid">
+            Email Ivalido
+          </div>
+
+          <label for="phone">Celular</label>
+          <input id="phone" type="text" formControlName="phone">
+          <div class="error" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">
+            Celular Ivalido
+          </div>
+
+
+        </div>
+        {{form.valid}}
+      </form>
+     
+      <div class="skeleton" *ngIf="loading">
+        <div class="skeleton-field"></div>
+        <div class="skeleton-field"></div>
+        <div class="skeleton-field"></div>
+        <div class="skeleton-field"></div>
+      </div>
+      <hr />
+ 
+      <!-- Add contact information form -->
+    </div>
+    <div *ngSwitchCase="'método de pago'">
+      <h2>3. Método de pago</h2>
+      <!-- Add payment method selection -->
+    </div>
+    <div *ngSwitchCase="'confirmación'">
+      <h2>4. Confirmación</h2>
+      {{PaymentMethod.attributes.nombre}}
+      <!-- Add order summary and confirm button -->
+    </div>
+  </div>
+
+  <div class="navigation">
+    <button (click)="prevStep()" [disabled]="currentStep === 0"><label *ngIf="getcurrentStep()!=''">Anterior</label><label *ngIf="getcurrentStep()==''">Volver al inicio</label></button>
+    <button (click)="nextStep()" [disabled]="cartItems.length==0 || currentStep > steps.length - 1  || (this.getcurrentStep()=='datos de contacto' && !form.valid)"><label *ngIf="this.getcurrentStep()=='confirmación'">Enviar</label><label *ngIf="this.getcurrentStep()!='confirmación'">Siguiente</label></button>
+  </div>
+</div>
+
+<!--https://api.whatsapp.com/send?phone=573108272370&text=_Hola,%20hice%20un%20pedido%20en%20tu%20tienda%20FrutGO%20mercado%20en%20casa_%0A%0ADETALLE%20DEL%20*PEDIDO%20N%C2%B0%20503*%0A%0A*1x%20Ar%C3%A1ndanos%20x%201lb*%0A*1x%20Ghee%20Mantequilla%20Clarificada%20640%20g*%0A%0ASubtotal%20$%C2%A087.000%0ACosto%20de%20env%C3%ADo%20:%20$%C2%A03.000%0A------------------------------%0A*TOTAL%20$%C2%A090.000*%0A------------------------------%0A%0A%0A*MIS%20DATOS*%0A%0A*Nombre:*%20FFDTGHYFGH%20%0A*Tel%C3%A9fono:*%2034534345%20%0A*Correo:*%20GHJGHJ@GMAIL.COM%20%0A%0A*Direcci%C3%B3n%20de%20env%C3%ADo:*%20DFGDGDFG%20%0A*Ciudad:*%20Bogot%C3%A1,%20D.C.%20%0A%0A%0A_Con%20tecnolog%C3%ADa%20de_%20www.alegra.com-->

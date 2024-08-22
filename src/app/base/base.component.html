@@ -1,6 +1,6 @@
 <app-header></app-header>
 <app-loader *ngIf="loading"></app-loader>
-<div *ngIf="!loading">
+<div class="container" *ngIf="!loading">
     <div *ngIf="Page.contenido!=''" [innerHTML]="ReturnHtml()"></div>
 </div>
 <div class="container mt-5 pb-3 px-3" *ngIf="HaveImages() && !loading">

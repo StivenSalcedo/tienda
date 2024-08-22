@@ -187,6 +187,19 @@ redirectTo(uri: string) {
 
 }
 
+getItemsCartCount():number{
+  var c=this.cacheService.get('cart', 600);
+  if(c!=null)
+  {
+    return c.reduce((total: number, item: { price: number; quantity: number; }) => total + item.quantity, 0);
+  }
+  else
+  {
+    return 0;
+  }
+ 
+}
+
   loadMenu(url:string){
     const cachedData = this.cacheService.get(url,1);
   if (cachedData==null) {
