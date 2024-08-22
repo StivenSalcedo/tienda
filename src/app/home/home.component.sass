@@ -28,7 +28,7 @@
 
   .carousel-track
     display: flex
-    padding: 1rem
+    // padding: 1rem
 
   .product-card
     flex: 0 0 auto
@@ -48,7 +48,7 @@
       img
         width: 100%
         height: 100%
-        object-fit: cover
+        object-fit: contain
         border-radius: 4px
 
       .magnify-btn
@@ -119,6 +119,12 @@
     scroll-behavior: smooth
     -webkit-overflow-scrolling: touch
 
+  .comments-testimonies
+    display: flex
+    overflow-x: hidden
+    scroll-behavior: smooth
+    -webkit-overflow-scrolling: touch
+
   .comment
     flex: 0 0 100%
     padding: 20px
@@ -157,12 +163,12 @@
     &:hover
          background: rgba(0,0,0,0.7)
 
-@media (min-width: 768px)
-  .comments-carousel
-    max-width: 600px
-    margin: 0 auto
+// @media (min-width: 768px)
+//   .comments-carousel
+//     max-width: 600px
+//     margin: 0 auto
 
-@media (max-width: 767px)
+@media (max-width: 992px)
   .comments-carousel
     .arrow
       display: none

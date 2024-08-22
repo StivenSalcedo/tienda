@@ -1,12 +1,14 @@
 <app-header></app-header>
 <app-loader *ngIf="LoadingProducts"></app-loader>
 <div style="margin-top: 74px;">
-  <ngb-carousel [interval]="4000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
+  <ngb-carousel [interval]="104000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
     <ng-template ngbSlide *ngFor="let p of Slider | orderby:'orden'">
       <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}">
         <div class="picsum-img-wrapper">
-          <img [src]="p.imagen.url" alt="{{p.imagen.alternativeText}}" style="max-width: 100%;height: auto;">
+          <img class="img-slider" [src]="p.imagen.url" alt="{{p.imagen.alternativeText}}" />
         </div>
+        <!-- <div class="bg-img-product-2" style="background-image:url({{p.imagen.url}});">
+        </div> -->
         <!-- <div class="carousel-caption">
           <h3 class="col-md-6 display-2 text-uppercase text-dark pb-5">{{p.attributes.titulo}}</h3>
           <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}"
@@ -79,9 +81,8 @@
     </div>
   </div>
 </section>
-<p>loko</p>
 
-<section id="{{c.attributes.descripcion1 || c.attributes.nombre}}"
+<!-- <section id="{{c.attributes.descripcion1 || c.attributes.nombre}}"
   *ngFor="let c of Categories | orderby:'attributes.orden'"
   class="product-store position-relative padding-large no-padding-top">
   @if (c.products) {
@@ -126,7 +127,71 @@
     </div>
   </div>
   }
+</section> -->
+
+<section id="{{c.attributes.descripcion1 || c.attributes.nombre}}"
+  *ngFor="let c of Categories | orderby:'attributes.orden'" class="container p-3 p-md-0">
+  @if (c.products) {
+  <div class="pb-3">
+    <h2 class="text-dark text-uppercase">{{c.attributes.nombre}}</h2>
+    <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}" class="text-uppercase">Ver Categoria</a>
+  </div>
+  <div class="comments-carousel" *ngIf="c.products.length>0">
+    <!-- <button class="arrow left" (click)="scrollLeft()" style="left: 0;">&lt;</button> -->
+    <button type="button" class="product-control-prev d-none d-lg-block" aria-labelledby="ngb-carousel-0-prev"
+      (click)="scrollLeft()">
+      <span aria-hidden="true" class="product-control-prev-icon shadown-1 border"></span>
+      <span class="visually-hidden" id="ngb-carousel-0-prev">
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;">Próximo</font>
+        </font>
+      </span>
+    </button>
+    <div class="comments-container" #commentsContainer>
+      <div>
+
+        <div class="swiper product-swiper">
+          <div class="swiper-wrapper">
+            <div class="product-carousel">
+              <div *ngIf="LoadingProducts" class="lds-general">
+                <div></div>
+                <div></div>
+              </div>
+              <div class="carousel-container p-2">
+                <div class="carousel-track">
+                  <div *ngFor="let product of c.products | orderby:'attributes.orden'" class="product-card">
+                    <div class="image-container">
+                      <img [src]="product.imagen.url" [alt]="product.attributes.titulo">
+                      <!-- <button class="magnify-btn" (click)="openLargeImage(product)">
+                        <i class="fas fa-search"></i>
+                      </button> -->
+                    </div>
+                    <a href="" (click)="goToDetails(product)">{{ product.attributes.titulo }}</a>
+                    <h3></h3>
+                    <p class="price">{{ product.attributes.precio | currency }}</p>
+                    <button class="btn btn-dark w-100">Comprar ahora</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <button class="arrow right" (click)="scrollRight()" style="right: 0;">&gt;</button> -->
+    <button type="button" class="product-control-next d-none d-lg-block" aria-labelledby="ngb-carousel-0-next"
+      (click)="scrollRight()">
+      <span aria-hidden="true" class="product-control-next-icon shadown-1 border"></span>
+      <span class="visually-hidden" id="ngb-carousel-0-next">
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;">Próximo</font>
+        </font>
+      </span>
+    </button>
+  </div>
+  }
 </section>
+
 
 
 
@@ -149,7 +214,7 @@
     </div>
   </div>
 </section>
-<section *ngIf="Blog.length>0" id="latest-blog" class="padding-large">
+<!-- <section *ngIf="Blog.length>0" id="latest-blog" class="padding-large">
   <div class="container">
     <div class="row">
       <div class="display-header d-flex justify-content-between pb-3">
@@ -178,8 +243,9 @@
       </div>
     </div>
   </div>
-</section>
-<section *ngIf="Testimonials.length>0" id="testimonials" class="position-relative">
+</section> -->
+
+<!-- <section *ngIf="Testimonials.length>0" id="testimonials" class="position-relative">
   <div class="container">
     <div class="row">
       <div class="review-content position-relative">
@@ -226,30 +292,87 @@
     </div>
   </div>
   <div class="swiper-pagination"></div>
-</section>
+</section> -->
 
 
 
+<section class="container">
+  <div class="comments-carousel">
+    <button type="button" class="product-control-prev" aria-labelledby="ngb-carousel-0-prev"
+      (click)="scrollLeft2()">
+      <span aria-hidden="true" class="product-control-prev-icon shadown-1 border"></span>
+      <span class="visually-hidden" id="ngb-carousel-0-prev">
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;">Próximo</font>
+        </font>
+      </span>
+    </button>
+    <div class="quotation text-center">
+      <svg class="quote">
+        <use xlink:href="#quote" />
+      </svg>
+    </div>
 
-<div class="comments-carousel">
-  <button class="arrow left" (click)="scrollLeft()">&lt;</button>
-  <div class="comments-container" #commentsContainer>
-    <div *ngFor="let t of Testimonials | orderby:'attributes.menu'" class="comment">
-      <p class="description">{{t.attributes.descripcion}}</p>
-      <div class="rating">
-        <svg *ngFor="let s of [].constructor(t.attributes.otros.starsok)" class="star star-fill">
-          <use xlink:href="#star-fill"></use>
-        </svg>
-        <svg *ngFor="let s of [].constructor(t.attributes.otros.starsempty)" class="star star-empty">
-          <use xlink:href="#star-empty"></use>
+    <!-- <div class="swiper testimonial-swiper" #commentsContainer2>
+      <div class="quotation text-center">
+        <svg class="quote">
+          <use xlink:href="#quote" />
         </svg>
       </div>
-      <p class="username">{{t.attributes.titulo}}</p>
-    </div>
-  </div>
+      <div class="swiper-wrapper">
+        <div *ngFor="let t of Testimonials | orderby:'attributes.menu'"
+          class="swiper-slide text-center d-flex justify-content-center">
+          <div class="review-item col-md-10">
+            <i class="icon icon-review"></i>
+            <blockquote>{{t.attributes.descripcion}}</blockquote>
+            <div class="rating">
+              <svg *ngFor="let s of [].constructor(t.attributes.otros.starsok)" class="star star-fill">
+                <use xlink:href="#star-fill"></use>
+              </svg>
+              <svg *ngFor="let s of [].constructor(t.attributes.otros.starsempty)" class="star star-empty">
+                <use xlink:href="#star-empty"></use>
+              </svg>
+            </div>
+            <div class="author-detail">
+              <div class="name text-dark text-uppercase pt-2">{{t.attributes.titulo}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
 
-  <button class="arrow right" (click)="scrollRight()">&gt;</button>
-</div>
+    <div class="comments-testimonies" #commentsContainer2>
+      
+      <div *ngFor="let t of Testimonials | orderby:'attributes.menu'" class="comment text-center d-flex justify-content-center">
+        <div class="review-item col-md-10">
+          <i class="icon icon-review"></i>
+          <blockquote>{{t.attributes.descripcion}}</blockquote>
+          <div class="rating">
+            <svg *ngFor="let s of [].constructor(t.attributes.otros.starsok)" class="star star-fill">
+              <use xlink:href="#star-fill"></use>
+            </svg>
+            <svg *ngFor="let s of [].constructor(t.attributes.otros.starsempty)" class="star star-empty">
+              <use xlink:href="#star-empty"></use>
+            </svg>
+          </div>
+          <div class="author-detail">
+            <div class="name text-dark text-uppercase pt-2">{{t.attributes.titulo}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="product-control-next" aria-labelledby="ngb-carousel-0-next"
+    (click)="scrollRight2()">
+    <span aria-hidden="true" class="product-control-next-icon shadown-1 border"></span>
+    <span class="visually-hidden" id="ngb-carousel-0-next">
+      <font style="vertical-align: inherit;">
+        <font style="vertical-align: inherit;">Próximo</font>
+      </font>
+    </span>
+  </button>
+  </div>
+</section>
 <!--
 <section id="subscribe" class="container-grid padding-large position-relative overflow-hidden">
   <div class="container">

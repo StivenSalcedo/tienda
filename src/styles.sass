@@ -23,7 +23,18 @@ $heading-font: "Jost", sans-serif
 
 //Bootstrap
 .navbar-brand
-    margin-right: 0
+    margin-right: carousel-control-next
+
+.carousel-control-prev-icon
+    background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30"><defs><filter id="b" data-name="drop-shadow-1" filterUnits="userSpaceOnUse"><feOffset dx="1" dy="1"/><feGaussianBlur result="c" stdDeviation="1"/><feFlood flood-color="%23000" flood-opacity=".85"/><feComposite in2="c" operator="in"/><feComposite in="SourceGraphic"/></filter></defs><g id="a" data-name="Layer 2"><circle cx="14" cy="14" r="12" style="fill: %23fff; filter: url(%23b); stroke-width: 0px;"/></g><g id="d" data-name="Layer 1"><path d="M9.98,13.23l6.52-6.52c.2-.2.48-.32.77-.32h0c.29,0,.56.11.77.32h0c.42.42.42,1.11,0,1.54l-5.75,5.75,5.75,5.75c.42.42.42,1.11,0,1.53-.21.21-.48.32-.77.32s-.56-.11-.77-.32l-6.52-6.52c-.21-.21-.32-.48-.32-.77,0-.29.11-.56.32-.77Z" style="stroke-width: 0px;"/></g></svg>')
+
+.carousel-control-next-icon
+    background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30"><defs><filter id="b" data-name="drop-shadow-1" filterUnits="userSpaceOnUse"><feOffset dx="1" dy="1"/><feGaussianBlur result="c" stdDeviation="1"/><feFlood flood-color="%23000" flood-opacity=".85"/><feComposite in2="c" operator="in"/><feComposite in="SourceGraphic"/></filter></defs><g id="a" data-name="Layer 2"><circle cx="14" cy="14" r="12" style="fill: %23fff; filter: url(%23b); stroke-width: 0px;"/></g><g id="d" data-name="Layer 1"><path d="M18.02,14.77l-6.52,6.52c-.2.2-.48.32-.77.32h0c-.29,0-.56-.11-.77-.32h0c-.42-.42-.42-1.11,0-1.54l5.75-5.75-5.75-5.75c-.42-.42-.42-1.11,0-1.53.21-.21.48-.32.77-.32s.56.11.77.32l6.52,6.52c.21.21.32.48.32.77,0,.29-.11.56-.32.77Z" style="stroke-width: 0px;"/></g></svg>')
+
+
+
+// .container
+//     padding: 0
 
 // .carousel-inner
 //     height: 710px
@@ -699,6 +710,10 @@ h3
     font-weight: 300
     line-height: 1.2
 
+    @media only screen and (max-width: 576px)
+        font-size: 2em
+        padding: 0 2rem
+
 .rating svg.star
     width: 16px
     height: 16px
@@ -992,12 +1007,83 @@ figure.instagram-item img.insta-image
     background-position-y: center
     background-position-x: center
     height: 710px
-    width: 100%
+    width: 100%    
     background-color: white
 
-//15. modals
+.img-slider
+    width: 100%
+    height: auto
 
-//16. modals
+//15. btn products
+
+.product-control-prev-icon
+    background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g id="a" data-name="Layer 2"><rect width="32" height="32" style="fill: %23fff; stroke-width: 0px;"/></g><g id="b" data-name="Layer 1"><path d="M11.98,15.23l6.52-6.52c.2-.2.48-.32.77-.32h0c.29,0,.56.11.77.32h0c.42.42.42,1.11,0,1.54l-5.75,5.75,5.75,5.75c.42.42.42,1.11,0,1.53-.21.21-.48.32-.77.32s-.56-.11-.77-.32l-6.52-6.52c-.21-.21-.32-.48-.32-.77,0-.29.11-.56.32-.77Z" style="stroke-width: 0px;"/></g></svg>')
+
+.product-control-next-icon
+    background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g id="a" data-name="Layer 2"><rect width="32" height="32" style="fill: %23fff; stroke-width: 0px;"/></g><g id="b" data-name="Layer 1"><path d="M20.02,16.77l-6.52,6.52c-.2.2-.48.32-.77.32h0c-.29,0-.56-.11-.77-.32h0c-.42-.42-.42-1.11,0-1.54l5.75-5.75-5.75-5.75c-.42-.42-.42-1.11,0-1.53.21-.21.48-.32.77-.32s.56.11.77.32l6.52,6.52c.21.21.32.48.32.77,0,.29-.11.56-.32.77Z" style="stroke-width: 0px;"/></g></svg>')
+
+
+
+.product-control-prev-icon, .product-control-next-icon
+    display: inline-block
+    width: 3rem
+    height: 3rem
+    background-repeat: no-repeat
+    background-position: 50%
+    background-size: 100% 100%
+
+    @media only screen and (max-width: 576px)
+        width: 2rem
+        height: 2rem
+
+    
+
+.product-control-prev
+    left: 0
+
+.product-control-next
+    right: 0
+
+.product-control-prev, .product-control-next
+    position: absolute
+    top: 0
+    bottom: 0
+    z-index: 1
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 6%
+    padding: 0
+    color: #000
+    text-align: center
+    background: none
+    border: 0
+    opacity: 0.5
+    transition: opacity 0.15s ease
+
+    @media only screen and (max-width: 992px)
+        width: 8%
+
+    @media only screen and (max-width: 768px)
+        width: 10%
+
+    @media only screen and (max-width: 576px)
+        width: 12%
+
+.product-control-prev:hover, .product-control-next:hover
+    color: #000
+    text-decoration: none
+    outline: 0
+    opacity: 0.8
+
+//16. shadowns
+
+.shadown-1
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75)
+    -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75)
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75)
+
+
 
 //17.loader
 

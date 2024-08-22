@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
     public Links: any = [];
     @ViewChild('commentsContainer')
     commentsContainer!: ElementRef;
+    @ViewChild('commentsContainer2')
+    commentsContainer2!: ElementRef;
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer, private cacheService: CacheService) {
     }
     ngOnInit(): void {
@@ -89,17 +91,25 @@ export class HomeComponent implements OnInit {
     }
 
     goToDetails(p: any) {
-        var uri=decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
+        var uri = decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
         this._router.navigateByUrl(uri, { skipLocationChange: false });
     }
 
     scrollLeft() {
         this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-      }
-    
-      scrollRight() {
+    }
+
+    scrollRight() {
         this.commentsContainer.nativeElement.scrollBy({ left: this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-      }
+    }
+
+    scrollLeft2() {
+        this.commentsContainer2.nativeElement.scrollBy({ left: -this.commentsContainer2.nativeElement.offsetWidth, behavior: 'smooth' });
+    }
+
+    scrollRight2() {
+        this.commentsContainer2.nativeElement.scrollBy({ left: this.commentsContainer2.nativeElement.offsetWidth, behavior: 'smooth' });
+    }
 
     loadProducts(url: string) {
         var Query = '/productos?filters[$or][0][categoria][favoritos1][$eq]=1&filters[$or][1][categoria][favoritos2][$eq]=1&populate=*';
