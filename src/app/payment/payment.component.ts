@@ -13,6 +13,7 @@ import { CacheService } from '../services/cache.service';
 import { error } from 'console';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
+import { GoogleMapsService } from '../services/google-maps.service';
 @Component({
   selector: 'app-payment-process',
   templateUrl: './payment.component.html',
@@ -30,8 +31,8 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   Data: any = {};
   PaymentMethods: any = [];
   PaymentMethod: any = {};
-  constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService,private _router: Router) { }
-  clientcity: any = {};
+  constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService, private _router: Router,private mapsService: GoogleMapsService) { }
+ 
   @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
   @ViewChild('ClientName') ClientName: ElementRef | undefined;
   @ViewChild('instance1') instance1: ElementRef | undefined;
@@ -40,13 +41,17 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   form!: UntypedFormGroup;
   //form!: FormGroup;
   loading = false;
-  cartItems:any=[];
+  cartItems: any = [];
+   lat:any =0;
+   lng:any=0;
 
   ngOnInit() {
 
 
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required, Validators.minLength(3)]),
+      complemento: new UntypedFormControl(null),
+      address: new UntypedFormControl(null, [Validators.required,Validators.pattern("^[a-zA-Z0-9, \s#-]+$")]),
       phone: new UntypedFormControl(null, [Validators.required, Validators.pattern("^((?=(?:.{7}|.{10}|.{13})$)[0-9]*)$")]),
       city: new UntypedFormControl(null, [Validators.required]),
       mail: new UntypedFormControl(null, [Validators.required, Validators.pattern("^([A-Za-z0-9._%\+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,3})$")]),
@@ -61,19 +66,20 @@ export class PaymentComponent implements OnInit, AfterContentInit {
       }
 
     });
-this.getItemsCart();
+    this.getItemsCart();
+    
 
   }
   removeItem(id: number) {
     var cachedData = this.cacheService.get('cart', 600);
-    cachedData= cachedData.filter((item: { id: number; }) => item.id !== id);
+    cachedData = cachedData.filter((item: { id: number; }) => item.id !== id);
     this.cacheService.set('cart', cachedData, new Date());
     this.getItemsCart();
   }
 
   updateQuantity(id: number, newQuantity: number) {
-   console.log(newQuantity)
-    this.cartItems.find((item: { id: number; }) => item.id === id).quantity=newQuantity;
+    console.log(newQuantity)
+    this.cartItems.find((item: { id: number; }) => item.id === id).quantity = newQuantity;
     this.cacheService.set('cart', this.cartItems, new Date());
     this.getItemsCart();
   }
@@ -82,20 +88,18 @@ this.getItemsCart();
     return this.cartItems.reduce((total: number, item: { price: number; quantity: number; }) => total + item.price * item.quantity, 0);
   }
 
-  getItemsCart():any[]{
-    var c=this.cacheService.get('cart', 600);
-    if(c!=null)
-    {
-      this.cartItems=c;
-     
+  getItemsCart(): any[] {
+    var c = this.cacheService.get('cart', 600);
+    if (c != null) {
+      this.cartItems = c;
+
     }
-    else
-    {
-      this.cartItems=[];
-      
+    else {
+      this.cartItems = [];
+
     }
     return this.cartItems;
-   
+
   }
 
 
@@ -107,7 +111,7 @@ this.getItemsCart();
           this.citiestemp = cities;
           this.citiestemp = this.citiestemp.data;
           if (this.citiestemp.length == 1 && assign) {
-            this.clientcity = this.citiestemp[0];
+            this.Data.city = this.citiestemp[0];
 
             //this.cities.push(this.citiestemp[0]);
           }
@@ -141,7 +145,7 @@ this.getItemsCart();
   Focused() {
     setTimeout(() => {
 
-      if (this.clientcity.id > 0) {
+      if (this.Data.city.id > 0) {
         this.ClientName?.nativeElement.focus();
       }
       else {
@@ -150,8 +154,6 @@ this.getItemsCart();
 
     }, 500)
   }
-
-  
 
   getcurrentStep() {
     try {
@@ -169,7 +171,20 @@ this.getItemsCart();
     }
     console.log(this.currentStep);
     if (this.currentStep === this.steps.length) {
-      alert('ok');
+      this.Data.ciudad = this.Data.city.id;
+      var Order: any = { data: {} };
+      Order.data = this.Data;
+      Order.data.city=null;
+      Order.data.productos=JSON.stringify(this.cartItems);
+      this.Service.getPosts('post', Order, 'ordenes')
+        .subscribe({
+          next: order => {
+            //this.cacheService.set('cart', [], new Date());
+          },
+          error: error => {
+
+          }
+        });
     }
     else if (this.steps[this.currentStep].toLowerCase() == 'datos de contacto') {
       this.Focused();
@@ -182,6 +197,10 @@ this.getItemsCart();
         this.currentStep++;
       }
     }
+    else if (this.steps[this.currentStep].toLowerCase() =='confirmación') {
+
+      
+    }
 
   }
 
@@ -189,13 +208,13 @@ this.getItemsCart();
     if (this.getcurrentStep() == '') {
       this._router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
         this._router.navigate(['/']));
-     // this._router.navigate(['']);
+      // this._router.navigate(['']);
     }
     if (this.currentStep > 0) {
       // this.goToStep(this.currentStep-1);
       this.currentStep--;
     }
-    
+
     else if (this.steps[this.currentStep].toLowerCase() == 'método de pago') {
 
       if (this.PaymentMethods.length == 1) {
@@ -227,6 +246,9 @@ this.getItemsCart();
       navigator?.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
+        this.lat=lat;
+        this.lng=lng;
+       // this.getAddress(lat, lng);
         this.reverseGeocode(lat, lng);
 
       });
@@ -271,7 +293,25 @@ this.getItemsCart();
   formatter = (x: { attributes: { nombre: string } }) => x.attributes.nombre;
 
 
-
+  getAddress(lat: number, lng: number) {
+    if(lat==0)
+    {
+      lat=this.lat;
+    }
+    if(lng==0)
+      {
+        lng=this.lng;
+      }
+    this.mapsService.getAddress(lat, lng, '').subscribe(
+      (response) => {
+        if (response.results && response.results.length > 0) {
+          this.Data.direccion = response.results[0].formatted_address;
+          this.Data.complemento = response.results[0].formatted_address;
+        }
+      },
+      (error) => console.error('Error fetching address:', error)
+    );
+  }
 
   reverseGeocode(lat: number, lng: number) {
     const apiKey = 'AIzaSyBvYkMQby0QFnb5B3XYZzTEXTMGBJdYPr8';
