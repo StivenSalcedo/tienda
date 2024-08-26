@@ -75,7 +75,7 @@
           </div>
 
           <label for="phone">Celular</label>
-          <input id="phone" type="text" formControlName="phone" [(ngModel)]="Data.celular">
+          <input id="phone" type="number" formControlName="phone" [(ngModel)]="Data.celular">
           <div class="error" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">
             Celular Ivalido
           </div>

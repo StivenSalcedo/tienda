@@ -67,6 +67,9 @@ export class PaymentComponent implements OnInit, AfterContentInit {
 
     });
     this.getItemsCart();
+    setTimeout(() => {
+      this.getCurrentCity();
+    }, 1500)
     
 
   }
@@ -175,7 +178,8 @@ export class PaymentComponent implements OnInit, AfterContentInit {
       var Order: any = { data: {} };
       Order.data = this.Data;
       Order.data.city=null;
-      Order.data.productos=JSON.stringify(this.cartItems);
+      Order.data.celular=String(Order.data.celular);
+      Order.data.productos=this.cartItems;
       this.Service.getPosts('post', Order, 'ordenes')
         .subscribe({
           next: order => {
@@ -242,24 +246,23 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   }
 
   getCurrentCity() {
-    try {
+    //try {
       navigator?.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         this.lat=lat;
         this.lng=lng;
+        console.log('position',position);
        // this.getAddress(lat, lng);
         this.reverseGeocode(lat, lng);
 
       });
-    }
-    catch (ex) { }
+   // }
+   // catch (ex) { }
   }
   ngAfterContentInit() {
     this.loadCities('/ciudades?sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', false);
-    setTimeout(() => {
-      this.getCurrentCity();
-    }, 1000)
+    
 
   }
 
@@ -313,26 +316,31 @@ export class PaymentComponent implements OnInit, AfterContentInit {
     );
   }
 
+  
   reverseGeocode(lat: number, lng: number) {
-    const apiKey = 'AIzaSyBvYkMQby0QFnb5B3XYZzTEXTMGBJdYPr8';
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-
-    this.httpClient.get(url).subscribe((response: any) => {
-      if (response.results && response.results.length > 0) {
-        this.city = response.results[0].address_components.find(
-          (component: any) => component.types.includes('locality')
-        )?.long_name || '';
-        var filterCity = "filters[nombre][$eqi]=";
-        if (this.city != "" && this.city != null) {
-          filterCity += this.city;
+    this.mapsService.reverseGeocode(lat, lng).subscribe(
+      (response:any) => {
+        console.log('response',response);
+        if (response.results && response.results.length > 0) {
+          this.city = response.results.find((component: any) => component.address_components.find((c: any) => c.types.includes('locality') && component.address_components[0].long_name==c.long_name) )?.address_components[0]?.long_name || '';
+          console.log('city',this.city);
+          var filterCity = "filters[nombre][$eqi]=";
+          if (this.city != "" && this.city != null) {
+            filterCity += this.city;
+          }
+          else {
+            filterCity = '';
+          }
+          console.log('/ciudades?' + filterCity + '&sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*');
+          this.loadCities('/ciudades?' + filterCity + '&sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', true);
+         // this.Focused();
         }
-        else {
-          filterCity = '';
-        }
-        this.loadCities('/ciudades?' + filterCity + '&sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', true);
-        this.Focused();
-      }
-    });
+      },
+      (error) => console.error('Error fetching address:', error)
+    );
   }
+
+    
+  
 
 }
