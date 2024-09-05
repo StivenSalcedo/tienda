@@ -62,7 +62,7 @@
   </div>
 </section>-->
 <section *ngIf="Benefits.length>0" id="benefits" class="padding-large">
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
       <div *ngFor="let b of Benefits | orderby:'attributes.menu'" class="col-lg-3 col-md-6 pb-3">
         <div class="icon-box d-flex">
@@ -72,12 +72,30 @@
             </svg>
           </div>
           <div class="icon-box-content">
-            <h3 class="card-title text-uppercase text-dark">{{b.attributes.titulo}}</h3>
+            <h3 class="card-title text-uppercase text-dark">{{b.attributes.titulo}}ss</h3>
             <p>{{b.attributes.descripcion}}</p>
           </div>
         </div>
       </div>
-
+    </div>
+  </div> -->
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let b of Benefits | orderby:'attributes.menu'" class="col-12 col-lg-6 col-xl-3 pb-3">
+        <div class="card shadow-sm text-center">
+          <div class="d-flex justify-content-center pt-3" >
+            <div class="d-flex justify-content-center align-items-center rounded-circle bg-dark bg-icon-rounded">
+              <svg class="{{getOtherAttributes('icon',b)}}" style="width: 18px;height: 18px;fill: #FFF;">
+                <use [attr.xlink:href]="'#'+getOtherAttributes('icon',b)" />
+              </svg>
+            </div>            
+          </div>
+          <div class="card-body">
+            <h3 class="card-title text-uppercase text-dark" style="margin: 0 15%;">{{b.attributes.titulo}}</h3>
+            <p class="mt-3 p-clamp-1" >{{b.attributes.descripcion}}</p>
+          </div>
+        </div>        
+      </div>
     </div>
   </div>
 </section>
