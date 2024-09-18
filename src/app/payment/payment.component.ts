@@ -1,6 +1,6 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, afterRender } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, afterRender, PLATFORM_ID, Inject, Optional } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { NgbTypeahead, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, OperatorFunction, merge } from 'rxjs';
@@ -14,6 +14,9 @@ import { error } from 'console';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { GoogleMapsService } from '../services/google-maps.service';
+import { request } from 'http';
+
+
 @Component({
   selector: 'app-payment-process',
   templateUrl: './payment.component.html',
@@ -31,8 +34,12 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   Data: any = {};
   PaymentMethods: any = [];
   PaymentMethod: any = {};
-  constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService, private _router: Router,private mapsService: GoogleMapsService) { }
- 
+
+  constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService, private _router: Router, private mapsService: GoogleMapsService) {
+
+   
+  }
+
   @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
   @ViewChild('ClientName') ClientName: ElementRef | undefined;
   @ViewChild('instance1') instance1: ElementRef | undefined;
@@ -42,8 +49,9 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   //form!: FormGroup;
   loading = false;
   cartItems: any = [];
-   lat:any =0;
-   lng:any=0;
+  lat: any = 0;
+  lng: any = 0;
+
 
   ngOnInit() {
 
@@ -51,7 +59,7 @@ export class PaymentComponent implements OnInit, AfterContentInit {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required, Validators.minLength(3)]),
       complemento: new UntypedFormControl(null),
-      address: new UntypedFormControl(null, [Validators.required,Validators.pattern("^[a-zA-Z0-9, \s#-]+$")]),
+      address: new UntypedFormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z0-9, ñÑáéíóúÁÉÍÓÚ\s#-]+$")]),
       phone: new UntypedFormControl(null, [Validators.required, Validators.pattern("^((?=(?:.{7}|.{10}|.{13})$)[0-9]*)$")]),
       city: new UntypedFormControl(null, [Validators.required]),
       mail: new UntypedFormControl(null, [Validators.required, Validators.pattern("^([A-Za-z0-9._%\+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,3})$")]),
@@ -67,10 +75,8 @@ export class PaymentComponent implements OnInit, AfterContentInit {
 
     });
     this.getItemsCart();
-    setTimeout(() => {
-      this.getCurrentCity();
-    }, 1500)
     
+
 
   }
   removeItem(id: number) {
@@ -147,13 +153,15 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   }
   Focused() {
     setTimeout(() => {
-
-      if (this.Data.city.id > 0) {
-        this.ClientName?.nativeElement.focus();
+      try {
+        if (this.Data.city.id > 0) {
+          this.ClientName?.nativeElement.focus();
+        }
+        else {
+          this.instance1?.nativeElement.focus();
+        }
       }
-      else {
-        this.instance1?.nativeElement.focus();
-      }
+      catch (ex) { }
 
     }, 500)
   }
@@ -177,9 +185,9 @@ export class PaymentComponent implements OnInit, AfterContentInit {
       this.Data.ciudad = this.Data.city.id;
       var Order: any = { data: {} };
       Order.data = this.Data;
-      Order.data.city=null;
-      Order.data.celular=String(Order.data.celular);
-      Order.data.productos=this.cartItems;
+      Order.data.city = null;
+      Order.data.celular = String(Order.data.celular);
+      Order.data.productos = this.cartItems;
       this.Service.getPosts('post', Order, 'ordenes')
         .subscribe({
           next: order => {
@@ -201,9 +209,9 @@ export class PaymentComponent implements OnInit, AfterContentInit {
         this.currentStep++;
       }
     }
-    else if (this.steps[this.currentStep].toLowerCase() =='confirmación') {
+    else if (this.steps[this.currentStep].toLowerCase() == 'confirmación') {
 
-      
+
     }
 
   }
@@ -246,23 +254,26 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   }
 
   getCurrentCity() {
-    //try {
-      navigator?.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        this.lat=lat;
-        this.lng=lng;
-        console.log('position',position);
-       // this.getAddress(lat, lng);
-        this.reverseGeocode(lat, lng);
+    try {
+    navigator?.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      this.lat = lat;
+      this.lng = lng;
+      console.log('position', position);
+      //this.getAddress(lat, lng);
+      this.reverseGeocode(lat, lng);
 
-      });
-   // }
-   // catch (ex) { }
+    })
+     }
+     catch (ex) { }
   }
   ngAfterContentInit() {
     this.loadCities('/ciudades?sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', false);
-    
+    setTimeout(() => {
+      this.getCurrentCity();
+    }, 1500)
+
 
   }
 
@@ -297,33 +308,42 @@ export class PaymentComponent implements OnInit, AfterContentInit {
 
 
   getAddress(lat: number, lng: number) {
-    if(lat==0)
-    {
-      lat=this.lat;
+    if (lat == 0) {
+      lat = this.lat;
     }
-    if(lng==0)
-      {
-        lng=this.lng;
-      }
-    this.mapsService.getAddress(lat, lng, '').subscribe(
-      (response) => {
-        if (response.results && response.results.length > 0) {
-          this.Data.direccion = response.results[0].formatted_address;
-          this.Data.complemento = response.results[0].formatted_address;
-        }
-      },
-      (error) => console.error('Error fetching address:', error)
-    );
+    if (lng == 0) {
+      lng = this.lng;
+    }
+   
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      this.lat=lat;
+      this.lng=lng;
+    
+      this.mapsService.getAddress(lat, lng, '').subscribe(
+        (response) => {
+          if (response.results && response.results.length > 0) {
+            this.Data.direccion = response.results[0].formatted_address;
+            this.Data.complemento = response.results[0].formatted_address;
+          }
+        },
+        (error) => console.error('Error fetching address:', error)
+      );
+
+    })
+    
+
   }
 
-  
+
   reverseGeocode(lat: number, lng: number) {
     this.mapsService.reverseGeocode(lat, lng).subscribe(
-      (response:any) => {
-        console.log('response',response);
+      (response: any) => {
+        console.log('response', response);
         if (response.results && response.results.length > 0) {
-          this.city = response.results.find((component: any) => component.address_components.find((c: any) => c.types.includes('locality') && component.address_components[0].long_name==c.long_name) )?.address_components[0]?.long_name || '';
-          console.log('city',this.city);
+          this.city = response.results.find((component: any) => component.address_components.find((c: any) => c.types.includes('locality') && component.address_components[0].long_name == c.long_name))?.address_components[0]?.long_name || '';
+          console.log('city', this.city);
           var filterCity = "filters[nombre][$eqi]=";
           if (this.city != "" && this.city != null) {
             filterCity += this.city;
@@ -333,14 +353,14 @@ export class PaymentComponent implements OnInit, AfterContentInit {
           }
           console.log('/ciudades?' + filterCity + '&sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*');
           this.loadCities('/ciudades?' + filterCity + '&sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', true);
-         // this.Focused();
+          // this.Focused();
         }
       },
       (error) => console.error('Error fetching address:', error)
     );
   }
 
-    
-  
+
+
 
 }
