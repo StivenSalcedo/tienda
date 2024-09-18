@@ -148,13 +148,13 @@
 </section> -->
 
 <section id="{{c.attributes.descripcion1 || c.attributes.nombre}}"
-  *ngFor="let c of Categories | orderby:'attributes.orden'" class="container p-3 p-md-0">
+  *ngFor="let c of Categories | orderby:'attributes.orden'" class="container px-3 pb-3 px-md-0">
   @if (c.products) {
-  <div class="pb-3">
+  <div class="">
     <h2 class="text-dark text-uppercase">{{c.attributes.nombre}}</h2>
     <a href="tienda/categoria?c={{c.attributes.nombre}}&Id={{c.id}}" class="text-uppercase">Ver Categoria</a>
   </div>
-  <div class="comments-carousel" *ngIf="c.products.length>0">
+  <div class="product-carousel" *ngIf="c.products.length>0">
     <!-- <button class="arrow left" (click)="scrollLeft()" style="left: 0;">&lt;</button> -->
     <button type="button" class="product-control-prev d-none d-lg-block" aria-labelledby="ngb-carousel-0-prev"
       (click)="scrollLeft()">
@@ -165,37 +165,28 @@
         </font>
       </span>
     </button>
-    <div class="comments-container" #commentsContainer>
-      <div>
-
-        <div class="swiper product-swiper">
-          <div class="swiper-wrapper">
-            <div class="product-carousel">
-              <div *ngIf="LoadingProducts" class="lds-general">
-                <div></div>
-                <div></div>
-              </div>
-              <div class="carousel-container p-2">
-                <div class="carousel-track">
-                  <div *ngFor="let product of c.products | orderby:'attributes.orden'" class="product-card">
-                    <div class="image-container">
-                      <img (click)="goToDetails(product)" [src]="product.imagen.url" [alt]="product.attributes.titulo">
-                      <!-- <button class="magnify-btn" (click)="openLargeImage(product)">
-                        <i class="fas fa-search"></i>
-                      </button> -->
-                    </div>
-                    <a href="tienda?p={{product.attributes.titulo}}&Id={{product.id}}" >{{ product.attributes.titulo }}</a>
-                    <h3></h3>
-                    <p class="price">{{ product.attributes.precio | currency }}</p>
-                    <button  (click)="AddtoCart(product.attributes)"  class="btn btn-dark w-100">Comprar ahora</button>
-                  
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div class="carousel-container " #commentsContainer>
+      <div *ngIf="LoadingProducts" class="lds-general">
+        <div></div>
+        <div></div>
+      </div>
+      <div class="carousel-track p-3">
+        <div *ngFor="let product of c.products | orderby:'attributes.orden'" class="product-card ">
+          <div class="image-container">
+            <img (click)="goToDetails(product)" [src]="product.imagen.url" [alt]="product.attributes.titulo">
+            <!-- <button class="magnify-btn" (click)="openLargeImage(product)">
+              <i class="fas fa-search"></i>
+            </button> -->
           </div>
+          <a href="tienda?p={{product.attributes.titulo}}&Id={{product.id}}" >{{ product.attributes.titulo }}</a>
+          <h3></h3>
+          <p class="price">{{ product.attributes.precio | currency }}</p>
+          <button  (click)="AddtoCart(product.attributes)"  class="btn btn-dark w-100">Comprar ahora</button>
+        
         </div>
       </div>
+
+      
     </div>
     <!-- <button class="arrow right" (click)="scrollRight()" style="right: 0;">&gt;</button> -->
     <button type="button" class="product-control-next d-none d-lg-block" aria-labelledby="ngb-carousel-0-next"

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, TemplateRef, ViewChild, afterRender, importProvidersFrom } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild, afterRender, importProvidersFrom } from '@angular/core';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -6,7 +6,7 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { orderByPipe } from '../pipes/main.pipe';
 import { HttpClient } from '@angular/common/http';
-import { NgbTooltipModule,NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule,NgbModal, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { CacheService } from '../services/cache.service';
 import { PaymentComponent } from '../payment/payment.component';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import { trigger, state, style, animate, transition,ɵBrowserAnimationBuilder } 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule,HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule,HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule,FormsModule,ReactiveFormsModule, NgbCarouselModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.sass',
   animations: [
@@ -47,6 +47,16 @@ export class ProductDetailComponent implements OnInit {
   form!: UntypedFormGroup;
   scrHeight:any;
   scrWidth:any;
+  @ViewChild('commentsContainer')
+    commentsContainer!: ElementRef;
+
+  scrollLeft() {
+    this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
+}
+
+scrollRight() {
+    this.commentsContainer.nativeElement.scrollBy({ left: this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
+}
  
   @ViewChild('ContentPayment') templateRefPayment: TemplateRef<any> | undefined;
 
