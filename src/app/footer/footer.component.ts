@@ -17,14 +17,24 @@ export class FooterComponent implements OnInit {
   Footer: any = [];
   Links: any = [];
   StringHtml:SafeHtml="";
+  CompanyInfo: any = {};
   constructor(private Service: ApiService, private http: HttpClient, private _router: Router, private sanitizer: DomSanitizer) {
 
 
   }
   ngOnInit(): void {
    this.loadFooter(true);
+   this.getCompanyInfo();
     
   }
+
+  getCompanyInfo() {
+  
+    this.CompanyInfo= this.Menu.filter((data: any) => {
+      return data.attributes.menu > 0 && data.attributes.titulo == 'Inicio';
+    })[0];
+  
+}
 
   GetStringHtml(id:any):SafeHtml{
    return this.Links.data.filter((p: any) => {
