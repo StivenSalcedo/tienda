@@ -18,6 +18,7 @@ export class FooterComponent implements OnInit {
   Links: any = [];
   StringHtml:SafeHtml="";
   CompanyInfo: any = {};
+  FooterInfo:any={};
   constructor(private Service: ApiService, private http: HttpClient, private _router: Router, private sanitizer: DomSanitizer) {
 
 
@@ -103,7 +104,12 @@ export class FooterComponent implements OnInit {
                     return p;
                   }
                 });
-              
+             
+                this.FooterInfo= this.Links.data.filter((p: any) => {
+                  if (p.attributes.titulo == 'redes') {
+                    return p;
+                  }
+                })[0];
                 
               }
 
@@ -113,10 +119,10 @@ export class FooterComponent implements OnInit {
           }
          
 
-          
+        
         });
        
-     
+        
       
      
       

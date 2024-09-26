@@ -136,13 +136,13 @@
 <!-- offcanvas -->
 <ng-template #contents let-offcanvas>
   <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Offcanvas title</h4>
+    <h4 class="offcanvas-title">{{CompanyInfo?.attributes?.otros?.empresa ||''}}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
       <li *ngFor="let m of Menu | orderby:'attributes.menu'" class="nav-link nav-item">
-        <a class="nav-link me-4 active" href="{{m.attributes.url}}">{{m.attributes.titulo}}</a>
+        <a class="nav-link me-4 active" href="{{m.attributes.url}}" (click)="offcanvas.dismiss('Cross click')">{{m.attributes.titulo}}</a>
       </li>
 
       <!-- <li class="nav-item dropdown">
@@ -249,7 +249,7 @@
                     </svg>
                   </a>
                 </li>-->
-                <li>
+                <li *ngIf="getItemsCartCount()>0">
                   <a href="/carrito">
                     <svg class="cart">
                       <use xlink:href="#cart"></use>

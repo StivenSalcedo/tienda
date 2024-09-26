@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-loader *ngIf="LoadingProducts"></app-loader>
+<app-loader *ngIf="LoadingProducts || Loading"></app-loader>
 <div style="margin-top: 74px;">
   <ngb-carousel [interval]="5000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
     <ng-template ngbSlide *ngFor="let p of Slider | orderby:'orden'">

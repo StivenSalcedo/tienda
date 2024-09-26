@@ -34,7 +34,7 @@ export class BaseComponent implements OnInit {
   pauseOnFocus = true;
   public Links: any = [];
   Counter: Number = 0;
-  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+ 
   constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, config: NgbCarouselConfig, public meta: Meta, public title: Title, private Service: ApiService, private renderer: Renderer2) {
     this.Host = Service.urlBase;
   }
@@ -104,7 +104,7 @@ export class BaseComponent implements OnInit {
       this.Page = PageFilter[0].attributes;
       if (this.Page.contenido != '' && this.Page.contenido != null) {
         //console.log('this.Page.contenido',this.Page.contenido);
-        // this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
+        this.Page.contenido = this.Page.contenido.toString().replace(/{YEAR}/g, new Date().getFullYear().toString());
         //this.Page.contenido = this.sanitizer.bypassSecurityTrustHtml(this.Page.contenido);
         //  this.Page.contenido =this.Page.contenido.changingThisBreaksApplicationSecurity;
         if (this.Page.imagen.data != null) {
