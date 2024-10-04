@@ -41,12 +41,13 @@ export class HomeComponent implements OnInit {
     @ViewChild('commentsContainer2')
     commentsContainer2!: ElementRef;
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer, private cacheService: CacheService, public meta: Meta, public title: Title) {
-    }
-    ngOnInit(): void {
-
         this.loadCategories('/categorias?&filters[$or][1][favoritos2][$eq]=1&filters[$or][0][favoritos1][$eq]=1&populate=*');
         this.loadContent('/paginas?filters[tipo][nombre][$ne]=pagina&populate=*');
         this.OnSearch('Inicio', true);
+    }
+    ngOnInit(): void {
+
+        
 
     }
 
@@ -73,7 +74,7 @@ export class HomeComponent implements OnInit {
     }
 
     loadCategories(url: string) {
-        const cachedData = this.cacheService.get(url, 60);
+        const cachedData = this.cacheService.get(url, 1);
         if (cachedData == null) {
             this.Service.getPosts('get', {}, url)
                 .subscribe({
@@ -214,7 +215,7 @@ export class HomeComponent implements OnInit {
     }
 
     loadContent(url: string) {
-        const cachedData = this.cacheService.get(url, 60);
+        const cachedData = this.cacheService.get(url, 1);
         if (cachedData == null) {
             this.Service.getPosts('get', {}, url)
                 .subscribe({

@@ -191,6 +191,11 @@ scrollRight() {
         next: (data:any) => {
           this.Loading = false;
           this.ProductDetail = data;
+          if(this.ProductDetail.description2!=null)
+          {
+            this.ProductDetail.description2=this.ProductDetail.description2.replace(/\\n/g, '<br />');
+          }
+          
           if(this.ProductDetail.data.length==0)
           {
             this.redirectTo('./pagina no encontrada', '');
