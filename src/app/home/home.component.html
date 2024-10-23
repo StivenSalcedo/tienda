@@ -2,7 +2,7 @@
 <app-loader *ngIf="LoadingProducts || Loading"></app-loader>
 <div style="margin-top: 74px;">
   <ngb-carousel [interval]="5000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
-    <ng-template ngbSlide *ngFor="let p of Slider | orderby:'orden'">
+    <ng-template ngbSlide *ngFor="let p of Slider | orderby:'attributes.menu'">
       <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}">
         <div class="picsum-img-wrapper">
           <img class="img-slider" [src]="p.imagen.url" alt="{{p.imagen.alternativeText}}" />
