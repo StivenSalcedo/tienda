@@ -190,8 +190,9 @@
       </button>
    
       <a class="navbar-brand wrap-logo order-2" href="#">
-        <img  width="70px" height="70px" src="{{CompanyInfo?.attributes?.otros?.logo || '/assets/images/main-logo.png' }} ">
+        <img style="width: {{CompanyInfo?.attributes?.otros?.width}};height: {{CompanyInfo?.attributes?.otros?.height ||'70px'}}"   src="{{CompanyInfo?.attributes?.otros?.logo || '/assets/images/main-logo.png' }}">
       </a>
+     
 
       <div class="order-3 d-none d-lg-block">
         <ul class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">

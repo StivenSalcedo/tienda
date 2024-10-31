@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { GoogleMapsService } from '../services/google-maps.service';
 import { request } from 'http';
+import { FooterComponent } from "../footer/footer.component";
 
 
 @Component({
@@ -22,7 +23,7 @@ import { request } from 'http';
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.sass',
   standalone: true,
-  imports: [CommonModule, NgbTypeaheadModule, FormsModule, JsonPipe, orderByPipe, ReactiveFormsModule, HeaderComponent],
+  imports: [CommonModule, NgbTypeaheadModule, FormsModule, JsonPipe, orderByPipe, ReactiveFormsModule, HeaderComponent, FooterComponent],
   providers: [orderByPipe]
 })
 export class PaymentComponent implements OnInit, AfterContentInit {
