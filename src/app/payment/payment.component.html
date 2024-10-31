@@ -1,20 +1,58 @@
-
-<div class="payment-container">
-  <div class="progress-bar">
-    <div *ngFor="let step of steps; let i = index" [class.active]="currentStep === i" (click)="goToStep(i)">
-      {{ step }}
+<app-header></app-header>
+<div class="container" style="margin-top: 74px;">
+  <div class="d-flex justify-content-center">
+    <div class="progress-bar">
+      <!-- <div *ngFor="let step of steps; let i = index" [class.active]="currentStep === i" (click)="goToStep(i)">
+        {{ step }}
+      </div> -->
+      <div class="d-flex align-items-center" id="StepByStep" *ngFor="let step of steps; let i = index"
+        [class.active]="currentStep === i" (click)="goToStep(i)">
+        <div class="d-flex align-items-center p-2 popo">
+          <span class="bs-stepper-circle mx-2">1</span>
+          <span class="bs-stepper-label">{{ step }}</span>
+        </div>
+        <div class="bs-stepper-line"></div>
+      </div>
     </div>
   </div>
 
+  <!-- <div class="step-trigger" role="tab" id="stepper1trigger1">
+      <span class="bs-stepper-circle">1</span>
+      <span class="bs-stepper-label">Email</span>
+    </div> -->
+
+  <!-- <button type="button" class="step-trigger" role="tab" id="stepper1trigger1" aria-controls="test-l-1" aria-selected="true">
+      <span class="bs-stepper-circle">1</span>
+      <span class="bs-stepper-label">Email</span>
+    </button> -->
+
   <div [ngSwitch]="getcurrentStep()" class="step-content">
     <div *ngSwitchCase="''">
-      <h2>Gracias por confiar en nosotros, ya esta en tramite su pedido, si no enviaste la confirmacion , no te preocupes nosotros te contactamos cualquier duda.</h2>
+      <h2>Gracias por confiar en nosotros, ya esta en tramite su pedido, si no enviaste la confirmacion , no te
+        preocupes
+        nosotros te contactamos cualquier duda.</h2>
     </div>
     <div *ngSwitchCase="'pedido'">
       @if (cartItems.length>0) {
       <div class="shopping-cart">
         <h2>1. Pedido</h2>
-        <div class="cart-items">
+        <div class="row">
+          <div class="product-card col-lg-4 col-md-12 mb-4" *ngFor="let item of cartItems">
+            <div class="image-container">
+              <img [src]="item.image" [alt]="item.name">
+              <!-- <button class="magnify-btn" (click)="openLargeImage(product)">
+                <i class="fas fa-search"></i>
+              </button> -->
+            </div>
+            <a>{{item.name}}</a>
+            <p class="price">Price: ${{item.price}}</p>
+            <input class="w-100" type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item.id, item.quantity)" /> 
+            <button class="btn btn-danger w-100 mt-4" (click)="removeItem(item.id)">Remove</button>        
+          </div>
+        </div>
+        
+
+        <!-- <div class="cart-items">
           <div *ngFor="let item of cartItems" class="cart-item">
             <img [src]="item.image" [alt]="item.name" class="item-thumbnail">
             <div class="item-details">
@@ -24,23 +62,23 @@
             </div>
             <button (click)="removeItem(item.id)">Remove</button>
           </div>
-        </div>
+        </div> -->
         <div class="cart-total">
           <h3>Total: {{getTotal()| currency}}</h3>
         </div>
-      
+
       </div>
-    }
-    @if (cartItems.length==0) {
-    <div>No hay items en el caroo</div>
-    }
+      }
+      @if (cartItems.length==0) {
+      <div>No hay items en el caroo</div>
+      }
       <!-- Add order details form -->
     </div>
     <div *ngSwitchCase="'datos de contacto'">
 
       <h2>2. Datos de contacto</h2>
 
-      <form [formGroup]="form"  class="form">
+      <form [formGroup]="form" class="form">
         <div class="form-field" *ngIf="!loading">
           <label for="typeahead-template">Ciudad</label>
           <input formControlName="city" id="typeahead-focus" type="text" class="form-control" [(ngModel)]="Data.city"
@@ -56,13 +94,15 @@
           <div class="error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
             Nombre es requerido y debe tener al menos 2 caracteres
           </div>
-          <input id="complemento" type="hidden" formControlName="complemento"  [(ngModel)]="Data.complemento">
+          <input id="complemento" type="hidden" formControlName="complemento" [(ngModel)]="Data.complemento">
           <label for="nombre">Dirección</label>
           <input id="name" type="text" formControlName="address" #ClientAddress [(ngModel)]="Data.direccion">
-          <button *ngIf="lng!=0 && lat!=0"  (click)="getAddress(0,0)"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16">
-            <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z"/>
-          </svg></button>
-        
+          <button *ngIf="lng!=0 && lat!=0" (click)="getAddress(0,0)"> <svg xmlns="http://www.w3.org/2000/svg" width="16"
+              height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16">
+              <path
+                d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z" />
+            </svg></button>
+
           <i class="bi bi-0-square"></i>
           <div class="error" *ngIf="form.get('address')?.touched && form.get('address')?.invalid">
             la dirección de entrega es requerida para que le llegue el producto.
@@ -82,9 +122,9 @@
 
 
         </div>
-       
+
       </form>
-     
+
       <div class="skeleton" *ngIf="loading">
         <div class="skeleton-field"></div>
         <div class="skeleton-field"></div>
@@ -92,7 +132,7 @@
         <div class="skeleton-field"></div>
       </div>
       <hr />
- 
+
       <!-- Add contact information form -->
     </div>
     <div *ngSwitchCase="'método de pago'">
@@ -106,10 +146,20 @@
     </div>
   </div>
 
-  <div class="navigation">
-    <button (click)="prevStep()" [disabled]="currentStep === 0"><label *ngIf="getcurrentStep()!=''">Anterior</label><label *ngIf="getcurrentStep()==''">Volver al inicio</label></button>
-    <button (click)="nextStep()" [disabled]="cartItems.length==0 || currentStep > steps.length - 1  || (this.getcurrentStep()=='datos de contacto' && !form.valid)"><label *ngIf="this.getcurrentStep()=='confirmación'">Enviar</label><label *ngIf="this.getcurrentStep()!='confirmación'">Siguiente</label></button>
+  <div class="navigation mb-4">
+    <button class="btn btn-primary" (click)="prevStep()" [disabled]="currentStep === 0">
+      <label *ngIf="getcurrentStep()!=''">Anterior</label>
+      <label *ngIf="getcurrentStep()==''">Volver al inicio</label>
+    </button>
+    <button class="btn btn-primary" (click)="nextStep()" [disabled]="cartItems.length==0 || currentStep > steps.length - 1  || (this.getcurrentStep()=='datos de contacto' && !form.valid)">
+      <label *ngIf="this.getcurrentStep()=='confirmación'">Enviar</label>
+      <label *ngIf="this.getcurrentStep()!='confirmación'">Siguiente</label>
+    </button>
   </div>
 </div>
+
+<app-footer></app-footer>
+
+
 
 <!--https://api.whatsapp.com/send?phone=573108272370&text=_Hola,%20hice%20un%20pedido%20en%20tu%20tienda%20FrutGO%20mercado%20en%20casa_%0A%0ADETALLE%20DEL%20*PEDIDO%20N%C2%B0%20503*%0A%0A*1x%20Ar%C3%A1ndanos%20x%201lb*%0A*1x%20Ghee%20Mantequilla%20Clarificada%20640%20g*%0A%0ASubtotal%20$%C2%A087.000%0ACosto%20de%20env%C3%ADo%20:%20$%C2%A03.000%0A------------------------------%0A*TOTAL%20$%C2%A090.000*%0A------------------------------%0A%0A%0A*MIS%20DATOS*%0A%0A*Nombre:*%20FFDTGHYFGH%20%0A*Tel%C3%A9fono:*%2034534345%20%0A*Correo:*%20GHJGHJ@GMAIL.COM%20%0A%0A*Direcci%C3%B3n%20de%20env%C3%ADo:*%20DFGDGDFG%20%0A*Ciudad:*%20Bogot%C3%A1,%20D.C.%20%0A%0A%0A_Con%20tecnolog%C3%ADa%20de_%20www.alegra.com-->

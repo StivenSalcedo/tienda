@@ -10,7 +10,7 @@ $accent-color: #717171
 $gray-color: #F3F3F3
 $gray-color-500: #AEAEAE
 $light-gray-color: #D7DDDF
-$primary-color: #72AEC8
+$primary-color: #007bff
 $light-color: #f8f9fa
 $dark-color: #212529
 $light-blue-color: #EDF1F3
@@ -30,8 +30,6 @@ $heading-font: "Jost", sans-serif
 
 .carousel-control-next-icon
     background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30"><defs><filter id="b" data-name="drop-shadow-1" filterUnits="userSpaceOnUse"><feOffset dx="1" dy="1"/><feGaussianBlur result="c" stdDeviation="1"/><feFlood flood-color="%23000" flood-opacity=".85"/><feComposite in2="c" operator="in"/><feComposite in="SourceGraphic"/></filter></defs><g id="a" data-name="Layer 2"><circle cx="14" cy="14" r="12" style="fill: %23fff; filter: url(%23b); stroke-width: 0px;"/></g><g id="d" data-name="Layer 1"><path d="M18.02,14.77l-6.52,6.52c-.2.2-.48.32-.77.32h0c-.29,0-.56-.11-.77-.32h0c-.42-.42-.42-1.11,0-1.54l5.75-5.75-5.75-5.75c-.42-.42-.42-1.11,0-1.53.21-.21.48-.32.77-.32s.56.11.77.32l6.52,6.52c.21.21.32.48.32.77,0,.29-.11.56-.32.77Z" style="stroke-width: 0px;"/></g></svg>')
-
-
 
 // .container
 //     padding: 0
@@ -70,14 +68,11 @@ a
         text-decoration: underline
         color: $primary-color
 
-
-
 img
     max-width: 100%
     height: auto
 
 .wrap-logo
-    
 
     @media only screen and (max-width: 992px)
         width: 50%
@@ -979,29 +974,50 @@ figure.instagram-item img.insta-image
 /* 12. carousel
  *--------------------------------------------------------------
 .product-carousel
-  position: relative
-  width: 100%
-  overflow: hidden
-
-  .carousel-container
+    position: relative
     width: 100%
-    overflow-x: auto
-    -webkit-overflow-scrolling: touch
-    scroll-behavior: smooth
+    overflow: hidden
 
-    &::-webkit-scrollbar
-      display: none
+    .carousel-container
+        width: 100%
+        overflow-x: auto
+        -webkit-overflow-scrolling: touch
+        scroll-behavior: smooth
 
-    &.image-galery-custom-1
-        width: calc(100% - 96px)
+        &::-webkit-scrollbar
+            display: none
 
-        @media (max-width: 992px)
+        &.image-galery-custom-1
+            width: calc(100% - 96px)
+
+            @media (max-width: 992px)
+                width: 100%
+
+    .carousel-track
+        display: flex
+
+        h3
+            font-size: 1rem
+            margin-bottom: 0.5rem
+
+        .price
+            font-weight: bold
+            color: #2ecc71
+            margin-bottom: 1rem
+
+        .details-btn
             width: 100%
+            padding: 0.5rem
+            background-color: #3498db
+            color: #fff
+            border: none
+            border-radius: 4px
+            cursor: pointer
+            transition: background-color 0.3s
 
-  .carousel-track
-    display: flex
+        
 
-  .product-card
+.product-card
     flex: 0 0 auto
     width: 200px
     margin-right: 1rem
@@ -1011,18 +1027,18 @@ figure.instagram-item img.insta-image
     padding: 1rem
 
     .image-container
-      position: relative
-      width: 100%
-      height: 150px
-      margin-bottom: 1rem
+        position: relative
+        width: 100%
+        height: 150px
+        margin-bottom: 1rem
 
-      img
+    img
         width: 100%
         height: 100%
         object-fit: contain
         border-radius: 4px
 
-      .magnify-btn
+    .magnify-btn
         position: absolute
         top: 5px
         right: 5px
@@ -1038,37 +1054,15 @@ figure.instagram-item img.insta-image
         transition: background-color 0.3s
 
         &:hover
-          background-color: rgba(255, 255, 255, 1)
-
-    h3
-      font-size: 1rem
-      margin-bottom: 0.5rem
-
-    .price
-      font-weight: bold
-      color: #2ecc71
-      margin-bottom: 1rem
-
-    .details-btn
-      width: 100%
-      padding: 0.5rem
-      background-color: #3498db
-      color: #fff
-      border: none
-      border-radius: 4px
-      cursor: pointer
-      transition: background-color 0.3s
-
-      &:hover
-        background-color: #2980b9
+            background-color: rgba(255, 255, 255, 1)
 
 @media (min-width: 768px)
-  .product-carousel
-    .carousel-track
-      justify-content: flex-start
+    .product-carousel
+        .carousel-track
+            justify-content: flex-start
 
-    .product-card
-      width: 250px
+        .product-card
+            width: 250px
 
 /* 13. Sibgle Post Page
  *--------------------------------------------------------------
@@ -1101,7 +1095,7 @@ figure.instagram-item img.insta-image
     background-position-y: center
     background-position-x: center
     height: 710px
-    width: 100%    
+    width: 100%
     background-color: white
 
 .img-slider
@@ -1116,8 +1110,6 @@ figure.instagram-item img.insta-image
 .product-control-next-icon
     background-image: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g id="a" data-name="Layer 2"><rect width="32" height="32" style="fill: %23fff; stroke-width: 0px;"/></g><g id="b" data-name="Layer 1"><path d="M20.02,16.77l-6.52,6.52c-.2.2-.48.32-.77.32h0c-.29,0-.56-.11-.77-.32h0c-.42-.42-.42-1.11,0-1.54l5.75-5.75-5.75-5.75c-.42-.42-.42-1.11,0-1.53.21-.21.48-.32.77-.32s.56.11.77.32l6.52,6.52c.21.21.32.48.32.77,0,.29-.11.56-.32.77Z" style="stroke-width: 0px;"/></g></svg>')
 
-
-
 .product-control-prev-icon, .product-control-next-icon
     display: inline-block
     width: 36px
@@ -1129,8 +1121,6 @@ figure.instagram-item img.insta-image
     // @media only screen and (max-width: 576px)
     //     width: 2rem
     //     height: 2rem
-
-    
 
 .product-control-prev
     left: 5px
@@ -1177,9 +1167,7 @@ figure.instagram-item img.insta-image
     -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75)
     box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75)
 
-
-
-//17.loader
+//17. Animation
 
 .loader-overlay
     position: fixed
@@ -1224,7 +1212,7 @@ figure.instagram-item img.insta-image
         animation: lds-general 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
 
         &:nth-child(2)
-            animation-delay: -0.5s            
+            animation-delay: -0.5s
 
 @keyframes lds-general
     0%
@@ -1254,6 +1242,65 @@ figure.instagram-item img.insta-image
         width: 80px
         height: 80px
         opacity: 0
+
+.bounce
+    -webkit-animation-name: bounce
+    animation-name: bounce
+    -webkit-transform-origin: center bottom
+    -ms-transform-origin: center bottom
+    transform-origin: center bottom
+    -webkit-animation-duration: 1s
+    animation-duration: 1s
+    -webkit-animation-fill-mode: both
+    animation-fill-mode: both
+
+@-webkit-keyframes bounce
+
+    0%, 20%, 53%, 80%, 100%
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+        -webkit-transform: translate3d(0,0,0)
+        transform: translate3d(0,0,0)
+
+    40%, 43%
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        -webkit-transform: translate3d(0, -30px, 0)
+        transform: translate3d(0, -30px, 0)
+
+    70%
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        -webkit-transform: translate3d(0, -15px, 0)
+        transform: translate3d(0, -15px, 0)
+
+    90%
+        -webkit-transform: translate3d(0,-4px,0)
+        transform: translate3d(0,-4px,0)
+
+@keyframes bounce
+
+    0%, 20%, 53%, 80%, 100%
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000)
+        -webkit-transform: translate3d(0,0,0)
+        transform: translate3d(0,0,0)
+
+    40%, 43%
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        -webkit-transform: translate3d(0, -30px, 0)
+        transform: translate3d(0, -30px, 0)
+
+    70%
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+        -webkit-transform: translate3d(0, -15px, 0)
+        transform: translate3d(0, -15px, 0)
+
+    90%
+        -webkit-transform: translate3d(0,-4px,0)
+        transform: translate3d(0,-4px,0)
 
 //18.paragrahs
 
