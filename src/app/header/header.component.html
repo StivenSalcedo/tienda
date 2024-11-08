@@ -190,7 +190,7 @@
       </button>
    
       <a class="navbar-brand wrap-logo order-2" href="#">
-        <img style="width: {{CompanyInfo?.attributes?.otros?.width}};height: {{CompanyInfo?.attributes?.otros?.height ||'70px'}}"   src="{{CompanyInfo?.attributes?.otros?.logo || '/assets/images/main-logo.png' }}">
+        <img style="width: {{CompanyInfo?.attributes?.otros?.width}};height: {{CompanyInfo?.attributes?.otros?.height ||'70px'}}" alt="NewTecnoShop"   src="{{CompanyInfo?.attributes?.otros?.logo || '' }}">
       </a>
      
 
@@ -250,7 +250,7 @@
                     </svg>
                   </a>
                 </li>-->
-                <li *ngIf="getItemsCartCount()>0">
+                <li class="bounce" *ngIf="getItemsCartCount()>0">
                   <a href="/carrito">
                     <svg class="cart">
                       <use xlink:href="#cart"></use>

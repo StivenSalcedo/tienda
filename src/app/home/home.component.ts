@@ -41,13 +41,13 @@ export class HomeComponent implements OnInit {
     @ViewChild('commentsContainer2')
     commentsContainer2!: ElementRef;
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer, private cacheService: CacheService, public meta: Meta, public title: Title) {
+       
+        
+    }
+    ngOnInit(): void {
         this.loadCategories('/categorias?&filters[$or][1][favoritos2][$eq]=1&filters[$or][0][favoritos1][$eq]=1&populate=*');
         this.loadContent('/paginas?filters[tipo][nombre][$ne]=pagina&populate=*');
         this.OnSearch('Inicio', true);
-    }
-    ngOnInit(): void {
-
-        
 
     }
 
@@ -123,17 +123,21 @@ export class HomeComponent implements OnInit {
             cachedData = [];
         }
         var url = "";
+       
         try {
-            url = p.imagen.data[0].attributes.formats.thumbnail.url;
+            url = p.imagen.data.filter((i: any) => { return i.attributes.caption=='1' })[0].attributes.url;
 
         }
-        catch (ex) { }
+        catch (ex) {
+            url = p.imagen.data[0].attributes.formats.thumbnail.url;
+         }
         var filter = cachedData.filter((item: { id: number; }) => item.id == p.id);
         if (filter.length > 0) {
             cachedData.find((item: { id: number; }) => item.id === p.id).quantity++;
         }
         else {
-            cachedData.push({ "id": p.id, "name": p.titulo, "price": p.precio, "quantity": 1, "image": this.Service.urlBase + url });
+            var image=url.indexOf('http')>=0?url:this.Service.urlBase + url;
+            cachedData.push({ "id": p.id, "name": p.titulo, "price": p.precio, "quantity": 1, "image":image  });
         }
 
         this.cacheService.set('cart', cachedData, new Date());

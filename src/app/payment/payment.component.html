@@ -6,9 +6,9 @@
         {{ step }}
       </div> -->
       <div class="d-flex align-items-center" id="StepByStep" *ngFor="let step of steps; let i = index"
-        [class.active]="currentStep === i" (click)="goToStep(i)">
+        [class.active]="currentStep === i" (click)="goToStep(i)" >
         <div class="d-flex align-items-center p-2 popo">
-          <span class="bs-stepper-circle mx-2">1</span>
+          <span class="bs-stepper-circle mx-2">{{ i+1 }}</span>
           <span class="bs-stepper-label">{{ step }}</span>
         </div>
         <div class="bs-stepper-line"></div>
@@ -70,7 +70,7 @@
       </div>
       }
       @if (cartItems.length==0) {
-      <div>No hay items en el caroo</div>
+      <div>No hay items en el carro</div>
       }
       <!-- Add order details form -->
     </div>
@@ -81,9 +81,9 @@
       <form [formGroup]="form" class="form">
         <div class="form-field" *ngIf="!loading">
           <label for="typeahead-template">Ciudad</label>
-          <input formControlName="city" id="typeahead-focus" type="text" class="form-control" [(ngModel)]="Data.city"
+          <input formControlName="city" #city id="typeahead-focus" type="text" class="form-control" [(ngModel)]="Data.city"
             [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [selectOnExact]="true"
-            [editable]="false" (focus)="focus$.next($any($event).target.value)"
+            [editable]="false" (focus)="focus$.next($any($event).target.value)" 
             (click)="click$.next($any($event).target.value);" #instance1 #instance="ngbTypeahead"
             (blur)="instance.dismissPopup()" (change)="Focused()" />
           <div class="error" *ngIf="form.get('city')?.touched && form.get('city')?.invalid">

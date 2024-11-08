@@ -37,13 +37,14 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   PaymentMethod: any = {};
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService, private _router: Router, private mapsService: GoogleMapsService) {
-
+this.scrollToTop();
    
   }
 
   @ViewChild('instance', { static: true }) instance: NgbTypeahead | undefined;
   @ViewChild('ClientName') ClientName: ElementRef | undefined;
   @ViewChild('instance1') instance1: ElementRef | undefined;
+  @ViewChild('city') searchElement: ElementRef| undefined;;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
   form!: UntypedFormGroup;
@@ -238,6 +239,16 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   }
 
   goToStep(step: number) {
+    if(step==2  && !this.form.valid)
+    {
+      return;
+    }
+    if(step==1)
+    {
+      this.searchElement?.nativeElement.focus();
+    
+    }
+
     if (step >= 0 && step < this.steps.length) {
       if (this.steps[step].toLowerCase() == 'método de pago') {
 
@@ -359,6 +370,10 @@ export class PaymentComponent implements OnInit, AfterContentInit {
       },
       (error) => console.error('Error fetching address:', error)
     );
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
 

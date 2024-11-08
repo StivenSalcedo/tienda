@@ -41,10 +41,11 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
     config.keyboard = false;
     config.fullscreen = true;
     config.backdropClass = 'bg-white';
+    
 
   }
   ngAfterViewInit(): void {
-   
+    this.getCompanyInfo();
   }
 
   open(content: any) {
@@ -78,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadMenu('/paginas?filters[tipo][nombre][$eq]=pagina&populate=*');
     this.loadCategories('/categorias?populate=*');
     this.loadProducts('/productos?populate=*');
-    this.getCompanyInfo();
+  
 
 
   }

@@ -61,7 +61,7 @@ export class BaseComponent implements OnInit {
         this.ShareText();
       }
       else if (event.srcElement.id == "whatsapp") {
-        window.open("http://wa.me//573212472489", "_blank");
+        window.open("http://wa.me//57321596138", "_blank");
       }
 
     });
