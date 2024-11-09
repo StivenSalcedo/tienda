@@ -250,7 +250,7 @@
                     </svg>
                   </a>
                 </li>-->
-                <li class="bounce" *ngIf="getItemsCartCount()>0">
+                <li   id="CartIcon" class="{{Move?'bounce':''}}"  *ngIf="getItemsCartCount()>0">
                   <a href="/carrito">
                     <svg class="cart">
                       <use xlink:href="#cart"></use>

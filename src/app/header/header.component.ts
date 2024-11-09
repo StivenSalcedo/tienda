@@ -6,7 +6,7 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { MainPipe, orderByPipe } from '../pipes/main.pipe';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModalConfig, NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CacheService } from '../services/cache.service';
 
 @Component({
@@ -21,7 +21,7 @@ import { CacheService } from '../services/cache.service';
 })
 
 
-export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   LoadData: boolean = true;
   Menu: any = [];
   Categories: any = [];
@@ -31,9 +31,13 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
   FocusInput: boolean = false;
   CompanyInfo: any = {};
   @ViewChild('Search') Search: ElementRef | undefined;
+  CartItems: number = 0;
+  public CartMove: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  Move: boolean = false;
+
   private cacheSubscription: Subscription = new Subscription;
 
-  
+
   constructor(private cacheService: CacheService, private Service: ApiService, private http: HttpClient, private _router: Router, config: NgbModalConfig, private modalService: NgbModal, private offcanvasService: NgbOffcanvas,) {
 
     // customize default values of modals used by this component tree
@@ -41,7 +45,21 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
     config.keyboard = false;
     config.fullscreen = true;
     config.backdropClass = 'bg-white';
-    
+
+    this.CartMove.subscribe((value) => {
+      if (true === value) {
+      this.Move=false;
+      setTimeout(()=>{
+        this.Move=true;
+      },500)
+      } else {
+        
+        // do some other stuff
+      }
+    });
+
+
+
 
   }
   ngAfterViewInit(): void {
@@ -79,7 +97,7 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadMenu('/paginas?filters[tipo][nombre][$eq]=pagina&populate=*');
     this.loadCategories('/categorias?populate=*');
     this.loadProducts('/productos?populate=*');
-  
+
 
 
   }
@@ -192,8 +210,19 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
 
   getItemsCartCount(): number {
     var c = this.cacheService.get('cart', 600);
+
     if (c != null) {
-      return c.reduce((total: number, item: { price: number; quantity: number; }) => total + item.quantity, 0);
+      if (this.CartItems != c.reduce((total: number, item: { price: number; quantity: number; }) => total + item.quantity, 0)) {
+       this.CartMove.next(true);
+       //this.Move=true;
+      }
+      else{
+       // this.Move=false;
+        //this.CartMove.next(false);
+      }
+      this.CartItems = c.reduce((total: number, item: { price: number; quantity: number; }) => total + item.quantity, 0);
+
+      return this.CartItems;
     }
     else {
       return 0;
@@ -202,11 +231,11 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   getCompanyInfo() {
-  
-      this.CompanyInfo= this.Menu.filter((data: any) => {
-        return data.attributes.menu > 0 && data.attributes.titulo == 'Inicio';
-      })[0];
-    
+
+    this.CompanyInfo = this.Menu.filter((data: any) => {
+      return data.attributes.menu > 0 && data.attributes.titulo == 'Inicio';
+    })[0];
+
   }
 
   loadMenu(url: string) {
@@ -239,8 +268,8 @@ export class HeaderComponent implements OnInit, OnDestroy,AfterViewInit {
         return data.attributes.menu > 0 && data.attributes.tipo.data.attributes.nombre == 'pagina';
       });
     }
-    
-   
+
+
   }
 
 }

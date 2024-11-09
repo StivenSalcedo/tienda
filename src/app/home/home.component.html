@@ -1,6 +1,7 @@
 <app-header></app-header>
-<app-loader *ngIf="LoadingProducts || Loading"></app-loader>
+
 <div style="margin-top: 74px;">
+  <app-loader *ngIf="LoadingProducts || Loading"></app-loader>
   <ngb-carousel [interval]="5000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">
     <ng-template ngbSlide *ngFor="let p of Slider | orderby:'attributes.menu'">
       <a *ngIf="p.attributes.url!='' && p.attributes.url!=null" href="{{p.attributes.url}}">
@@ -181,7 +182,8 @@
           <a href="tienda?p={{product.attributes.titulo}}&Id={{product.id}}" >{{ product.attributes.titulo }}</a>
           <h3></h3>
           <p class="price">{{ product.attributes.precio | currency }}</p>
-          <button  (click)="AddtoCart(product.attributes)"  class="btn btn-dark w-100">Comprar ahora</button>
+          <button *ngIf="product.attributes.unidades<1" [disabled]="product.attributes.unidades<1"    class="btn btn-dark w-100">Agotado</button>
+          <button *ngIf="product.attributes.unidades>0"   (click)="AddtoCart(product.attributes)"  class="btn btn-dark w-100">Comprar ahora</button>
         
         </div>
       </div>

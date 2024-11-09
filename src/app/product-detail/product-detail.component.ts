@@ -113,6 +113,7 @@ scrollRight() {
     if(this.ProductDetail.color.data.id!=id)
     {
         this.ProductDetail= this.Products.filter((p: any) => { return p.color.data.id == id;})[0];
+        this.ProductDetail.cantidad=1;
         if(this.ProductDetail.imagen.data!=undefined)
         {
           this.ShowDetail(this.ProductDetail.imagen.data[0]);
@@ -212,7 +213,7 @@ scrollRight() {
             this.CurrentImagen = this.ProductDetail.imagen.data[0].attributes;
           }
           if (this.ProductDetail.color.data != null) {
-            console.log(this.ProductDetail.color);
+            console.log('this.ProductDetail.color',this.ProductDetail.color);
            // this.ProductDetail.color.data.id=this.ProductDetail.color.id;
             this.Colors.push(this.ProductDetail.color.data);
             console.log(this.ProductDetail.productos.data.length);

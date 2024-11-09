@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
     }
 
     AddtoCart(p: any) {
-
+console.log('product',p);
         var cachedData = this.cacheService.get('cart', 600);
         if (cachedData == null) {
             cachedData = [];
@@ -131,6 +131,7 @@ export class HomeComponent implements OnInit {
         catch (ex) {
             url = p.imagen.data[0].attributes.formats.thumbnail.url;
          }
+         console.log(cachedData);
         var filter = cachedData.filter((item: { id: number; }) => item.id == p.id);
         if (filter.length > 0) {
             cachedData.find((item: { id: number; }) => item.id === p.id).quantity++;
@@ -167,11 +168,10 @@ export class HomeComponent implements OnInit {
         this.Service.getPosts('get', {}, Query)
             .subscribe({
                 next: data => {
-
                     this.Products = data;
                     this.Products = this.Products.data;
-
                     this.Products.forEach((data: any, index2: number) => {
+                        data.attributes.id=data.id;
                         if (data.attributes.imagen.data != null) {
                             var MainImage = data.attributes.imagen.data.filter((data1: any) => { return data1.attributes.caption == "1"; });
                             if (MainImage.length > 0) {

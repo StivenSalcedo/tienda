@@ -51,15 +51,7 @@
           </span>
         </button>
       </div>
-
-    </div>
-
-    <div class="product-info">
       <form [formGroup]="form">
-        <h1>{{ ProductDetail.titulo }}</h1>
-        <p>{{ ProductDetail.descripcion1 }}</p>
-        <p style="white-space: pre-wrap;" [innerHTML]="ProductDetail.descripcion2"></p>
-
         <div *ngIf="Colors.length>1" class="color-variation">
           <label>Color:</label>
           <div class="btn-group btn-group-lg ms-3" role="group" aria-label="Large button group">
@@ -69,7 +61,7 @@
 
           </div>
         </div>
-
+<br>
         <div *ngIf="ProductDetail.unidades>0" class="quantity">
           <label>Quantity:</label>
           <select formControlName="quantity" [(ngModel)]="ProductDetail.cantidad"
@@ -92,6 +84,14 @@
           
         </div>
       </form>
+    </div>
+
+    <div class="product-info">
+     
+        <h1>{{ ProductDetail.titulo }}</h1>
+        <p>{{ ProductDetail.descripcion1 }}</p>
+        <p style="white-space: pre-wrap;" [innerHTML]="ProductDetail.descripcion2"></p>
+       
       
     </div>
    
@@ -100,7 +100,7 @@
 </div>
 
 
-<div class="feedback" *ngIf="showFeedback">Added to cart!</div>
+<!--<div class="feedback" *ngIf="showFeedback">Added to cart!</div>-->
 
 <div *ngIf="ProductDetail.contenido!=null" [innerHTML]="ProductDetail.contenido"></div>
 
