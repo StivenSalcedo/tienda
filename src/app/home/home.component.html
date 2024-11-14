@@ -1,5 +1,10 @@
 <app-header></app-header>
-
+<div class="container">
+  <app-optimized-image
+    *ngFor="let image of images"
+    [config]="image"
+  ></app-optimized-image>
+</div>
 <div style="margin-top: 74px;">
   <app-loader *ngIf="LoadingProducts || Loading"></app-loader>
   <ngb-carousel [interval]="5000" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus">

@@ -10,13 +10,15 @@ import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
 import { NgbAlertModule, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { CacheService } from '../services/cache.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { OptimizedImageComponent } from "../services/optimized-image/optimized-image.component";
+import { ImageConfig } from '../interfaces/image-config';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.sass',
-    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule, NgbAlertModule, ReplacePipe, NgbCarouselModule, LoaderComponent]
+    imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule, NgbAlertModule, ReplacePipe, NgbCarouselModule, LoaderComponent, OptimizedImageComponent]
 })
 export class HomeComponent implements OnInit {
     Categories: any = [];
@@ -40,9 +42,10 @@ export class HomeComponent implements OnInit {
     commentsContainer!: ElementRef;
     @ViewChild('commentsContainer2')
     commentsContainer2!: ElementRef;
+    public images = new Array<ImageConfig>;
     constructor(private Service: ApiService, private http: HttpClient, private _router: Router, @Inject(DOCUMENT) private document: Document, private sanitizer: DomSanitizer, private cacheService: CacheService, public meta: Meta, public title: Title) {
-       
-        
+
+
     }
     ngOnInit(): void {
         this.loadCategories('/categorias?&filters[$or][1][favoritos2][$eq]=1&filters[$or][0][favoritos1][$eq]=1&populate=*');
@@ -51,11 +54,71 @@ export class HomeComponent implements OnInit {
 
     }
 
+   
+
     OnSearch(value?: string, category?: boolean) {
         this.Service.getPosts('get', {}, '/paginas?filters[$and][0][titulo][$eq]=' + value + '&filters[$and][1][tipo][nombre][$eq]=pagina&populate=*')
             .subscribe({
                 next: (data: any) => {
                     if (data.data.length > 0) {
+                       
+                        if (data.data[0].attributes.imagen) {
+                            if (data.data[0].attributes.imagen.data.length > 0) {
+                                var images = data.data[0].attributes.imagen.data;
+                                images.forEach((i: any, indexIamge: number) => {
+                                    this.images?.push({
+                                        src: this.Service.urlBase + i.attributes.url,
+                                        alt: i.attributes.alternativeText || '',
+                                        width: i.attributes.width,
+                                        height: i.attributes.height,
+                                        priority: true
+                                    });
+                                    if (i.attributes.formats) {
+                                        if (i.attributes.formats.medium) {
+                                            var dataImg = i.attributes.formats.medium;
+                                            this.images?.push({
+                                                src: this.Service.urlBase + dataImg.url,
+                                                alt: i.attributes.alternativeText || '',
+                                                width: dataImg.width,
+                                                height: dataImg.height,
+                                                priority: true
+                                            });
+                                        }
+                                        if (i.attributes.formats.large) {
+                                            var dataImg = i.attributes.formats.large;
+                                            this.images?.push({
+                                                src: this.Service.urlBase + dataImg.url,
+                                                alt: i.attributes.alternativeText || '',
+                                                width: dataImg.width,
+                                                height: dataImg.height,
+                                                priority: true
+                                            });
+                                        }
+                                        if (i.attributes.formats.small) {
+                                            var dataImg = i.attributes.formats.small;
+                                            this.images?.push({
+                                                src: this.Service.urlBase + dataImg.url,
+                                                alt: i.attributes.alternativeText || '',
+                                                width: dataImg.width,
+                                                height: dataImg.height,
+                                                priority: true
+                                            });
+                                        }
+                                        if (i.attributes.formats.thumbnail) {
+                                            var dataImg = i.attributes.formats.thumbnail;
+                                            this.images?.push({
+                                                src: this.Service.urlBase + dataImg.url,
+                                                alt: i.attributes.alternativeText || '',
+                                                width: dataImg.width,
+                                                height: dataImg.height,
+                                                priority: true
+                                            });
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                       
                         if (data.data[0].attributes.metadata != null) {
                             this.ChangeMeta(data.data[0].attributes.metadata);
                         }
@@ -68,7 +131,7 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    
+
     GetLinks(data: any) {
         this.Links = data;
     }
@@ -117,28 +180,28 @@ export class HomeComponent implements OnInit {
     }
 
     AddtoCart(p: any) {
-console.log('product',p);
+        console.log('product', p);
         var cachedData = this.cacheService.get('cart', 600);
         if (cachedData == null) {
             cachedData = [];
         }
         var url = "";
-       
+
         try {
-            url = p.imagen.data.filter((i: any) => { return i.attributes.caption=='1' })[0].attributes.url;
+            url = p.imagen.data.filter((i: any) => { return i.attributes.caption == '1' })[0].attributes.url;
 
         }
         catch (ex) {
             url = p.imagen.data[0].attributes.formats.thumbnail.url;
-         }
-         console.log(cachedData);
+        }
+        console.log(cachedData);
         var filter = cachedData.filter((item: { id: number; }) => item.id == p.id);
         if (filter.length > 0) {
             cachedData.find((item: { id: number; }) => item.id === p.id).quantity++;
         }
         else {
-            var image=url.indexOf('http')>=0?url:this.Service.urlBase + url;
-            cachedData.push({ "id": p.id, "name": p.titulo, "price": p.precio, "quantity": 1, "image":image  });
+            var image = url.indexOf('http') >= 0 ? url : this.Service.urlBase + url;
+            cachedData.push({ "id": p.id, "name": p.titulo, "price": p.precio, "quantity": 1, "image": image });
         }
 
         this.cacheService.set('cart', cachedData, new Date());
@@ -171,7 +234,7 @@ console.log('product',p);
                     this.Products = data;
                     this.Products = this.Products.data;
                     this.Products.forEach((data: any, index2: number) => {
-                        data.attributes.id=data.id;
+                        data.attributes.id = data.id;
                         if (data.attributes.imagen.data != null) {
                             var MainImage = data.attributes.imagen.data.filter((data1: any) => { return data1.attributes.caption == "1"; });
                             if (MainImage.length > 0) {
@@ -324,7 +387,7 @@ console.log('product',p);
     }
     getOtherAttributes(attribute: string, b: any) {
         return b.attributes.otros[attribute];
-       
+
     }
 
     ChangeMeta(Data: any[]) {

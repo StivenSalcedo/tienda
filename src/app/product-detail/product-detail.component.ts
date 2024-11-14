@@ -12,13 +12,15 @@ import { PaymentComponent } from '../payment/payment.component';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { trigger, state, style, animate, transition,ɵBrowserAnimationBuilder } from '@angular/animations';
 import { Meta, Title } from '@angular/platform-browser';
+import { OptimizedImageComponent } from "../services/optimized-image/optimized-image.component";
+import { ImageConfig } from '../interfaces/image-config';
 
 
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule,HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbTooltipModule,FormsModule,ReactiveFormsModule, NgbCarouselModule],
+  imports: [CommonModule, HeaderComponent, FooterComponent, orderByPipe, CommonModule, NgbTooltipModule, FormsModule, ReactiveFormsModule, NgbCarouselModule, OptimizedImageComponent],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.sass',
   animations: [
@@ -50,7 +52,7 @@ export class ProductDetailComponent implements OnInit {
   scrWidth:any;
   @ViewChild('commentsContainer')
     commentsContainer!: ElementRef;
-
+    public images = new Array<ImageConfig>;
   scrollLeft() {
     this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
 }
@@ -234,14 +236,70 @@ scrollRight() {
               }
             
           }
-          if(this.ProductDetail.metadata!=null)
-          {
+          
             this.ChangeMeta(this.ProductDetail.metadata);
-          }
+          
+          if (this.ProductDetail.imagen) {
+            if (this.ProductDetail.imagen.data.length > 0) {
+                var images =this.ProductDetail.imagen.data;
+                images.forEach((i: any, indexIamge: number) => {
+                    this.images?.push({
+                        src: this.Service.urlBase + i.attributes.url,
+                        alt: i.attributes.alternativeText || '',
+                        width: i.attributes.width,
+                        height: i.attributes.height,
+                        priority: true
+                    });
+                    if (i.attributes.formats) {
+                        if (i.attributes.formats.medium) {
+                            var dataImg = i.attributes.formats.medium;
+                            this.images?.push({
+                                src: this.Service.urlBase + dataImg.url,
+                                alt: i.attributes.alternativeText || '',
+                                width: dataImg.width,
+                                height: dataImg.height,
+                                priority: true
+                            });
+                        }
+                        if (i.attributes.formats.large) {
+                            var dataImg = i.attributes.formats.large;
+                            this.images?.push({
+                                src: this.Service.urlBase + dataImg.url,
+                                alt: i.attributes.alternativeText || '',
+                                width: dataImg.width,
+                                height: dataImg.height,
+                                priority: true
+                            });
+                        }
+                        if (i.attributes.formats.small) {
+                            var dataImg = i.attributes.formats.small;
+                            this.images?.push({
+                                src: this.Service.urlBase + dataImg.url,
+                                alt: i.attributes.alternativeText || '',
+                                width: dataImg.width,
+                                height: dataImg.height,
+                                priority: true
+                            });
+                        }
+                        if (i.attributes.formats.thumbnail) {
+                            var dataImg = i.attributes.formats.thumbnail;
+                            this.images?.push({
+                                src: this.Service.urlBase + dataImg.url,
+                                alt: i.attributes.alternativeText || '',
+                                width: dataImg.width,
+                                height: dataImg.height,
+                                priority: true
+                            });
+                        }
+                    }
+                })
+            }
+         
+        }
         }
         },
         error: error => {
-alert('ok');
+
         }
       });
 
@@ -255,7 +313,7 @@ alert('ok');
   }
 
   ChangeMeta(Data: any[]) {
-    console.log(Data);
+    console.log('meta',Data);
     this.meta.removeTag('description');
     this.meta.removeTag('title');
     this.meta.removeTag('description');
@@ -323,7 +381,7 @@ alert('ok');
         this.meta.removeTag('og:image:secure_url');
     }
     catch (ex) { }
-    if (Data.length > 0) {
+    if (Data != null) {
         Data.forEach((data: any, index2: number) => {
             if (data.tipo == 'tittle') {
                 this.title.setTitle(data.valor);
@@ -338,12 +396,13 @@ alert('ok');
     }
     else {
         this.title.setTitle('');
-        this.meta.updateTag({ name: 'description', content: '' });
+      
+        this.meta.updateTag({ name: 'description', content: this.ProductDetail.titulo });
         this.meta.updateTag({ property: 'og:locale', content: 'es_CO' });
-        this.meta.updateTag({ property: 'og:url', content: this.Service.urlBase });
+        this.meta.updateTag({ property: 'og:url', content: this.Service.urlBase + '/tienda?p='+  this.ProductDetail.titulo});
         this.meta.updateTag({ property: 'og:type', content: 'website' });
-        this.meta.updateTag({ property: 'og:title', content: '' });
-        this.meta.updateTag({ property: 'og:description', content: '' });
+        this.meta.updateTag({ property: 'og:title', content: this.ProductDetail.titulo });
+        this.meta.updateTag({ property: 'og:description', content:  this.ProductDetail.descripcion1 || this.ProductDetail.descripcion2  });
     }
 }
 

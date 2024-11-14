@@ -1,4 +1,11 @@
+<div class="container">
+  <app-optimized-image
+    *ngFor="let image of images"
+    [config]="image"
+  ></app-optimized-image>
+</div>
 <app-header></app-header>
+
 <div class="container" style="margin-top: 74px;">
   <div *ngIf="!Loading" class="product-detail pt-3">
 
