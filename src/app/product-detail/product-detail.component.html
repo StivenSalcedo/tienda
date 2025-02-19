@@ -5,7 +5,7 @@
     *ngFor="let image of images"
     [config]="image"
   ></app-optimized-image>
-  <p style="white-space: pre-wrap;" [innerHTML]="ReturnHtml()"></p>
+ 
   <div class="product-detail pt-3">
     <div class="product-image-gallery">
       <div class="main-image mb-3">
@@ -14,8 +14,10 @@
           alt="{{CurrentImagen.alternativeText || 'ok'}}" >
       </div>
     
-
+      @if (ProductDetail.imagen!=null) {
       <div class="d-flex justify-content-center product-carousel">
+        @if (ProductDetail.imagen.data.length>9) {
+        
         <button type="button" class="product-control-prev d-none d-lg-block" aria-labelledby="ngb-carousel-0-prev"
           (click)="scrollLeft()">
           <span aria-hidden="true" class="product-control-prev-icon shadown-1 border"></span>
@@ -25,16 +27,18 @@
             </font>
           </span>
         </button>
+      }
         <div class="carousel-container image-galery-custom-1" #commentsContainer>
          
           <div class="carousel-track">
-            <div class="thumbnail-images wrap-thumbnail-images-custom-1">
+            <div id="scroll-container" class="thumbnail-images wrap-thumbnail-images-custom-1">
               <img *ngFor="let p of ProductDetail.imagen.data" (click)="ShowDetail(p)"
                 src="{{Service.urlBase}}{{p.attributes.formats.thumbnail.url}}"
                 alt="{{p.attributes.alternativeText || 'ok'}}" [class.active]="p.attributes === CurrentImagen">
             </div>
           </div>
         </div>
+        @if (ProductDetail.imagen.data.length>9) {
         <button type="button" class="product-control-next d-none d-lg-block" aria-labelledby="ngb-carousel-0-next"
           (click)="scrollRight()">
           <span aria-hidden="true" class="product-control-next-icon shadown-1 border"></span>
@@ -44,8 +48,10 @@
             </font>
           </span>
         </button>
+      }
       </div>
-      <form [formGroup]="form">
+    }
+    
         <div *ngIf="Colors.length>1" class="color-variation">
           <label>Color:</label>
           <div class="btn-group btn-group-lg ms-3" role="group" aria-label="Large button group">
@@ -55,7 +61,15 @@
 
           </div>
         </div>
-<br>
+
+      
+      
+    </div>
+
+    <div class="product-info">
+      <form [formGroup]="form">
+        <h1>{{ ProductDetail.titulo }}</h1>
+        <p>{{ ProductDetail.descripcion1 }}</p>
         <div *ngIf="ProductDetail.unidades>0" class="quantity">
           <label>Quantity:</label>
           <select formControlName="quantity" [(ngModel)]="ProductDetail.cantidad"
@@ -77,16 +91,10 @@
           
           
         </div>
-      </form>
-    </div>
-
-    <div class="product-info">
-     
-        <h1>{{ ProductDetail.titulo }}</h1>
-        <p>{{ ProductDetail.descripcion1 }}</p>
+<br>
         <p style="white-space: pre-wrap;" [innerHTML]="ProductDetail.descripcion2"></p>
        
-      
+      </form>
     </div>
    
   </div>

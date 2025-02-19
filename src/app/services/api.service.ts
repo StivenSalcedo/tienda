@@ -8,7 +8,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public urlBase ='https://hegocomca.com';
+  public urlBase =(window as any).config?.apiUrl || 'https://default-api.com';//'https://hegocomca.com';
   public url = this.urlBase + '/api';
 
   getPosts(Type?: string, ObjectData?: any, Action?: string) {

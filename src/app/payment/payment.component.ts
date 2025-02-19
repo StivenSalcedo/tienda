@@ -37,7 +37,9 @@ export class PaymentComponent implements OnInit, AfterContentInit {
   PaymentMethod: any = {};
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient, private order: orderByPipe, private Service: ApiService, private cacheService: CacheService, private _router: Router, private mapsService: GoogleMapsService) {
-this.scrollToTop();
+
+
+   
    
   }
 
@@ -61,7 +63,7 @@ this.scrollToTop();
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required, Validators.minLength(3)]),
       complemento: new UntypedFormControl(null),
-      address: new UntypedFormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z0-9, ñÑáéíóúÁÉÍÓÚ\s#-]+$")]),
+      address: new UntypedFormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z0-9, ñÑáéíóúÁÉÍÓÚ\s#-.]+$")]),
       phone: new UntypedFormControl(null, [Validators.required, Validators.pattern("^((?=(?:.{7}|.{10}|.{13})$)[0-9]*)$")]),
       city: new UntypedFormControl(null, [Validators.required]),
       mail: new UntypedFormControl(null, [Validators.required, Validators.pattern("^([A-Za-z0-9._%\+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,3})$")]),
@@ -284,6 +286,7 @@ this.scrollToTop();
     this.loadCities('/ciudades?sort=orden:asc&pagination[start]=0&pagination[limit]=10&populate=*', false);
     setTimeout(() => {
       this.getCurrentCity();
+      this.scrollToTop();
     }, 1500)
 
 
@@ -373,7 +376,11 @@ this.scrollToTop();
   }
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    try{
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    catch(s){}
+    
   }
 
 

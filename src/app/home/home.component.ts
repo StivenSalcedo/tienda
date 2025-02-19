@@ -63,6 +63,8 @@ export class HomeComponent implements OnInit {
                     if (data.data.length > 0) {
                        
                         if (data.data[0].attributes.imagen) {
+                            if(data.data[0].attributes.imagen.data!=null)
+                            {
                             if (data.data[0].attributes.imagen.data.length > 0) {
                                 var images = data.data[0].attributes.imagen.data;
                                 images.forEach((i: any, indexIamge: number) => {
@@ -117,6 +119,7 @@ export class HomeComponent implements OnInit {
                                     }
                                 })
                             }
+                        }
                         }
                        
                         if (data.data[0].attributes.metadata != null) {
@@ -210,15 +213,18 @@ export class HomeComponent implements OnInit {
 
     }
 
-    scrollLeft() {
-        this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-    }
+    scrollLeft(id:string) {
+        const container = document.getElementById('scroll-container-'+id);
+        if (container) {
+          container.scrollBy({ left: -300, behavior: 'smooth' });
+        }
+      }
 
     scrollRight(id:string) {
         const container = document.getElementById('scroll-container-'+id);
         console.log('container',container);
         if (container) {
-          container.scrollBy({ left: 200, behavior: 'smooth' });
+          container.scrollBy({ left: 300, behavior: 'smooth' });
         }
       }
     

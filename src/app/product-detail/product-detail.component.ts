@@ -42,11 +42,18 @@ export class ProductDetailComponent implements OnInit {
   commentsContainer!: ElementRef;
   public images = new Array<ImageConfig>;
   scrollLeft() {
-    this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
+    const container = document.getElementById('scroll-container');
+    if (container) {
+      container.scrollBy({ left: -300, behavior: 'smooth' });
+    }
   }
 
-  scrollRight() {
-    this.commentsContainer.nativeElement.scrollBy({ left: this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
+scrollRight() {
+    const container = document.getElementById('scroll-container');
+    console.log('container',container);
+    if (container) {
+      container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
   }
 
   @ViewChild('ContentPayment') templateRefPayment: TemplateRef<any> | undefined;
@@ -155,7 +162,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   GetProductDetail() {
-    /*var Filter = "/productos?filters[id][$eq]=";
+    var Filter = "/productos?filters[id][$eq]=";
     var ComplementQuery = "&populate[color]=*&populate[imagen]=*&populate[productos][populate]=*";
     if (this.ProductId != '' && this.ProductId != null) {
       Filter = "/productos?filters[id][$eq]=";
@@ -166,9 +173,9 @@ export class ProductDetailComponent implements OnInit {
     }
     else {
       this.redirectTo('./', '');
-    }*/
-    this.Service.getPosts('get', {}, '/productos?filters[id][$eq]=9&populate[color]=*&populate[imagen]=*&populate[productos][populate]=*' )
-    //this.Service.getPosts('get', {}, Filter + this.ProductId + ComplementQuery)
+    }
+   // this.Service.getPosts('get', {}, '/productos?filters[id][$eq]=9&populate[color]=*&populate[imagen]=*&populate[productos][populate]=*' )
+    this.Service.getPosts('get', {}, Filter + this.ProductId + ComplementQuery)
       .subscribe({
         next: (data: any) => {
           console.log('p',data);
@@ -196,6 +203,7 @@ export class ProductDetailComponent implements OnInit {
             if (this.ProductDetail.imagen.data.length > 0) {
               this.CurrentImagen = this.ProductDetail.imagen.data[0].attributes;
             }
+            if (this.ProductDetail.color != null)
             if (this.ProductDetail.color.data != null) {
               console.log('this.ProductDetail.color', this.ProductDetail.color);
               // this.ProductDetail.color.data.id=this.ProductDetail.color.id;
