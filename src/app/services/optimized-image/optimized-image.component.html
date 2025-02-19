@@ -1,0 +1,9 @@
+<img
+      [src]="config.src"
+      [alt]="config.alt"
+      [width]="config.width || 'auto'"
+      [height]="config.height || 'auto'"
+      class="responsive-image"
+      (error)="handleError($event)"
+      ngOptimizedImage
+    />
