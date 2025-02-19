@@ -171,13 +171,13 @@
         </font>
       </span>
     </button>
-    <div class="carousel-container " #commentsContainer>
+    <div class="carousel-container " >
       <div *ngIf="LoadingProducts" class="lds-general">
         <div></div>
         <div></div>
       </div>
-      <div class="carousel-track p-3">
-        <div *ngFor="let product of c.products | orderby:'attributes.orden'" class="product-card ">
+      <div class="carousel-track p-3" id="scroll-container-{{c.id}}" #commentsContainer>
+        <div *ngFor="let product of c.products | orderby:'attributes.orden'" class="product-card"  >
           <div class="image-container">
             <img (click)="goToDetails(product)" [src]="product.imagen.url" [alt]="product.attributes.titulo">
             <!-- <button class="magnify-btn" (click)="openLargeImage(product)">
@@ -192,12 +192,8 @@
         
         </div>
       </div>
-
-      
-    </div>
-    <!-- <button class="arrow right" (click)="scrollRight()" style="right: 0;">&gt;</button> -->
-    <button type="button" class="product-control-next d-none d-lg-block" aria-labelledby="ngb-carousel-0-next"
-      (click)="scrollRight()">
+      <button type="button" class="product-control-next" aria-labelledby="ngb-carousel-0-next"
+      (click)="scrollRight(c.id)">
       <span aria-hidden="true" class="product-control-next-icon shadown-1 border"></span>
       <span class="visually-hidden" id="ngb-carousel-0-next">
         <font style="vertical-align: inherit;">
@@ -205,6 +201,19 @@
         </font>
       </span>
     </button>
+
+      
+    </div>
+  
+   <!-- <button type="button" class="product-control-next d-none d-lg-block" aria-labelledby="ngb-carousel-0-next"
+      (click)="scrollRight()">
+      <span aria-hidden="true" class="product-control-next-icon shadown-1 border"></span>
+      <span class="visually-hidden" id="ngb-carousel-0-next">
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;">Próximo</font>
+        </font>
+      </span>
+    </button>-->
   </div>
   }
 </section>
@@ -329,34 +338,6 @@
         <use xlink:href="#quote" />
       </svg>
     </div>
-
-    <!-- <div class="swiper testimonial-swiper" #commentsContainer2>
-      <div class="quotation text-center">
-        <svg class="quote">
-          <use xlink:href="#quote" />
-        </svg>
-      </div>
-      <div class="swiper-wrapper">
-        <div *ngFor="let t of Testimonials | orderby:'attributes.menu'"
-          class="swiper-slide text-center d-flex justify-content-center">
-          <div class="review-item col-md-10">
-            <i class="icon icon-review"></i>
-            <blockquote>{{t.attributes.descripcion}}</blockquote>
-            <div class="rating">
-              <svg *ngFor="let s of [].constructor(t.attributes.otros.starsok)" class="star star-fill">
-                <use xlink:href="#star-fill"></use>
-              </svg>
-              <svg *ngFor="let s of [].constructor(t.attributes.otros.starsempty)" class="star star-empty">
-                <use xlink:href="#star-empty"></use>
-              </svg>
-            </div>
-            <div class="author-detail">
-              <div class="name text-dark text-uppercase pt-2">{{t.attributes.titulo}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="comments-testimonies" #commentsContainer2>
       

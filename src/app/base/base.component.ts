@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, Renderer2, Inject } from '@angular/core'
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
+import { DomSanitizer, Meta, Title ,provideClientHydration} from '@angular/platform-browser';
 import { NgbCarousel, NgbCarouselConfig ,NgbSlideEvent, NgbSlideEventSource,NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/api.service';
 import { orderByPipe } from '../pipes/main.pipe';
@@ -15,7 +15,7 @@ import { LoaderComponent } from '../loader/loader.component';
   standalone: true,
   templateUrl: './base.component.html',
   styleUrl: './base.component.sass',
-  imports: [HeaderComponent, FooterComponent, orderByPipe, CommonModule,NgbCarouselModule,LoaderComponent]
+  imports: [HeaderComponent, FooterComponent, CommonModule,NgbCarouselModule,LoaderComponent]
 })
 export class BaseComponent implements OnInit {
   public DataResponse: any = [];

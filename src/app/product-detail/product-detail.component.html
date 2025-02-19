@@ -1,29 +1,19 @@
-<div class="container">
+<app-header></app-header>
+
+<div   class="container" style="margin-top: 74px;">
   <app-optimized-image
     *ngFor="let image of images"
     [config]="image"
   ></app-optimized-image>
-</div>
-<app-header></app-header>
-
-<div class="container" style="margin-top: 74px;">
-  <div *ngIf="!Loading" class="product-detail pt-3">
-
-
-
+  <p style="white-space: pre-wrap;" [innerHTML]="ReturnHtml()"></p>
+  <div class="product-detail pt-3">
     <div class="product-image-gallery">
       <div class="main-image mb-3">
 
         <img *ngIf="CurrentImagen.url!=null" src="{{Service.urlBase}}{{CurrentImagen.url}}"
-          alt="{{CurrentImagen.alternativeText || 'ok'}}" [@addToCartAnimation]="animationState">
+          alt="{{CurrentImagen.alternativeText || 'ok'}}" >
       </div>
-      <!-- <div class="thumbnail-images">
-        <img *ngFor="let p of ProductDetail.imagen.data" 
-         (click)="ShowDetail(p)"  
-         src="{{Service.urlBase}}{{p.attributes.formats.thumbnail.url}}" 
-         alt="{{p.attributes.alternativeText || 'ok'}}"
-         [class.active]="p.attributes === CurrentImagen">      
-      </div> -->
+    
 
       <div class="d-flex justify-content-center product-carousel">
         <button type="button" class="product-control-prev d-none d-lg-block" aria-labelledby="ngb-carousel-0-prev"
@@ -36,10 +26,7 @@
           </span>
         </button>
         <div class="carousel-container image-galery-custom-1" #commentsContainer>
-          <!-- <div *ngIf="LoadingProducts" class="lds-general">
-            <div></div>
-            <div></div>
-          </div> -->
+         
           <div class="carousel-track">
             <div class="thumbnail-images wrap-thumbnail-images-custom-1">
               <img *ngFor="let p of ProductDetail.imagen.data" (click)="ShowDetail(p)"
@@ -62,7 +49,7 @@
         <div *ngIf="Colors.length>1" class="color-variation">
           <label>Color:</label>
           <div class="btn-group btn-group-lg ms-3" role="group" aria-label="Large button group">
-            <button *ngFor="let c of Colors" style="background-color:{{c.attributes.codigo}};" type="button"
+            <button *ngFor="let c of Colors" style="background-color:'{{c.attributes.codigo}}'" type="button"
               class="btn btn-outline-primary " placement="auto" ngbTooltip="{{c.attributes.nombre}}"
               (click)="ShowProduct(c.id)"></button>
 
@@ -106,9 +93,5 @@
  
 </div>
 
-
-<!--<div class="feedback" *ngIf="showFeedback">Added to cart!</div>-->
-
 <div *ngIf="ProductDetail.contenido!=null" [innerHTML]="ProductDetail.contenido"></div>
 
-<app-footer *ngIf="!Loading"></app-footer>

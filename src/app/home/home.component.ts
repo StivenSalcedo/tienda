@@ -214,9 +214,14 @@ export class HomeComponent implements OnInit {
         this.commentsContainer.nativeElement.scrollBy({ left: -this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
     }
 
-    scrollRight() {
-        this.commentsContainer.nativeElement.scrollBy({ left: this.commentsContainer.nativeElement.offsetWidth, behavior: 'smooth' });
-    }
+    scrollRight(id:string) {
+        const container = document.getElementById('scroll-container-'+id);
+        console.log('container',container);
+        if (container) {
+          container.scrollBy({ left: 200, behavior: 'smooth' });
+        }
+      }
+    
 
     scrollLeft2() {
         this.commentsContainer2.nativeElement.scrollBy({ left: -this.commentsContainer2.nativeElement.offsetWidth, behavior: 'smooth' });

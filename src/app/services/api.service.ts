@@ -8,7 +8,7 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public urlBase ='https://newtecnoshop.com';
+  public urlBase ='https://hegocomca.com';
   public url = this.urlBase + '/api';
 
   getPosts(Type?: string, ObjectData?: any, Action?: string) {

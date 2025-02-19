@@ -48,11 +48,13 @@ export class CategoryDetailComponent {
         this.Loading = false;
 
       })
-      this.loadCategories('/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*');
-      this.loadProductsByCategory();
+    //  this.loadCategories('/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*');
+      //this.loadProductsByCategory();
     }
   }
   ngOnInit(): void {
+    this.loadCategories('/categorias?filters[$or][0][favoritos1][$eq]=1&filters[$or][1][favoritos2][$eq]=1&populate=*');
+      this.loadProductsByCategory();
     // this.loadProducts(true);
 
   }
