@@ -62,6 +62,10 @@ export class CategoryDetailComponent {
   toggleImage(): void {
     this.showImage = !this.showImage;
   }
+  goToDetails(p: any) {
+    var uri = decodeURI('tienda?p=' + p.attributes.titulo + '&Id=' + p.id);
+    this._router.navigateByUrl(uri, { skipLocationChange: false });
+}
 
   loadCategories(url: string) {
     const cachedData = this.cacheService.get(url, 60);

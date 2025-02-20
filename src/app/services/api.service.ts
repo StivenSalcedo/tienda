@@ -1,17 +1,25 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
+import { Injectable, PLATFORM_ID,Inject  } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ConfigService } from './config.service';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+ 
+  constructor(private httpClient: HttpClient) { 
+   
+   
 
-  constructor(private httpClient: HttpClient) { }
+  }
+  
+ 
 
-  public urlBase =(window as any).config?.apiUrl || 'https://default-api.com';//'https://hegocomca.com';
+  public urlBase=  (window as any).config?.apiUrl || 'https://default-api.com';
   public url = this.urlBase + '/api';
 
-  getPosts(Type?: string, ObjectData?: any, Action?: string) {
+    getPosts(Type?: string, ObjectData?: any, Action?: string) {
+    
     let Params = new HttpParams();
     ObjectData=JSON.stringify(ObjectData)=="{}"?{test:'ok'}:ObjectData;
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });

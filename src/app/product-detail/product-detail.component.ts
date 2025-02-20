@@ -16,7 +16,6 @@ import { OptimizedImageComponent } from "../services/optimized-image/optimized-i
 import { ImageConfig } from '../interfaces/image-config';
 
 
-
 @Component({
   selector: 'app-product-detail',
   standalone: true,

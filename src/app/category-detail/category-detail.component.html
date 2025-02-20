@@ -6,17 +6,17 @@
     @if (CurrentCategory.attributes) {
     <h4 class="mt-4 mb-5"><strong>{{CurrentCategory.attributes.nombre}}</strong></h4>
     <div class="row">
-      <div *ngFor="let p of Products | orderby:'orden'" class="col-lg-4 col-md-12 mb-4">
+      <div *ngFor="let p of Products | orderby:'attributes.orden'" class="col-lg-4 col-md-12 mb-4">
         <div class="card">
           <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
-            <img src="{{p.imagen.url}}" class="card-img-top" />
+            <img (click)="goToDetails(p)" src="{{p.imagen.url}}" class="card-img-top" />
             <a href="#">
               <div class="mask">
                 <div class="d-flex justify-content-start align-items-end h-100">
-                  <h5>
+                  <!--<h5>
                     <span class="badge bg-primary ms-2">New</span><span class="badge bg-success ms-2">Eco</span>
                     <span class="badge bg-danger ms-2">-10%</span>
-                  </h5>
+                  </h5>-->
                 </div>
               </div>
 
@@ -25,12 +25,12 @@
               </div>
             </a>
             <div>
-              <a href="tienda?p=" class="btn btn-medium btn-black">Añadir al carro</a>
+              <a href="" class="btn btn-medium btn-black">Añadir al carro</a>
             </div>
 
           </div>
           <div class="card-body">
-            <a href="" class="text-reset">
+            <a href="tienda?p={{p.attributes.titulo}}&Id={{p.id}}" class="text-reset">
               <h5 class="card-title mb-3">{{p.attributes.titulo}}</h5>
             </a>
             <h6 class="mb-3">{{p.attributes.precio | currency}}

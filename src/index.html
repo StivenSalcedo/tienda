@@ -9,7 +9,14 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  
-
+  <script>
+    fetch('/assets/config.json')
+      .then(response => response.json())
+      .then(config => {
+        window.config = config; // Guardar la config en window
+      })
+      .catch(error => console.error('⚠️ Error cargando config.json:', error));
+  </script>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
   <app-root></app-root>
